@@ -1,0 +1,194 @@
+/* =====================================================
+   CINEMA DARK THEME
+===================================================== */
+/* =====================================================
+   1. BIẾN MÀU TOÀN CỤC
+===================================================== */
+:root {
+
+  /* ===== BACKGROUND ===== */
+  --bg-main: #0B0F19;          /* Nền toàn website */
+  --bg-secondary: #111827;     /* Card, section */
+  --bg-tertiary: #1F2933;      /* Modal, dropdown */
+
+  /* ===== HEADER / FOOTER ===== */
+  --header-bg: rgba(11, 15, 25, 0.85); /* Header kính mờ */
+  --footer-bg: #0A0D14;                /* Footer */
+  --border-divider: #1F2937;           /* Viền mảnh */
+
+  /* ===== ACCENT ===== */
+  --accent-gold: #F5C77A;      /* Điểm nhấn */
+  --accent-red: #E50914;       /* CTA / phim hot */
+  --accent-purple: #7C3AED;   /* Sci-fi */
+
+  /* ===== TEXT ===== */
+  --text-main: #F9FAFB;        /* Chữ chính */
+  --text-secondary: #9CA3AF;   /* Mô tả */
+  --text-muted: #6B7280;       /* Footer */
+
+  /* ===== BUTTON GRADIENT ===== */
+  --btn-gradient-primary: linear-gradient(135deg, #F5C77A, #E50914);
+  --btn-gradient-secondary: linear-gradient(135deg, #7C3AED, #4F46E5);
+}
+
+
+/* =====================================================
+   2. RESET & BODY
+===================================================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: 'Inter', 'Montserrat', sans-serif;
+}
+
+
+/* =====================================================
+   3. TEXT & LINK
+===================================================== */
+a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--accent-gold);
+}
+
+
+/* =====================================================
+   4. NAVBAR
+===================================================== */
+.navbar {
+  background: var(--header-bg) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-divider);
+}
+
+.navbar-brand {
+  color: var(--accent-gold) !important;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.navbar-nav .nav-link {
+  color: var(--text-secondary) !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--accent-gold) !important;
+}
+
+
+/* =====================================================
+   5. BUTTONS
+===================================================== */
+.btn-primary {
+  background: var(--btn-gradient-primary) !important;
+  border: none;
+  color: #0B0F19 !important;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 10px 24px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 25px rgba(229, 9, 20, 0.6);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: var(--btn-gradient-secondary) !important;
+  border: none;
+  color: #fff !important;
+}
+
+
+/* =====================================================
+   6. CARD PHIM
+===================================================== */
+.card {
+  background-color: var(--bg-secondary);
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+
+.card img {
+  width: 100%;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 25px 50px rgba(245, 199, 122, 0.15);
+}
+
+.card-title {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.card-text {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   7. SECTION TITLE
+===================================================== */
+.section-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  margin: 40px 0 20px;
+}
+
+
+/* =====================================================
+   8. MODAL (BOOTSTRAP MODAL)
+===================================================== */
+.modal-content {
+  background-color: var(--bg-tertiary);
+  color: var(--text-main);
+  border-radius: 16px;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-divider);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-divider);
+}
+
+
+/* =====================================================
+   9. FOOTER
+===================================================== */
+footer {
+  background-color: var(--footer-bg);
+  border-top: 1px solid var(--border-divider);
+  padding: 40px 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   10. jQuery EFFECT SUPPORT (OPTIONAL)
+===================================================== */
+.fade-hover {
+  transition: opacity 0.3s ease;
+}
+
+.fade-hover:hover {
+  opacity: 0.85;
+}
