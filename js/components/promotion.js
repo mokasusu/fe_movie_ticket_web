@@ -9,22 +9,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const total = items.length;
   let autoSlide;
 
-  /* ===== tạo dots ===== */
+  // Tạo dot indicator
   for (let i = 0; i < total; i++) {
     const dot = document.createElement('span');
     dot.classList.add('promo-dot');
     if (i === 0) dot.classList.add('active');
-    dot.addEventListener('click', () => goToSlide(i));
+    dot.addEventListener('click', () => {
+      stopAuto();
+      goToSlide(i);
+      startAuto();
+    });
     dotsContainer.appendChild(dot);
   }
-
   const dots = dotsContainer.children;
 
   function updateDots() {
     [...dots].forEach(d => d.classList.remove('active'));
     dots[index].classList.add('active');
   }
-  
+
   function goToSlide(i) {
     index = i;
     slider.style.transform = `translateX(-${index * 100}%)`;
@@ -41,27 +44,20 @@ document.addEventListener('DOMContentLoaded', () => {
     goToSlide(index);
   }
 
-  /* Events */
-  next.addEventListener('click', () => {
-    stopAuto();
-    nextSlide();
-    startAuto();
-  });
+  // Arrow events
+  next.addEventListener('click', () => { stopAuto(); nextSlide(); startAuto(); });
+  prev.addEventListener('click', () => { stopAuto(); prevSlide(); startAuto(); });
 
-  prev.addEventListener('click', () => {
-    stopAuto();
-    prevSlide();
-    startAuto();
-  });
-
-  /* Tự trượt*/
-  function startAuto() {
-    autoSlide = setInterval(nextSlide, 4000);
-  }
-
-  function stopAuto() {
-    clearInterval(autoSlide);
-  }
+  // Auto slide
+  function startAuto() { autoSlide = setInterval(nextSlide, 4000); }
+  function stopAuto() { clearInterval(autoSlide); }
 
   startAuto();
+
+  // Reset slider khi resize
+  window.addEventListener('resize', () => {
+    slider.style.transition = 'none';
+    goToSlide(index);
+    setTimeout(() => { slider.style.transition = 'transform 0.6s ease-in-out'; }, 50);
+  });
 });
