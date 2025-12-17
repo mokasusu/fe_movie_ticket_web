@@ -1,0 +1,99 @@
+/* ================= HEADER ================= */
+:root {
+  --header-height: 90px;
+}
+/* HEADER */
+.cinema-header {
+  height: 90px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1050;
+  background: var(--header-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-divider);
+}
+
+/* ĐẨY NỘI DUNG XUỐNG */
+body {
+  padding-top: 90px;
+}
+
+/* LOGO */
+.logo-img {
+  height: 54px;
+}
+
+/* MENU */
+.cinema-menu .nav-link {
+  font-weight: 600;
+  padding: 0 60px;
+  font-size: 25px;
+  color: var(--text-secondary) !important;
+  position: relative;
+}
+
+.cinema-menu .nav-link:hover {
+  color: var(--accent-gold) !important;
+}
+
+.cinema-menu .highlight {
+  color: var(--accent-red) !important;
+}
+
+/* Gạch chân hover */
+.cinema-menu .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent-gold);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.cinema-menu .nav-link:hover::after {
+  width: 60%;
+}
+
+/* USER */
+.avatar-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-gold);
+  cursor: pointer;
+}
+
+/* DROPDOWN */
+.user-dropdown {
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  border: 1px solid var(--border-divider);
+  min-width: 200px;
+  padding: 8px 0;
+}
+
+.user-dropdown .dropdown-item {
+  color: var(--text-main);
+  font-size: 14px;
+  padding: 10px 16px;
+}
+
+.user-dropdown .dropdown-item:hover {
+  background: rgba(245, 199, 122, 0.1);
+  color: var(--accent-gold);
+}
+
+.user-dropdown .logout {
+  color: var(--accent-red);
+}
+
+/*BODY OFFSET */
+body {
+  padding-top: 90px;
+}

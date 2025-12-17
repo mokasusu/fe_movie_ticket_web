@@ -1,57 +1,109 @@
 /* =====================================================
    CINEMA DARK THEME
 ===================================================== */
+
 /* =====================================================
    1. BIẾN MÀU TOÀN CỤC
 ===================================================== */
 :root {
 
   /* ===== BACKGROUND ===== */
-  --bg-main: #0B0F19;          /* Nền toàn website */
-  --bg-secondary: #111827;     /* Card, section */
-  --bg-tertiary: #1F2933;      /* Modal, dropdown */
+  --bg-main: #0B0F19;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1F2933;
 
   /* ===== HEADER / FOOTER ===== */
-  --header-bg: rgba(11, 15, 25, 0.85); /* Header kính mờ */
-  --footer-bg: #0A0D14;                /* Footer */
-  --border-divider: #1F2937;           /* Viền mảnh */
+  --header-bg: rgba(11, 15, 25, 0.85);
+  --footer-bg: #0A0D14;
+  --border-divider: #1F2937;
 
   /* ===== ACCENT ===== */
-  --accent-gold: #F5C77A;      /* Điểm nhấn */
-  --accent-red: #E50914;       /* CTA / phim hot */
-  --accent-purple: #7C3AED;   /* Sci-fi */
+  --accent-gold: #F5C77A;
+  --accent-red: #E50914;
+  --accent-purple: #7C3AED;
 
   /* ===== TEXT ===== */
-  --text-main: #F9FAFB;        /* Chữ chính */
-  --text-secondary: #9CA3AF;   /* Mô tả */
-  --text-muted: #6B7280;       /* Footer */
+  --text-main: #F9FAFB;
+  --text-secondary: #9CA3AF;
+  --text-muted: #6B7280;
 
   /* ===== BUTTON GRADIENT ===== */
   --btn-gradient-primary: linear-gradient(135deg, #F5C77A, #E50914);
   --btn-gradient-secondary: linear-gradient(135deg, #7C3AED, #4F46E5);
 }
 
-
 /* =====================================================
-   2. RESET & BODY
+   2. RESET CSS CƠ BẢN (SAFE RESET)
 ===================================================== */
 * {
   box-sizing: border-box;
 }
 
+html, body,
+h1, h2, h3, h4, h5, h6,
+p, ul, ol, li,
+figure, blockquote,
+dl, dd {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  outline: none;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+p {
+  line-height: 1.6;
+}
+
+/* =====================================================
+   3. BODY & FONT
+===================================================== */
 body {
   background-color: var(--bg-main);
   color: var(--text-main);
   font-family: 'Inter', 'Montserrat', sans-serif;
 }
 
-
 /* =====================================================
-   3. TEXT & LINK
+   4. LINK (KHÔNG GẠCH CHÂN KHI BÌNH THƯỜNG)
 ===================================================== */
 a {
   color: var(--text-secondary);
-  text-decoration: none;
+  text-decoration: none; /* CHỈ bỏ gạch chân trạng thái thường */
   transition: color 0.3s ease;
 }
 
@@ -59,9 +111,8 @@ a:hover {
   color: var(--accent-gold);
 }
 
-
 /* =====================================================
-   4. NAVBAR
+   5. NAVBAR
 ===================================================== */
 .navbar {
   background: var(--header-bg) !important;
@@ -83,9 +134,8 @@ a:hover {
   color: var(--accent-gold) !important;
 }
 
-
 /* =====================================================
-   5. BUTTONS
+   6. BUTTONS
 ===================================================== */
 .btn-primary {
   background: var(--btn-gradient-primary) !important;
@@ -109,9 +159,8 @@ a:hover {
   color: #fff !important;
 }
 
-
 /* =====================================================
-   6. CARD PHIM
+   7. CARD PHIM
 ===================================================== */
 .card {
   background-color: var(--bg-secondary);
@@ -140,9 +189,8 @@ a:hover {
   font-size: 14px;
 }
 
-
 /* =====================================================
-   7. SECTION TITLE
+   8. SECTION TITLE
 ===================================================== */
 .section-title {
   font-size: 26px;
@@ -151,9 +199,8 @@ a:hover {
   margin: 40px 0 20px;
 }
 
-
 /* =====================================================
-   8. MODAL (BOOTSTRAP MODAL)
+   9. MODAL (BOOTSTRAP)
 ===================================================== */
 .modal-content {
   background-color: var(--bg-tertiary);
@@ -169,9 +216,8 @@ a:hover {
   border-top: 1px solid var(--border-divider);
 }
 
-
 /* =====================================================
-   9. FOOTER
+   10. FOOTER
 ===================================================== */
 footer {
   background-color: var(--footer-bg);
@@ -181,9 +227,8 @@ footer {
   font-size: 14px;
 }
 
-
 /* =====================================================
-   10. jQuery EFFECT SUPPORT (OPTIONAL)
+   11. jQuery EFFECT SUPPORT
 ===================================================== */
 .fade-hover {
   transition: opacity 0.3s ease;
@@ -191,4 +236,24 @@ footer {
 
 .fade-hover:hover {
   opacity: 0.85;
+}
+
+/* =====================================================
+   12. SCROLLBAR
+===================================================== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-divider);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold);
 }
