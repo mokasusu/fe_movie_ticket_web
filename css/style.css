@@ -1,0 +1,18 @@
+.main-content {
+    padding-bottom: 50px;
+}
+
+.section-title {
+    position: relative;
+    padding-left: 15px;
+    border-left: 4px solid var(--accent-red);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.movie-poster img {
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    width: 100%;
+    display: block;
+}

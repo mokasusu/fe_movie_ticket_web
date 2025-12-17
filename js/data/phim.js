@@ -132,7 +132,7 @@ const movies = [
     daoDien: 'Trần Hữu Tấn',
     theLoai: ['Hành động', 'Kinh dị', 'Giật gân'],
     doTuoi: 'C16',
-    dinhDang: '2D',
+    dinhDang: '3D',
     noiDung:
       'Hoàng Tử Quỷ xoay quanh Thân Đức - một hoàng tử được sinh ra nhờ tà thuật. Trốn thoát khỏi cung cấm, Thân Đức tham vọng giải thoát Quỷ Xương Cuồng khỏi Ải Mắt Người để khôi phục Xương Cuồng Giáo. Nhưng kế hoạch của Thân Đức chỉ thành hiện thực khi hắn có đủ cả hai “nguyên liệu” - Du Hồn Giả và Bạch Hổ Nguyên Âm. Đội lốt một lang y hiền lành, muốn chữa bệnh cứu người, Thân Đức lên đường đến làng Hủi và đụng độ trưởng làng Lỗ Đạt mạnh mẽ, liệu hắn có thể đạt được âm mưu tà ác của mình?',
     dienVien: 'Anh Tú Atus, Lương Thế Thành, Hoàng Linh Chi, Huỳnh Thanh Trực, Rima Thanh Vy, Lê Hà Phương, Duy Luân,...',
@@ -173,12 +173,12 @@ const movies = [
     daoDien: 'Na Hong-jin',
     theLoai: ['Kinh dị', 'Giật gân', 'Hành động'],
     doTuoi: 'C16',
-    dinhDang: '2D',
+    dinhDang: '3D',
     noiDung:
       'Quán Kỳ Nam kể về một quán ăn bí ẩn xuất hiện vào ban đêm, nơi những thực khách đến để thử thách vận may của mình thông qua các trò chơi nguy hiểm. Khi những người tham gia dần nhận ra rằng họ không thể rời khỏi quán nếu không chiến thắng, họ bị cuốn vào một cuộc đấu trí sinh tử đầy kịch tính và kinh hoàng.',
     dienVien: [],
     anhPhim: './assets/images/posters/quan_ky_nam.jpg',
-    trailerUrl: 'https://www.youtube.com/watch?v=JfVOs4VSpmA',
+    trailerUrl: 'https://youtu.be/6bW9byYRhz8?si=2HaftjaWl88Qdzjk',
     lichChieu: [
       {
         ngayChieu: '2025-12-23',
@@ -207,7 +207,7 @@ const movies = [
     maPhim: 'MV006',
     tenPhim: 'Avatar: Lửa Và Tro Tàn',
     thoiLuong: 192,
-    ngayKhoiChieu: '2025-12-18',
+    ngayKhoiChieu: '2025-12-31',
     quocGia: 'Mỹ',
     daoDien: 'James Cameron',
     theLoai: ['Khoa học viễn tưởng', 'Phiêu lưu', 'Hành động'],
@@ -256,7 +256,7 @@ const movies = [
     noiDung:
       'Phi Vụ Động Trời 2 tiếp tục theo chân Danny Ocean và đội của anh khi họ lên kế hoạch thực hiện một phi vụ táo bạo mới nhằm đánh cắp một kho báu khổng lồ từ một sòng bạc hạng sang ở châu Âu. Với sự tham gia của những tên trộm tài ba và những tình huống hài hước, bộ phim mang đến những pha hành động nghẹt thở cùng những màn đấu trí đầy kịch tính.',
     dienVien: [],
-    anhPhim: './assets/images/posters/phi_vu_dong_troi_2.jpg',
+    anhPhim: './assets/images/posters/phi_vu_dong_troi_2.png',
     trailerUrl: 'https://www.youtube.com/watch?v=cohD4l6gIkM',
     lichChieu: [
       {

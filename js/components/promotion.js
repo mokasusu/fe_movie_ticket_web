@@ -1,15 +1,20 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initPromotion() {
   const slider = document.getElementById('promoSlider');
-  const items = slider.children;
   const prev = document.getElementById('promoPrev');
   const next = document.getElementById('promoNext');
   const dotsContainer = document.getElementById('promoDots');
 
-  let index = 0;
+  if (!slider || !prev || !next || !dotsContainer) return;
+
+  const items = slider.children;
   const total = items.length;
+  let index = 0;
   let autoSlide;
 
-  // Tạo dot indicator
+  // Xóa dots cũ nếu có
+  dotsContainer.innerHTML = '';
+
+  // Tạo dot indicators
   for (let i = 0; i < total; i++) {
     const dot = document.createElement('span');
     dot.classList.add('promo-dot');
@@ -21,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     dotsContainer.appendChild(dot);
   }
+
   const dots = dotsContainer.children;
 
   function updateDots() {
@@ -60,4 +66,4 @@ document.addEventListener('DOMContentLoaded', () => {
     goToSlide(index);
     setTimeout(() => { slider.style.transition = 'transform 0.6s ease-in-out'; }, 50);
   });
-});
+}

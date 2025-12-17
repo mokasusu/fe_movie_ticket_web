@@ -10,12 +10,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components/header.css">
     <link rel="stylesheet" href="css/components/footer.css">
     <link rel="stylesheet" href="css/components/promotion.css">
-    <link rel="stylesheet" href="css/reponsive.css">
+    <link rel="stylesheet" href="css/components/movie_card.css">
 </head>
 <body>
     <!-- HEADER -->
@@ -25,7 +26,15 @@
     <main class="main-content">
         <div id="promotion-container"></div>
         <div class="container">
-            <!-- Nội dung trang chủ của bạn ở đây -->
+            <section id="section-dang-chieu">
+                <h2 class="section-title">Phim Đang Chiếu</h2>
+                <div id="movie-list-dang-chieu" class="row g-4 mb-5"></div>
+            </section>
+
+            <section id="section-sap-chieu">
+                <h2 class="section-title">Phim Sắp Chiếu</h2>
+                <div id="movie-list-sap-chieu" class="row g-4"></div>
+            </section>
         </div>
     </main>
 
@@ -36,10 +45,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Custom JS -->
+    <script type="module" src="js/main.js"></script>
     <script src="js/components/header.js"></script>
-    <script src="js/components/promotion.js" defer></script>
     <script src="js/components/footer.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/components/promotion.js" defer></script>
+    <script src="js/components/movie_card.js"></script>
     
     <!-- Load Header và Footer -->
     <script>
@@ -56,6 +66,7 @@
             .then(res => res.text())
             .then(html => {
             document.getElementById('promotion-container').innerHTML = html;
+            initPromotion();
             })
             .catch(err => console.error('Load promotion error:', err));
 

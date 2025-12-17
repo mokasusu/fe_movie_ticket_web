@@ -2,9 +2,7 @@
    CINEMA DARK THEME
 ===================================================== */
 
-/* =====================================================
-   1. BIẾN MÀU TOÀN CỤC
-===================================================== */
+/* BIẾN MÀU TOÀN CỤC */
 :root {
 
   /* ===== BACKGROUND ===== */
@@ -32,78 +30,15 @@
   --btn-gradient-secondary: linear-gradient(135deg, #7C3AED, #4F46E5);
 }
 
-/* =====================================================
-   2. RESET CSS CƠ BẢN (SAFE RESET)
-===================================================== */
-* {
-  box-sizing: border-box;
-}
-
-html, body,
-h1, h2, h3, h4, h5, h6,
-p, ul, ol, li,
-figure, blockquote,
-dl, dd {
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  scroll-behavior: smooth;
-}
-
-ul, ol {
-  list-style: none;
-}
-
-img, video {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-button,
-input,
-select,
-textarea {
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-  outline: none;
-}
-
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-p {
-  line-height: 1.6;
-}
-
-/* =====================================================
-   3. BODY & FONT
-===================================================== */
 body {
   background-color: var(--bg-main);
   color: var(--text-main);
   font-family: 'Inter', 'Montserrat', sans-serif;
 }
 
-/* =====================================================
-   4. LINK (KHÔNG GẠCH CHÂN KHI BÌNH THƯỜNG)
-===================================================== */
 a {
   color: var(--text-secondary);
-  text-decoration: none; /* CHỈ bỏ gạch chân trạng thái thường */
+  text-decoration: none;
   transition: color 0.3s ease;
 }
 
@@ -111,9 +46,6 @@ a:hover {
   color: var(--accent-gold);
 }
 
-/* =====================================================
-   5. NAVBAR
-===================================================== */
 .navbar {
   background: var(--header-bg) !important;
   backdrop-filter: blur(12px);
@@ -134,9 +66,6 @@ a:hover {
   color: var(--accent-gold) !important;
 }
 
-/* =====================================================
-   6. BUTTONS
-===================================================== */
 .btn-primary {
   background: var(--btn-gradient-primary) !important;
   border: none;
@@ -159,9 +88,6 @@ a:hover {
   color: #fff !important;
 }
 
-/* =====================================================
-   7. CARD PHIM
-===================================================== */
 .card {
   background-color: var(--bg-secondary);
   border: none;
@@ -189,9 +115,6 @@ a:hover {
   font-size: 14px;
 }
 
-/* =====================================================
-   8. SECTION TITLE
-===================================================== */
 .section-title {
   font-size: 26px;
   font-weight: 700;
@@ -199,9 +122,6 @@ a:hover {
   margin: 40px 0 20px;
 }
 
-/* =====================================================
-   9. MODAL (BOOTSTRAP)
-===================================================== */
 .modal-content {
   background-color: var(--bg-tertiary);
   color: var(--text-main);
@@ -216,9 +136,6 @@ a:hover {
   border-top: 1px solid var(--border-divider);
 }
 
-/* =====================================================
-   10. FOOTER
-===================================================== */
 footer {
   background-color: var(--footer-bg);
   border-top: 1px solid var(--border-divider);
@@ -227,9 +144,6 @@ footer {
   font-size: 14px;
 }
 
-/* =====================================================
-   11. jQuery EFFECT SUPPORT
-===================================================== */
 .fade-hover {
   transition: opacity 0.3s ease;
 }
@@ -238,9 +152,6 @@ footer {
   opacity: 0.85;
 }
 
-/* =====================================================
-   12. SCROLLBAR
-===================================================== */
 ::-webkit-scrollbar {
   width: 8px;
 }

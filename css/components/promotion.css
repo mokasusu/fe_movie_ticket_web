@@ -7,7 +7,7 @@
 
 .promo-wrapper {
   width: 100vw;
-  aspect-ratio: 21 / 9; /* chiều cao tự động theo tỉ lệ */
+  aspect-ratio: 21 / 9;
   max-height: 90vh;
   overflow: hidden;
   position: relative;
@@ -83,7 +83,7 @@
 .promo-dot.active {
   width: 28px;
   border-radius: 20px;
-  background: #F5C77A; /* accent gold */
+  background: #F5C77A;
 }
 
 .promo-dot:hover {
