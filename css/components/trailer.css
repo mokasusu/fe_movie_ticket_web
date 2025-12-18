@@ -1,0 +1,49 @@
+.trailer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.trailer-overlay.active {
+  display: flex;
+}
+
+.trailer-box {
+  width: 90%;
+  max-width: 900px;
+  position: relative;
+}
+
+.trailer-iframe-wrapper {
+  position: relative;
+  padding-top: 56.25%;
+}
+
+.trailer-iframe-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+.trailer-close {
+  position: absolute;
+  top: -45px;
+  right: 0;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #fff;
+  cursor: pointer;
+}
+
+@media (max-width: 576px) {
+  .trailer-box {
+    width: 95%;
+  }
+}
