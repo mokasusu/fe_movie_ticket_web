@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - Cinema</title>
+    <!-- Bootstrap 5 (Chỉ dùng Hệ thống lưới Grid & Logic của Modal) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts: Font chữ Inter hiện đại -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome: Thư viện icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components/header.css">
+    <link rel="stylesheet" href="../css/components/footer.css">
+    <style>
+        :root {
+            --primary-red: #E50914;
+            --bg-black: #05070a;
+            --card-gray: #111827;
+            --border: #2a2a2a;
+            --text-dim: #94a3b8;
+            --vip-gold: #fbbf24;
+            --couple-pink: #f472b6;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 50px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #fff, var(--vip-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .price-section {
+            background: var(--card-gray);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            color: var(--primary-red);
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            padding: 15px;
+            background: #000;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            border-bottom: 2px solid var(--primary-red);
+            text-align: left;
+        }
+
+        tbody td {
+            padding: 20px 15px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .time-slot {
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+
+        .col-vip {
+            color: var(--vip-gold);
+        }
+
+        .col-couple {
+            color: var(--couple-pink);
+        }
+
+        .notes {
+            border-left: 4px solid var(--primary-red);
+            padding: 20px;
+            background: rgba(229, 9, 20, 0.05);
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>BẢNG GIÁ VÉ NIÊM YẾT</h1>
+            <p>Khám phá trải nghiệm điện ảnh đỉnh cao tại COP Cinema</p>
+        </div>
+
+        <div class="price-section" id="section-2d">
+            <div class="section-title"><i class="fas fa-film me-2"></i> PHIM 2D</div>
+            <table id="table-2d">
+                <thead>
+                    <tr>
+                        <th>Khung giờ</th>
+                        <th>Standard</th>
+                        <th>VIP</th>
+                        <th>Couple</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-2d"></tbody>
+            </table>
+        </div>
+
+        <div class="price-section" id="section-3d">
+            <div class="section-title"><i class="fas fa-vr-cardboard me-2"></i> PHIM 3D</div>
+            <table id="table-3d">
+                <thead>
+                    <tr>
+                        <th>Khung giờ</th>
+                        <th>Standard</th>
+                        <th>VIP</th>
+                        <th>Couple</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-3d"></tbody>
+            </table>
+        </div>
+
+        <div class="notes">
+            <h5 class="text-white mb-2">Lưu ý quan trọng:</h5>
+            <p>• Giá vé Couple tính cho 1 cặp (2 người).</p>
+            <p>• Phụ thu 3D là 30.000đ so với giá vé 2D tương ứng.</p>
+        </div>
+    </div>
+    <div id="footer-container"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/pages/gia_ve.js"></script>
+    <script>
+        async function loadLayout() {
+            try {
+                const headerRes = await fetch('../pages/components/header.html');
+                document.getElementById('header-container').innerHTML = await headerRes.text();
+
+                const footerRes = await fetch('../pages/components/footer.html');
+                document.getElementById('footer-container').innerHTML = await footerRes.text();
+            } catch (err) {
+                console.error('Load layout error:', err);
+            }
+        }
+        loadLayout();
+    </script>
+</body>
+
+</html>

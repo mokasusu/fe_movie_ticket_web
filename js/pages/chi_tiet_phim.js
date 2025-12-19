@@ -9,10 +9,11 @@ function getMovieIdFromURL() {
 function renderMovieDetail(movie) {
   if (!movie) {
     document.querySelector('main').innerHTML =
-      '<p class="text-danger text-center mt-5">Phim không tồn tại.</p>';
+      '<div class="container mt-5"><p class="text-danger text-center">Phim không tồn tại hoặc đã bị gỡ bỏ.</p></div>';
     return;
   }
 
+  // Cập nhật thông tin cơ bản
   document.getElementById('movie-poster').src = '../' + movie.anhPhim;
   document.getElementById('breadcrumb-movie-name').textContent = movie.tenPhim;
   document.getElementById('movie-title').textContent = movie.tenPhim;
@@ -24,25 +25,31 @@ function renderMovieDetail(movie) {
   document.getElementById('movie-duration').textContent = movie.thoiLuong + ' phút';
   document.getElementById('movie-release').textContent = movie.ngayKhoiChieu;
 
-  /* Nút xem trailer tại chỗ */
+  /* Nút xem trailer */
   const trailerBtn = document.getElementById('movie-trailer');
-  trailerBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    showTrailer(movie.trailerUrl);
-  });
+  if (trailerBtn) {
+    trailerBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (typeof showTrailer === 'function') {
+        showTrailer(movie.trailerUrl);
+      } else {
+        window.open(movie.trailerUrl, '_blank');
+      }
+    });
+  }
 
-  /* Lịch chiếu */
+  /* Render Lịch chiếu */
   const scheduleContainer = document.getElementById('movie-schedule');
   scheduleContainer.innerHTML = '';
 
   if (!movie.lichChieu || movie.lichChieu.length === 0) {
-    scheduleContainer.innerHTML = '<p class="text-muted">Chưa có lịch chiếu</p>';
+    scheduleContainer.innerHTML = '<p class="text-muted mt-3">Hiện chưa có lịch chiếu cho phim này.</p>';
     return;
   }
 
   movie.lichChieu.forEach(day => {
     const dayDiv = document.createElement('div');
-    dayDiv.className = 'schedule-day';
+    dayDiv.className = 'schedule-day mb-4';
 
     const dateText = new Date(day.ngayChieu).toLocaleDateString('vi-VN', {
       weekday: 'long',
@@ -52,21 +59,57 @@ function renderMovieDetail(movie) {
     });
 
     dayDiv.innerHTML = `
-      <h6><i class="far fa-calendar-alt me-2"></i>${dateText}</h6>
-      <div class="time-slots-container">
+      <h6 class="fw-bold mb-3"><i class="far fa-calendar-alt me-2 text-danger"></i>${dateText}</h6>
+      <div class="time-slots-container d-flex flex-wrap gap-2">
         ${day.suatChieu.map(s => `
-          <button class="schedule-time">${s.gioChieu}</button>
+          <button class="btn btn-outline-light schedule-time" 
+                  data-gio="${s.gioChieu}" 
+                  data-phong="${s.phongChieu}" 
+                  data-ngay="${day.ngayChieu}">
+            ${s.gioChieu}
+          </button>
         `).join('')}
       </div>
     `;
-
     scheduleContainer.appendChild(dayDiv);
+  });
+
+  // Sau khi render xong các nút giờ, ta gán sự kiện click
+  bindBookingEvents(movie);
+}
+
+/* Xử lý khi click chọn giờ chiếu */
+function bindBookingEvents(movie) {
+  const timeButtons = document.querySelectorAll('.schedule-time');
+  
+  timeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Đóng gói dữ liệu chuẩn để trang Booking (booking.js) có thể đọc được
+      const bookingData = {
+        maPhim: movie.maPhim,
+        tenPhim: movie.tenPhim,
+        anhPhim: movie.anhPhim,
+        doTuoi: movie.doTuoi,
+        thoiLuong: movie.thoiLuong,
+        dinhDang: movie.dinhDang || "2D Digital",
+        ngayChieu: btn.dataset.ngay,
+        gioChieu: btn.dataset.gio,
+        phongChieu: btn.dataset.phong
+      };
+
+      // Lưu vào localStorage với key 'currentBooking' (trùng với logic trong booking.js)
+      localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+
+      // Chuyển hướng sang màn hình chọn ghế
+      window.location.href = '/pages/booking.html';
+    });
   });
 }
 
-/* INIT */
+/* KHỞI CHẠY */
 document.addEventListener('DOMContentLoaded', () => {
   const movieId = getMovieIdFromURL();
   const movie = dsPhim.find(p => p.maPhim === movieId);
+  
   renderMovieDetail(movie);
 });
