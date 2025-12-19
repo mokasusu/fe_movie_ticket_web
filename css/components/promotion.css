@@ -13,7 +13,6 @@
   position: relative;
 }
 
-/* Slider */
 .promo-slider {
   display: flex;
   width: 100%;
@@ -33,7 +32,6 @@
   object-position: center;
 }
 
-/* Arrows */
 .promo-arrow {
   position: absolute;
   top: 50%;
@@ -44,9 +42,9 @@
   border: none;
   cursor: pointer;
   z-index: 10;
-  background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3));
+  background: linear-gradient(135deg, var(--background-primary), var(--background-secondary));
   backdrop-filter: blur(8px);
-  color: #fff;
+  color: var(--text-primary);
   font-size: 22px;
   transition: all 0.3s ease;
 }
@@ -57,10 +55,9 @@
 .promo-arrow:hover {
   transform: translateY(-50%) scale(1.15);
   box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-  background: linear-gradient(135deg, rgba(229,9,20,0.8), rgba(245,199,122,0.8));
+  background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
 }
 
-/* Dots */
 .promo-dots {
   position: absolute;
   bottom: 12px;
@@ -75,7 +72,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.4);
+  background: var(--background-secondary);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -83,20 +80,9 @@
 .promo-dot.active {
   width: 28px;
   border-radius: 20px;
-  background: #F5C77A;
+  background: var(--accent-gold);
 }
 
 .promo-dot:hover {
-  background: #F5C77A;
-}
-
-/* Responsive */
-@media (max-width: 992px) {
-  .promo-wrapper { aspect-ratio: 16 / 9; }
-  .promo-arrow { width: 44px; height: 44px; font-size: 18px; }
-}
-
-@media (max-width: 480px) {
-  .promo-wrapper { aspect-ratio: 4 / 3; }
-  .promo-arrow { width: 36px; height: 36px; font-size: 16px; }
+  background: var(--accent-gold);
 }

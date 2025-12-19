@@ -42,10 +42,12 @@
     <!-- FOOTER -->
     <div id="footer-container"></div>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/components/trailer.js"></script>
     <script src="js/components/promotion.js"></script>
+    <script src="js/components/header.js"></script>
     
     <!-- Custom JS -->
     <script type="module">
@@ -70,6 +72,7 @@
             try {
                 const headerRes = await fetch('pages/components/header.html');
                 document.getElementById('header-container').innerHTML = await headerRes.text();
+                if (window.initHeaderUserMenu) window.initHeaderUserMenu();
 
                 const promoRes = await fetch('pages/components/promotion.html');
                 document.getElementById('promotion-container').innerHTML = await promoRes.text();
