@@ -81,7 +81,9 @@ export function createMovieCard(movie, isSapChieu = false) {
   });
 
   // Nút đặt vé/ngày chiếu không bắn click card
-  buttonHTML.addEventListener('click', e => e.stopPropagation());
+  buttonHTML.addEventListener('click', () => {
+    window.location.href = `${BASE_URL}/pages/chi_tiet_phim.html?maphim=${movie.maPhim}`;
+  });
 
   colDiv.appendChild(card);
   return colDiv;
