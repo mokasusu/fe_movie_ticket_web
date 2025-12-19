@@ -11,10 +11,8 @@ function initPromotion() {
   let index = 0;
   let autoSlide;
 
-  // Xóa dots cũ nếu có
   dotsContainer.innerHTML = '';
 
-  // Tạo dot indicators
   for (let i = 0; i < total; i++) {
     const dot = document.createElement('span');
     dot.classList.add('promo-dot');
@@ -50,20 +48,18 @@ function initPromotion() {
     goToSlide(index);
   }
 
-  // Arrow events
   next.addEventListener('click', () => { stopAuto(); nextSlide(); startAuto(); });
   prev.addEventListener('click', () => { stopAuto(); prevSlide(); startAuto(); });
 
-  // Auto slide
   function startAuto() { autoSlide = setInterval(nextSlide, 4000); }
   function stopAuto() { clearInterval(autoSlide); }
 
   startAuto();
 
-  // Reset slider khi resize
   window.addEventListener('resize', () => {
     slider.style.transition = 'none';
     goToSlide(index);
     setTimeout(() => { slider.style.transition = 'transform 0.6s ease-in-out'; }, 50);
   });
 }
+window.initPromotion = initPromotion;

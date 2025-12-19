@@ -1,3 +1,9 @@
+#promotion-container {
+  display: block !important;
+  width: 100%;
+  clear: both;
+}
+
 .main-content {
     padding-bottom: 50px;
 }

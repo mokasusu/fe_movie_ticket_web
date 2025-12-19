@@ -1,0 +1,208 @@
+html {
+  height: auto;
+  min-height: 100%;
+}
+
+body.login-page-body {
+  background-color: var(--bg-main);
+  background-image: url('../../assets/background/bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.login-form-card {
+  background-color: var(--bg-secondary);
+  backdrop-filter: blur(8px);
+  padding: 40px;
+  border-radius: 16px;
+  width: 400px;
+  box-shadow: 0 10px 30px var(--shadow-dark);
+  border: 1px solid var(--border-divider);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-logo {
+  width: 120px;
+  height: auto;
+  margin-bottom: 25px;
+}
+
+.form-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  width: 100%;
+  justify-content: space-around;
+  border-bottom: 1px solid var(--border-divider);
+  position: relative;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 10px 0;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  line-height: 1.4;
+}
+
+.tab-btn.active {
+  background: var(--accent-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--accent-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: tabUnderline 0.4s forwards;
+}
+
+@keyframes tabUnderline {
+  0% { transform: scaleX(0); opacity: 0.6; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tab-btn:not(.active):hover {
+    color: var(--accent-gold);
+  }
+}
+
+.form-tab {
+  width: 100%;
+  display: none;
+  flex-direction: column;
+}
+
+.form-tab.active {
+  display: flex;
+}
+
+.input-group {
+  width: 100%;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.error-msg {
+  color: var(--accent-red);
+  font-size: 12px;
+  margin-top: 3px;
+  min-height: 16px;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.input-group.error .error-msg {
+  opacity: 1;
+}
+
+.input-group.error input {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 6px var(--accent-red);
+}
+
+.login-form-card input {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid var(--border-divider);
+  background-color: #1F2933;
+  color: var(--text-main);
+  transition: all 0.3s ease;
+  line-height: 1.6;
+}
+
+.login-form-card input::placeholder {
+  color: var(--text-secondary);
+}
+
+.login-form-card input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 8px var(--accent-gold);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--accent-gold);
+  color: #0B0F19;
+  transition: all 0.3s ease;
+  line-height: 1.6;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-login:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 25px var(--accent-red);
+    transform: translateY(-2px);
+  }
+}
+
+.login-form-card .link {
+  text-align: center;
+  margin-top: 10px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+  display: block;
+  text-decoration: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .login-form-card .link:hover {
+    color: var(--accent-gold);
+  }
+}
+
+@media (max-width: 1024px) {
+  .login-container {
+    justify-content: center;
+    padding: 0 20px;
+  }
+
+  .login-form-card {
+    width: 90%;
+    padding: 30px;
+  }
+
+  .login-logo {
+    width: 90px;
+    margin-bottom: 20px;
+  }
+}
