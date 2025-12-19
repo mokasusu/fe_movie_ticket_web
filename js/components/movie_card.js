@@ -1,22 +1,24 @@
+import { BASE_URL } from "../config.js";
+
 export function createMovieCard(movie, isSapChieu = false) {
   const ageClass = movie.doTuoi.toLowerCase();
   const genreText = movie.theLoai.join(', ');
 
-  // Xác định nút hiển thị
-  let buttonHTML;
+  // Nút hiển thị
+  let buttonHTML = document.createElement('button');
   if (isSapChieu) {
     const ngayChieu = new Date(movie.ngayKhoiChieu);
-    const ngayChieuFormat = ngayChieu.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    buttonHTML = document.createElement('button');
+    const ngayChieuFormat = ngayChieu.toLocaleDateString('vi-VN', {
+      day: '2-digit', month: '2-digit', year: 'numeric'
+    });
     buttonHTML.className = 'btn btn-outline-light btn-sm mt-2 schedule-btn';
     buttonHTML.textContent = ngayChieuFormat;
   } else {
-    buttonHTML = document.createElement('button');
     buttonHTML.className = 'btn btn-primary btn-sm mt-2 schedule-btn';
-    buttonHTML.textContent = 'ĐẶT VÉ NGAY';
+    buttonHTML.innerHTML = '<i class="fas fa-ticket-alt me-1"></i> ĐẶT VÉ NGAY';
   }
 
-  // Tạo card element
+  // Card container
   const colDiv = document.createElement('div');
   colDiv.className = 'col-6 col-md-4 col-lg-3 mb-4';
 
@@ -25,7 +27,7 @@ export function createMovieCard(movie, isSapChieu = false) {
 
   // Poster
   const posterDiv = document.createElement('div');
-  posterDiv.className = 'movie-poster';
+  posterDiv.className = 'movie-poster position-relative';
   const img = document.createElement('img');
   img.src = movie.anhPhim;
   img.alt = movie.tenPhim;
@@ -50,12 +52,8 @@ export function createMovieCard(movie, isSapChieu = false) {
 
   const trailerBtn = document.createElement('button');
   trailerBtn.className = 'btn-trailer mb-2';
-  trailerBtn.innerHTML = `
-    <i class="fas fa-play-circle me-2"></i>
-    <span>Xem Trailer</span>
-  `;
+  trailerBtn.innerHTML = `<i class="fas fa-play-circle me-2"></i> Xem Trailer`;
   overlay.appendChild(trailerBtn);
-
   overlay.appendChild(buttonHTML);
   card.appendChild(overlay);
 
@@ -71,18 +69,19 @@ export function createMovieCard(movie, isSapChieu = false) {
   `;
   card.appendChild(contentDiv);
 
-  // Click card
+  // Click card -> detail page
   card.addEventListener('click', () => {
-    window.location.href = `./pages/chi_tiet_phim.html?id=${movie.maPhim}`;
+    window.location.href = `${BASE_URL}/pages/chi_tiet_phim.html?maphim=${movie.maPhim}`;
   });
 
-  trailerBtn.addEventListener('click', (e) => {
+  // Trailer click
+  trailerBtn.addEventListener('click', e => {
     e.stopPropagation();
     showTrailer(movie.trailerUrl);
   });
 
-  // Nút đặt vé/ngày chiếu
-  buttonHTML.addEventListener('click', (e) => e.stopPropagation());
+  // Nút đặt vé/ngày chiếu không bắn click card
+  buttonHTML.addEventListener('click', e => e.stopPropagation());
 
   colDiv.appendChild(card);
   return colDiv;

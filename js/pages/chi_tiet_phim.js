@@ -2,7 +2,7 @@ import dsPhim from '../data/phim.js';
 
 /* Lấy ID phim từ URL */
 function getMovieIdFromURL() {
-  return new URLSearchParams(window.location.search).get('id');
+  return new URLSearchParams(window.location.search).get('maphim');
 }
 
 /* Render chi tiết phim */
@@ -13,7 +13,7 @@ function renderMovieDetail(movie) {
     return;
   }
 
-  document.getElementById('movie-poster').src = movie.anhPhim;
+  document.getElementById('movie-poster').src = '../' + movie.anhPhim;
   document.getElementById('breadcrumb-movie-name').textContent = movie.tenPhim;
   document.getElementById('movie-title').textContent = movie.tenPhim;
   document.getElementById('movie-description').textContent = movie.noiDung;
