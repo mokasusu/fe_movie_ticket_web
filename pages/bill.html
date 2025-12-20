@@ -4,17 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch sử giao dịch - BingeBox Premium</title>
+    <title>Lịch sử giao dịch - COP Cinema Premium</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-      <link rel="stylesheet" href="../css/reset.css">
-  <link rel="stylesheet" href="../css/theme.css">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/components/header.css">
-  <link rel="stylesheet" href="../css/components/footer.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components/header.css">
+    <link rel="stylesheet" href="../css/components/footer.css">
     <style>
         :root {
             --primary-red: #E50914;
@@ -47,17 +46,21 @@
             border-radius: 10px;
         }
 
-        .container {
+        .bill-page * {
+            box-sizing: border-box;
+        }
+
+        .bill-page .bill-container {
             max-width: 1000px;
         }
 
         /* Header Styling */
-        .page-header {
+        .bill-page .bill-page-header {
             padding: 40px 0;
             border-bottom: 1px solid var(--border-color);
         }
 
-        .brand-text {
+        .bill-page .bill-brand-text {
             font-weight: 800;
             letter-spacing: 2px;
             background: linear-gradient(to right, #fff, var(--primary-red));
@@ -66,12 +69,12 @@
         }
 
         /* Custom Tabs */
-        .nav-tabs {
+        .bill-page .bill-nav-tabs {
             border: none;
             gap: 20px;
         }
 
-        .nav-tabs .nav-link {
+        .bill-page .bill-nav-tabs .nav-link {
             color: var(--text-dim);
             border: none;
             font-weight: 600;
@@ -80,12 +83,12 @@
             transition: 0.3s;
         }
 
-        .nav-tabs .nav-link.active {
+        .bill-page .bill-nav-tabs .nav-link.active {
             color: var(--primary-red);
             background: none;
         }
 
-        .nav-tabs .nav-link.active::after {
+        .bill-page .bill-nav-tabs .nav-link.active::after {
             content: "";
             position: absolute;
             bottom: 0;
@@ -97,7 +100,7 @@
         }
 
         /* --- TICKET CARD DESIGN --- */
-        .ticket-item {
+        .bill-page .bill-ticket-item {
             background: var(--card-gray);
             border: 1px solid var(--border-color);
             border-radius: 20px;
@@ -108,13 +111,13 @@
             position: relative;
         }
 
-        .ticket-item:hover {
+        .bill-page .bill-ticket-item:hover {
             transform: scale(1.02);
             border-color: var(--primary-red);
         }
 
         /* Phần bên trái: Thông tin phim */
-        .ticket-main {
+        .bill-page .bill-ticket-main {
             flex: 1;
             padding: 30px;
             border-right: 2px dashed #2a2a2a;
@@ -122,8 +125,8 @@
         }
 
         /* Hiệu ứng vết cắt vé (Notches) */
-        .ticket-main::before,
-        .ticket-main::after {
+        .bill-page .bill-ticket-main::before,
+        .bill-page .bill-ticket-main::after {
             content: "";
             position: absolute;
             right: -12px;
@@ -134,28 +137,28 @@
             z-index: 2;
         }
 
-        .ticket-main::before {
+        .bill-page .bill-ticket-main::before {
             top: -12px;
         }
 
-        .ticket-main::after {
+        .bill-page .bill-ticket-main::after {
             bottom: -12px;
         }
 
-        .movie-title {
+        .bill-page .bill-movie-title {
             font-size: 1.5rem;
             font-weight: 800;
             margin-bottom: 15px;
             display: block;
         }
 
-        .info-grid {
+        .bill-page .bill-info-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
 
-        .info-label {
+        .bill-page .bill-info-label {
             color: var(--text-dim);
             font-size: 0.75rem;
             text-transform: uppercase;
@@ -164,13 +167,13 @@
             font-weight: 600;
         }
 
-        .info-value {
+        .bill-page .bill-info-value {
             font-weight: 600;
             font-size: 0.95rem;
         }
 
         /* Phần bên phải: QR Code */
-        .ticket-side {
+        .bill-page .bill-ticket-side {
             width: 220px;
             padding: 30px;
             display: flex;
@@ -180,14 +183,14 @@
             background: #161616;
         }
 
-        .qr-wrapper {
+        .bill-page .bill-qr-wrapper {
             background: #fff;
             padding: 10px;
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
         }
 
-        .ticket-status {
+        .bill-page .bill-ticket-status {
             font-size: 0.7rem;
             font-weight: 800;
             margin-top: 15px;
@@ -196,7 +199,7 @@
         }
 
         /* Invoice styling nâng cấp */
-        #invoice-container {
+        .bill-page #bill-invoice-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -205,19 +208,19 @@
             min-height: 200px;
         }
 
-        .invoice-item-wrapper {
+        .bill-page .bill-invoice-item-wrapper {
             padding: 10px;
             display: flex;
             justify-content: center;
         }
 
-        .empty-state {
+        .bill-page .bill-empty-state {
             padding: 100px 0;
             text-align: center;
             color: var(--text-dim);
         }
 
-        .btn-home {
+        .bill-page .bill-btn-home {
             background: transparent;
             border: 1px solid #333;
             color: #fff;
@@ -227,19 +230,19 @@
             transition: 0.3s;
         }
 
-        .btn-home:hover {
+        .bill-page .bill-btn-home:hover {
             background: #fff;
             color: #000;
         }
 
         /* CSS cho hóa đơn kiểu chân thực */
-        .receipt-container {
+        .bill-page .bill-receipt-container {
             max-width: 500px;
             margin: 20px auto;
             perspective: 1000px;
         }
 
-        .thermal-receipt {
+        .bill-page .bill-thermal-receipt {
             background: #fdfdfd;
             color: #000;
             padding: 20px 15px;
@@ -253,75 +256,89 @@
             clip-path: polygon(0% 0%, 100% 0%, 100% 98%, 98% 100%, 96% 98%, 94% 100%, 92% 98%, 90% 100%, 88% 98%, 86% 100%, 84% 98%, 82% 100%, 80% 98%, 78% 100%, 76% 98%, 74% 100%, 72% 98%, 70% 100%, 68% 98%, 66% 100%, 64% 98%, 62% 100%, 60% 98%, 58% 100%, 56% 98%, 54% 100%, 52% 98%, 50% 100%, 48% 98%, 46% 100%, 44% 98%, 42% 100%, 40% 98%, 38% 100%, 36% 98%, 34% 100%, 32% 98%, 30% 100%, 28% 98%, 26% 100%, 24% 98%, 22% 100%, 20% 98%, 18% 100%, 16% 98%, 14% 100%, 12% 98%, 10% 100%, 8% 98%, 6% 100%, 4% 98%, 2% 100%, 0% 98%);
         }
 
-        .thermal-receipt h6 {
+        .bill-page .bill-thermal-receipt h6 {
             font-weight: 800;
             font-size: 0.9rem;
             border-bottom: 1px dashed #000;
             padding-bottom: 8px;
         }
 
-        .receipt-line {
+        .bill-page .bill-receipt-line {
             display: flex;
             justify-content: space-between;
             margin: 5px 0;
         }
 
-        .receipt-divider {
+        .bill-page .bill-receipt-divider {
             border-top: 1px dashed #888;
             margin: 10px 0;
         }
 
-        .receipt-barcode {
+        .bill-page .bill-receipt-barcode {
             height: 30px;
             background: repeating-linear-gradient(90deg, #000, #000 1px, transparent 1px, transparent 3px);
             width: 100%;
             margin-top: 10px;
         }
+
+        @media (max-width: 991px) {
+        .bill-page .bill-container {
+          padding-left: 12px;
+          padding-right: 12px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+      @media (min-width: 992px) {
+        .bill-page .bill-container {
+          padding-left: 24px;
+          padding-right: 24px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
     </style>
 </head>
 
 <body>
     <div id="header-container"></div>
-
-    <div class="container">
-
-        <ul class="nav nav-tabs my-4" id="myTab" role="tablist">
-            <li class="nav-item">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-tickets">
-                    <i class="fas fa-ticket-alt me-2"></i>VÉ CỦA TÔI
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-invoices">
-                    <i class="fas fa-file-invoice-dollar me-2"></i>HÓA ĐƠN
-                </button>
-            </li>
+    <div class="bill-page">
+      <div class="bill-container">
+        <ul class="bill-nav-tabs nav nav-tabs my-4" id="myTab" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-tickets">
+              <i class="fas fa-ticket-alt me-2"></i>VÉ CỦA TÔI
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-invoices">
+              <i class="fas fa-file-invoice-dollar me-2"></i>HÓA ĐƠN
+            </button>
+          </li>
         </ul>
-
         <div class="tab-content pb-5">
-            <div class="tab-pane fade show active" id="tab-tickets">
-                <div id="ticket-container">
-                </div>
+          <div class="tab-pane fade show active" id="tab-tickets">
+            <div id="bill-ticket-container">
             </div>
-
-            <div class="tab-pane fade" id="tab-invoices">
-                <div id="invoice-container">
-                </div>
+          </div>
+          <div class="tab-pane fade" id="tab-invoices">
+            <div id="bill-invoice-container">
             </div>
+          </div>
         </div>
+      </div>
     </div>
-<div id="footer-container"></div>
-
-
+    <div id="footer-container"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/pages/bill.js"></script>
-
-     <script>
+    <script src="../js/pages/bill.js"></script>
+    <script src="../js/components/header.js"></script>
+    <script>
         async function loadLayout() {
         try {
             const headerRes = await fetch('../pages/components/header.html');
             document.getElementById('header-container').innerHTML = await headerRes.text();
+            if (window.initHeaderUserMenu) window.initHeaderUserMenu();
 
             const footerRes = await fetch('../pages/components/footer.html');
             document.getElementById('footer-container').innerHTML = await footerRes.text();
