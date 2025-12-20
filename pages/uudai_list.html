@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ưu Đãi & Khuyến Mãi - COP Cinema</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components/header.css">
+    <link rel="stylesheet" href="../css/components/footer.css">
     <style>
         :root {
             --primary: #E50914;
@@ -21,19 +27,19 @@
             margin: 0; padding: 0;
         }
 
-        .container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
-        
-        .header-section { text-align: center; margin-bottom: 50px; }
-        .header-section h1 { font-size: 2.5rem; text-transform: uppercase; color: var(--primary); }
+        .uudai-page * { box-sizing: border-box; }
+        .uudai-page .uudai-container { max-width: 1200px; margin: 50px auto 0 auto; padding: 0 20px; margin-top: 90px; }
+        .uudai-page .uudai-header-section { text-align: center; margin-bottom: 50px; }
+        .uudai-page .uudai-header-section h1 { font-size: 2.5rem; text-transform: uppercase; color: var(--primary); }
 
         /* Lưới ưu đãi */
-        .promotion-grid {
+        .uudai-page .uudai-promotion-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 30px;
         }
 
-        .promo-card {
+        .uudai-page .promo-card {
             background: var(--card-bg);
             border-radius: 16px;
             overflow: hidden;
@@ -42,50 +48,71 @@
             cursor: pointer;
         }
 
-        .promo-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        .uudai-page .promo-card:hover { transform: translateY(-10px); border-color: var(--primary); }
         
-        .promo-img img { width: 100%; height: 200px; object-fit: cover; }
+        .uudai-page .promo-img img { width: 100%; height: 200px; object-fit: cover; }
         
-        .promo-info { padding: 25px; }
-        .promo-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 10px; color: var(--primary); }
-        .promo-desc { color: var(--text-dim); font-size: 0.9rem; line-height: 1.5; }
+        .uudai-page .promo-info { padding: 25px; }
+        .uudai-page .promo-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 10px; color: var(--primary); }
+        .uudai-page .promo-desc { color: var(--text-dim); font-size: 0.9rem; line-height: 1.5; }
 
         /* Modal hiển thị chi tiết */
-        .modal {
+        .uudai-page .uudai-modal {
             display: none; position: fixed; z-index: 1000; top: 0; left: 0;
             width: 100%; height: 100%; background: rgba(0,0,0,0.9);
             align-items: center; justify-content: center;
         }
-        .modal-content {
+        .uudai-page .uudai-modal-content {
             background: var(--card-bg); width: 90%; max-width: 600px;
             border-radius: 20px; padding: 40px; position: relative;
         }
-        .close-btn {
+        .uudai-page .uudai-close-btn {
             position: absolute; top: 20px; right: 20px;
             font-size: 24px; cursor: pointer; color: var(--text-dim);
         }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <div class="header-section">
+    <div id="header-container"></div>
+    <div class="uudai-page">
+      <div class="uudai-container container">
+        <div class="uudai-header-section header-section">
             <h1>Chương Trình Ưu Đãi</h1>
             <p style="color: var(--text-dim)">Đừng bỏ lỡ những món hời tại COP Cinema</p>
         </div>
-
-        <div class="promotion-grid" id="uudai-container">
-            </div>
-    </div>
-
-    <div id="promoModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
+        <div class="uudai-promotion-grid promotion-grid" id="uudai-container"></div>
+      </div>
+      <div id="promoModal" class="uudai-modal modal">
+        <div class="uudai-modal-content modal-content">
+            <span class="uudai-close-btn close-btn">&times;</span>
             <h2 id="modal-title" style="color: var(--primary);"></h2>
             <div id="modal-body" style="line-height: 2;"></div>
         </div>
+      </div>
     </div>
+    <div id="footer-container"></div>
 
-    <script src="/js/pages/uudai_list.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/components/header.js"></script>
+    <script src="../js/components/footer.js"></script>
+    <script src="../js/pages/uudai_list.js"></script>
+
+    <script>
+        async function loadLayout() {
+            try {
+                const headerRes = await fetch('../pages/components/header.html');
+                const headerHtml = await headerRes.text();
+                document.getElementById('header-container').innerHTML = headerHtml;
+                // Gọi lại hàm khởi tạo avatar user sau khi header được inject
+                if (window.initHeaderUserMenu) window.initHeaderUserMenu();
+
+                const footerRes = await fetch('../pages/components/footer.html');
+                document.getElementById('footer-container').innerHTML = await footerRes.text();
+            } catch (err) {
+                console.error('Load layout error:', err);
+            }
+        }
+        loadLayout();
+    </script>
 </body>
 </html>

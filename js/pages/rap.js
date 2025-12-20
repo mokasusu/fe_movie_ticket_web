@@ -8,7 +8,7 @@ const cinemaData = {
         phone: '024.247.6886',
         email: 'chuaboc@popcinema.vn',
         openHours: '8:00 - 24:00 hàng ngày',
-        image: '/assets/icons/rap_1.png',
+        image: '../assets/icons/rap_1.png',
         mapLink: 'https://www.google.com/search?q=King+Building%2C+7+P.+Ch%C3%B9a+B%E1%BB%99c%2C+Kim+Li%C3%AAn%2C+H%C3%A0+N%E1%BB%99i'
     }
 };
@@ -25,45 +25,43 @@ function renderCinemaDetail(id) {
     if (!rap) return;
 
     container.innerHTML = `
-        <div class="cinema-image">
+        <div class="rap-cinema-image cinema-image">
             <img src="${rap.image}" alt="${rap.name}">
         </div>
-        <div class="cinema-info">
+        <div class="rap-cinema-info cinema-info">
             <h1>${rap.name}</h1>
-            <p class="cinema-desc">${rap.description}</p>
-            
-            <div class="info-list">
-                <div class="info-item">
+            <p class="rap-cinema-desc cinema-desc">${rap.description}</p>
+            <div class="rap-info-list info-list">
+                <div class="rap-info-item info-item">
                     <i class="fas fa-star"></i>
                     <div>
-                        <span class="info-label">Tiện ích</span>
-                        <span class="info-value">${rap.facilities}</span>
+                        <span class="rap-info-label info-label">Tiện ích</span>
+                        <span class="rap-info-value info-value">${rap.facilities}</span>
                     </div>
                 </div>
-                <div class="info-item">
+                <div class="rap-info-item info-item">
                     <i class="fas fa-map-marker-alt"></i>
                     <div>
-                        <span class="info-label">Địa chỉ</span>
-                        <span class="info-value">${rap.address}</span>
+                        <span class="rap-info-label info-label">Địa chỉ</span>
+                        <span class="rap-info-value info-value">${rap.address}</span>
                     </div>
                 </div>
-                <div class="info-item">
+                <div class="rap-info-item info-item">
                     <i class="fas fa-phone-alt"></i>
                     <div>
-                        <span class="info-label">Điện thoại</span>
-                        <span class="info-value">${rap.phone}</span>
+                        <span class="rap-info-label info-label">Điện thoại</span>
+                        <span class="rap-info-value info-value">${rap.phone}</span>
                     </div>
                 </div>
-                <div class="info-item">
+                <div class="rap-info-item info-item">
                     <i class="fas fa-clock"></i>
                     <div>
-                        <span class="info-label">Giờ mở cửa</span>
-                        <span class="info-value">${rap.openHours}</span>
+                        <span class="rap-info-label info-label">Giờ mở cửa</span>
+                        <span class="rap-info-value info-value">${rap.openHours}</span>
                     </div>
                 </div>
             </div>
-
-            <a href="${rap.mapLink}" target="_blank" class="btn-map">
+            <a href="${rap.mapLink}" target="_blank" class="rap-btn-map btn-map">
                 <i class="fas fa-directions me-2"></i> XEM ĐƯỜNG ĐI
             </a>
         </div>

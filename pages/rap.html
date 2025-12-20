@@ -5,36 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ Thống Rạp - COP Cinema</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components/header.css">
+    <link rel="stylesheet" href="../css/components/footer.css">
+
     <style>
-        :root {
-            --primary: #E50914;
-            --bg: #0b0f19;
-            --card-bg: #161d2f;
-            --text: #ffffff;
-            --text-dim: #94a3b8;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
+        /* KHÔNG override body để tránh ảnh hưởng header/footer */
+        .rap-page {
+            background-color: #0b0f19;
+            color: #ffffff;
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin: 0; padding: 0;
+            min-height: calc(100vh - 180px);
+            padding-bottom: 60px;
+            /* Thêm khoảng cách với header/footer */
+            margin-top: var(--header-height, 90px);
+            margin-bottom: 80px;
+        }
+        /* ...existing code... */
+
+        .rap-page * {
+            box-sizing: border-box;
         }
 
-        .container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+        .rap-page .rap-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            margin-top: 90px;
+        }
 
-        .cinema-detail {
+        .rap-page .rap-cinema-detail {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
-            background: var(--card-bg);
+            background: #161d2f;
             padding: 40px;
             border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* Hình ảnh rạp */
-        .cinema-image img {
+        .rap-page .rap-cinema-image img {
             width: 100%;
             height: 400px;
             object-fit: cover;
@@ -42,40 +57,51 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* Thông tin rạp */
-        .cinema-info h1 {
-            color: var(--primary);
+        .rap-page .rap-cinema-info h1 {
+            color: #E50914;
             font-size: 2.5rem;
             margin-top: 0;
             text-transform: uppercase;
         }
 
-        .cinema-desc {
-            color: var(--text-dim);
+        .rap-page .rap-cinema-desc {
+            color: #94a3b8;
             line-height: 1.8;
             margin-bottom: 30px;
         }
 
-        .info-list { list-style: none; padding: 0; }
-        .info-item {
+        .rap-page .rap-info-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rap-page .rap-info-item {
             display: flex;
             align-items: start;
             margin-bottom: 20px;
             gap: 15px;
         }
 
-        .info-item i {
-            color: var(--primary);
+        .rap-page .rap-info-item i {
+            color: #E50914;
             width: 20px;
             margin-top: 5px;
         }
 
-        .info-label { font-weight: bold; display: block; margin-bottom: 2px; }
-        .info-value { color: var(--text-dim); font-size: 0.95rem; }
+        .rap-page .rap-info-label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 2px;
+        }
 
-        .btn-map {
+        .rap-page .rap-info-value {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .rap-page .rap-btn-map {
             display: inline-block;
-            background: var(--primary);
+            background: #E50914;
             color: white;
             text-decoration: none;
             padding: 12px 30px;
@@ -85,20 +111,50 @@
             transition: 0.3s;
         }
 
-        .btn-map:hover { transform: scale(1.05); background: #ff0f1b; }
+        .rap-page .rap-btn-map:hover {
+            transform: scale(1.05);
+            background: #ff0f1b;
+        }
 
         @media (max-width: 992px) {
-            .cinema-detail { grid-template-columns: 1fr; }
+            .rap-page .rap-cinema-detail {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <div id="header-container"></div>
 
-    <div class="container">
-        <div class="cinema-detail" id="cinema-content">
-            </div>
+    <div class="rap-page">
+        <div class="rap-container">
+            <div class="rap-cinema-detail cinema-detail" id="cinema-content"></div>
+        </div>
     </div>
 
-    <script src="/js/pages/rap.js"></script>
+    <div id="footer-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="../js/pages/rap.js"></script>
+    <script src="../js/components/header.js"></script>
+    <script src="../js/components/footer.js"></script>
+    <script>
+        async function loadLayout() {
+            try {
+                const headerRes = await fetch('../pages/components/header.html');
+                const headerHtml = await headerRes.text();
+                document.getElementById('header-container').innerHTML = headerHtml;
+                // Gọi lại hàm khởi tạo avatar user sau khi header được inject
+                if (window.initHeaderUserMenu) window.initHeaderUserMenu();
+
+                const footerRes = await fetch('../pages/components/footer.html');
+                document.getElementById('footer-container').innerHTML = await footerRes.text();
+            } catch (err) {
+                console.error('Load layout error:', err);
+            }
+        }
+        loadLayout();
+    </script>
 </body>
 </html>
