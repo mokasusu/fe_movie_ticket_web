@@ -1,4 +1,10 @@
-/* --- CẤU HÌNH GIÁ VÉ (Khớp với bang_gia.js) --- */
+// Thêm hàm sinh mã vào đầu file booking.js
+function generateTransactionID() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const segment = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    return `COP-${segment()}-${segment()}`;
+}
+
 const PRICE_CONFIG = {
     movieType: { '2D': 0, '3D': 30000 },
     timeSlots: [
@@ -102,7 +108,7 @@ function toggleCoupleSeat(id, el) {
 /* --- CẬP NHẬT GIAO DIỆN VÉ --- */
 function renderSummary() {
     // Phần ghế hiển thị giá cụ thể từng loại
-    let seatHtml = selectedSeats.length > 0 ? '' : '<div class="ticket-item text-muted small py-2">Chưa chọn ghế</div>';
+    let seatHtml = selectedSeats.length > 0 ? '' : '<div class="ticket-item text-main small py-2">Chưa chọn ghế</div>';
     if(selectedSeats.length > 0) {
         const groups = selectedSeats.reduce((acc, seat) => {
             if (!acc[seat.type]) acc[seat.type] = { count: 0, ids: [], price: seat.price };
@@ -129,7 +135,7 @@ function renderSummary() {
     $('#side-seat').html(seatHtml);
 
     // Đồ ăn 
-    let foodHtml = Object.keys(selectedFood).length > 0 ? '' : '<div class="ticket-item text-muted small py-2">Chưa chọn đồ ăn</div>';
+    let foodHtml = Object.keys(selectedFood).length > 0 ? '' : '<div class="ticket-item text-main small py-2">Chưa chọn đồ ăn</div>';
     Object.values(selectedFood).forEach(f => {
         foodHtml += `
         <div class="ticket-item">
@@ -245,6 +251,7 @@ function completeBooking() {
     const total = (totalSeatPrice + totalFoodPrice) * (1 - discount);
 
     const finalTicket = {
+        transactionID: generateTransactionID(),
         tenPhim: bookingData.tenPhim,
         anhPhim: bookingData.anhPhim,
         ngayChieu: bookingData.ngayChieu,

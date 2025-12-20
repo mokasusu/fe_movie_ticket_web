@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ưu Đãi & Khuyến Mãi - COP Cinema</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #E50914;
+            --bg: #0b0f19;
+            --card-bg: #161d2f;
+            --text: #ffffff;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0; padding: 0;
+        }
+
+        .container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+        
+        .header-section { text-align: center; margin-bottom: 50px; }
+        .header-section h1 { font-size: 2.5rem; text-transform: uppercase; color: var(--primary); }
+
+        /* Lưới ưu đãi */
+        .promotion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .promo-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .promo-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        
+        .promo-img img { width: 100%; height: 200px; object-fit: cover; }
+        
+        .promo-info { padding: 25px; }
+        .promo-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 10px; color: var(--primary); }
+        .promo-desc { color: var(--text-dim); font-size: 0.9rem; line-height: 1.5; }
+
+        /* Modal hiển thị chi tiết */
+        .modal {
+            display: none; position: fixed; z-index: 1000; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.9);
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--card-bg); width: 90%; max-width: 600px;
+            border-radius: 20px; padding: 40px; position: relative;
+        }
+        .close-btn {
+            position: absolute; top: 20px; right: 20px;
+            font-size: 24px; cursor: pointer; color: var(--text-dim);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-section">
+            <h1>Chương Trình Ưu Đãi</h1>
+            <p style="color: var(--text-dim)">Đừng bỏ lỡ những món hời tại COP Cinema</p>
+        </div>
+
+        <div class="promotion-grid" id="uudai-container">
+            </div>
+    </div>
+
+    <div id="promoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title" style="color: var(--primary);"></h2>
+            <div id="modal-body" style="line-height: 2;"></div>
+        </div>
+    </div>
+
+    <script src="/js/pages/uudai_list.js"></script>
+</body>
+</html>
