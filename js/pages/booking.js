@@ -261,6 +261,22 @@ function completeBooking() {
     history.push(finalTicket);
     localStorage.setItem('bookingHistory', JSON.stringify(history));
     localStorage.setItem('lastBooking', JSON.stringify(finalTicket));
+
+    // Lưu hóa đơn vào userBookings (theo email hoặc username)
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+        let userBookings = JSON.parse(localStorage.getItem('userBookings') || '{}');
+        const userKey = currentUser.email || currentUser.username || 'unknown';
+        if (!userBookings[userKey]) {
+            userBookings[userKey] = [];
+        }
+        userBookings[userKey].push({
+            ...finalTicket,
+            createdAt: new Date().toISOString()
+        });
+        localStorage.setItem('userBookings', JSON.stringify(userBookings));
+    }
+
     localStorage.removeItem('currentBooking');
-    window.location.href = '/pages/bill.html'; 
+    window.location.href = '/pages/bill.html';
 }

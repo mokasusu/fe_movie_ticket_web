@@ -68,6 +68,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // --- PHẦN RENDER HÓA ĐƠN ---
+        // Lấy thông tin user nếu có
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let userInfoHTML = '';
+        if (currentUser) {
+            userInfoHTML = `
+                <div class="receipt-line"><span>Khách:</span><span>${currentUser.fullName || currentUser.username || ''}</span></div>
+                <div class="receipt-line"><span>Email:</span><span>${currentUser.email || ''}</span></div>
+                <div class="receipt-divider"></div>
+            `;
+        }
         const invoiceHTML = `
             <div class="col-xl-3 col-lg-4 col-md-6 invoice-item-wrapper">
                 <div class="thermal-receipt">
@@ -77,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p style="font-size: 10px;">ID: <strong>${randomID}</strong></p>
                     </div>
                     <div class="receipt-line"><span>Ngày:</span><span>${booking.ngayChieu}</span></div>
-                    <div class="receipt-divider"></div>
+                    ${userInfoHTML}
                     <div class="fw-bold mb-1" style="font-size: 0.85rem;">${booking.tenPhim}</div>
                     <div class="receipt-line"><span>Suất:</span><span>${booking.gioChieu}</span></div>
                     <div class="receipt-line"><span>Ghế:</span><span>${booking.seats}</span></div>
