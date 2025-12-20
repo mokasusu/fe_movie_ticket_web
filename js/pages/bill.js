@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. KIỂM TRA XEM CÓ VÉ VỪA ĐẶT KHÔNG
     const lastBooking = JSON.parse(localStorage.getItem('lastBooking'));
     const historyData = lastBooking ? [lastBooking] : (JSON.parse(localStorage.getItem('bookingHistory')) || []);
 

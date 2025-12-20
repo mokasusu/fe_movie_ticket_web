@@ -1,0 +1,629 @@
+:root {
+    --primary-red: #E50914;
+    /* Màu đỏ chính (phong cách Netflix/CGV) */
+    --body-bg: #0b0f19;
+    /* Màu nền tối của trang */
+    --card-bg: #161d2f;
+    /* Màu nền của các khung nội dung */
+    --border-color: #334155;
+    /* Màu đường viền */
+    --text-main: #ffffff;
+    /* Màu chữ trắng chính */
+    --text-muted: #94a3b8;
+    /* Màu chữ xám mờ */
+    --vip-gold: #fbbf24;
+    /* Màu vàng cho ghế VIP */
+    --couple-pink: #f472b6;
+    /* Màu hồng cho ghế Couple */
+    --success-green: #10b981;
+    /* Màu xanh thành công */
+    --accent-orange: #f59e0b;
+    /* Màu cam nhấn mạnh */
+    --accent-blue: #38bdf8;
+    /* Màu xanh dương ánh sáng màn hình */
+}
+
+
+/* --- BỐ CỤC CHÍNH --- */
+.section-2 {
+    padding-top: 40px;
+    padding-bottom: 100px;
+        min-height: 70vh; 
+}
+
+/* Style cho từng bước (Step) */
+.step {
+    display: none;
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    min-height: 500px; 
+}
+
+
+.step.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+}
+
+.step-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* --- STYLE SƠ ĐỒ GHẾ --- */
+.theatre-view {
+    text-align: center;
+    padding: 20px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Giúp vuốt mượt trên iPhone */
+}
+
+.screen-bar {
+    height: 4px;
+    background: var(--accent-blue);
+    width: 70%;
+    margin: 0 auto 50px;
+    box-shadow: 0 8px 20px rgba(56, 189, 248, 0.5);
+}
+
+.seat-grid {
+    display: grid;
+    gap: 10px;
+    justify-content: center;
+}
+
+.seat-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.row-label {
+    width: 25px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.seat-item {
+    width: 32px;
+    height: 32px;
+    background: #1e293b;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.seat-item.vip {
+    border-color: var(--vip-gold);
+    color: var(--vip-gold);
+}
+
+.seat-item.couple {
+    width: 40px;
+    border-color: var(--couple-pink);
+    color: var(--couple-pink);
+}
+
+.seat-item.selected {
+    background: var(--primary-red) !important;
+    color: white !important;
+}
+
+/* --- STYLE DANH SÁCH ĐỒ ĂN --- */
+.food-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.food-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background: #0f172a;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.food-icon {
+    font-size: 24px;
+}
+
+.food-icon.orange {
+    color: var(--accent-orange);
+}
+
+.food-icon.blue {
+    color: var(--accent-blue);
+}
+
+.food-info {
+    flex: 1;
+}
+
+.food-name {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.food-price {
+    color: var(--primary-red);
+    font-weight: 700;
+}
+
+/* Bộ tăng giảm số lượng */
+.qty-box {
+    display: flex;
+    align-items: center;
+    background: #1e293b;
+    border-radius: 6px;
+    padding: 5px;
+}
+
+.qty-btn {
+    border: none;
+    background: #334155;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.qty-input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    color: white;
+    font-weight: 700;
+    outline: none;
+}
+
+/* --- STYLE THANH TOÁN --- */
+.promotion-selector {
+    margin-bottom: 25px;
+}
+
+.promotion-label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.promotion-options {
+    display: flex;
+    gap: 10px;
+}
+
+.promo-choice {
+    background: none;
+    border: 1px solid var(--text-muted);
+    color: var(--text-muted);
+    padding: 6px 15px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.promo-choice.is-selected {
+    background: #ffffff;
+    color: #000;
+    border-color: #ffffff;
+}
+
+.payment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+}
+
+.pay-card {
+    padding: 20px;
+    background: #0f172a;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.pay-card.active {
+    border-color: var(--primary-red);
+    background: rgba(229, 9, 20, 0.1);
+}
+
+.pay-card i {
+    font-size: 24px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* --- STYLE SIDEBAR VÉ (BÊN PHẢI) --- */
+.movie-ticket {
+    background: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    position: sticky;
+    top: 20px;
+}
+
+.movie-infomation {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    background: #020617;
+    border-bottom: 1px dotted var(--border-color);
+}
+
+.movie-image img {
+    width: 80px;
+    height: 110px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.movie-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.movie-infomation ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.movie-age {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--accent-orange);
+    color: #000;
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 10px;
+    margin-top: 10px;
+}
+
+.cinema,
+.schedule {
+    display: flex;
+    padding: 10px 20px;
+    gap: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.seat-info-container,
+.food-info-container,
+.promotion-info-container,
+.payment-info-container {
+    padding: 0 20px;
+}
+
+/* Style cho từng dòng thông tin trong vé */
+.ticket-item {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ticket-item:last-child {
+    border-bottom: none;
+}
+
+.ticket-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.ticket-detail {
+    flex: 1;
+}
+
+.ticket-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+}
+
+.ticket-sub {
+    font-size: 12px;
+    color: var(--primary-red);
+    font-weight: 600;
+}
+
+.ticket-price {
+    font-weight: 700;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.total-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    margin-top: 10px;
+}
+
+.total-price-title {
+    font-weight: 700;
+}
+
+.total-price-number {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--primary-red);
+}
+
+/* NÚT ĐIỀU HƯỚNG */
+.navigation-controls {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-next {
+    background: var(--primary-red);
+    color: #fff;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-next:hover {
+    background: var(--btn-gradient-primary);
+    transform: scale(1.02);
+}
+
+.btn-prev {
+    background: var(--btn-gradient-secondary);
+    color: var(--text-main);
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 8px;
+}
+.btn-prev:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+}
+
+/* STYLE CHO MODAL */
+.custom-modal-content {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 50px;
+    text-align: center;
+    border: none;
+}
+
+.modal-icon {
+    font-size: 80px;
+    margin-bottom: 25px;
+}
+
+.modal-icon.success {
+    color: var(--success-green);
+}
+
+.modal-icon.warning {
+    color: var(--vip-gold);
+}
+
+.modal-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.modal-desc {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+}
+
+.modal-btn {
+    width: 100%;
+    background: var(--primary-red);
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Container chính chứa ảnh và chữ */
+.movie-infomation {
+    display: flex;
+    flex-direction: column; /* Chuyển sang dạng dọc để ảnh có không gian to nhất */
+    align-items: center;    /* Căn giữa tất cả thành phần */
+    gap: 20px;
+    padding: 25px;
+    background: #020617;
+    border-bottom: 1px dotted var(--border-color);
+}
+
+/* Tăng kích thước khu vực chứa ảnh */
+.movie-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Cấu hình lại ảnh Poster to hơn */
+.movie-image img {
+    width: 180px;      /* Tăng chiều rộng đáng kể từ 80px lên 180px */
+    height: 260px;     /* Tăng chiều cao tương ứng */
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6); /* Đổ bóng sâu hơn cho nổi bật */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Căn chỉnh lại phần chữ bên dưới ảnh */
+.movie-content {
+    text-align: center; /* Căn chữ ra giữa theo ảnh */
+    width: 100%;
+}
+
+.movie-title {
+    font-weight: 800;
+    font-size: 1.2rem;  /* Tăng kích thước tiêu đề phim */
+    color: var(--text-main);
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.movie-content ul {
+    justify-content: center; /* Căn giữa các thông số 2D, Phụ đề... */
+    margin-bottom: 15px;
+}
+
+.movie-age {
+    margin-top: 5px;
+}
+/* --- RESPONSIVE ADJUSTMENTS --- */
+
+/* 1. Trên Tablet & Mobile: Đẩy Sidebar xuống dưới cùng hoặc làm nó nổi lên */
+@media (max-width: 991.98px) {
+    .section-2 {
+        padding: 15px 0;
+    }
+
+    .movie-ticket {
+        position: relative;
+        /* Không dính (sticky) nữa */
+        top: 0;
+        margin-top: 30px;
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .step {
+        padding: 15px;
+        /* Giảm padding cho đỡ chiếm diện tích */
+    }
+}
+
+/* 2. Riêng cho Mobile (Điện thoại nhỏ) */
+@media (max-width: 575.98px) {
+
+    /* Sơ đồ ghế: Thu nhỏ kích thước ghế để không bị tràn màn hình */
+    .seat-item {
+        width: 26px;
+        height: 26px;
+        font-size: 8px;
+        gap: 4px;
+    }
+
+    .seat-row {
+        gap: 4px;
+    }
+
+    .row-label {
+        width: 15px;
+        font-size: 10px;
+    }
+
+    .screen-bar {
+        width: 90%;
+        margin-bottom: 30px;
+    }
+
+    /* Các bước thanh toán */
+    .promotion-options {
+        flex-wrap: wrap;
+        /* Cho phép các mã giảm giá xuống hàng */
+    }
+
+    .promo-choice {
+        flex: 1 1 40%;
+        /* Mỗi mã chiếm gần nửa hàng */
+        text-align: center;
+    }
+
+    .payment-grid {
+        grid-template-columns: 1fr;
+        /* Mỗi phương thức thanh toán 1 hàng */
+    }
+
+    /* Đồ ăn */
+    .food-card {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .food-name {
+        font-size: 14px;
+    }
+
+    /* Nút điều hướng */
+    .navigation-controls {
+        flex-direction: column-reverse;
+        /* Nút Tiếp theo lên trên, Quay lại xuống dưới */
+        gap: 15px;
+    }
+
+    .btn-next,
+    .btn-prev {
+        width: 100%;
+        /* Nút full màn hình dễ bấm */
+        padding: 15px;
+    }
+}
+
+/* 3. Tối ưu thanh Sidebar để người dùng dễ theo dõi khi cuộn */
+@media (max-width: 991.98px) {
+    /* Optional: Nếu bạn muốn thanh tổng tiền luôn dính ở dưới màn hình điện thoại */
+    /*
+    .total-price {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        margin-top: 0;
+    }
+    */
+}

@@ -12,7 +12,7 @@ function initHeaderUserMenu() {
       </a>
       <ul class="dropdown-menu dropdown-menu-end user-dropdown">
         <li><a class="dropdown-item" href="/pages/tai_khoan.html">Thông tin của tôi</a></li>
-        <li><a class="dropdown-item" href="#">Vé của tôi</a></li>
+        <li><a class="dropdown-item" href="/pages/ve_cua_toi.html">Vé của tôi</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item logout" href="#" id="logoutBtn">Đăng xuất</a></li>
       </ul>

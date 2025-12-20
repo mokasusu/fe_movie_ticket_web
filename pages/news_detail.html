@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>COP - Chi Tiết Tin Tức</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #E50914;
+            --bg: #0b0f19;
+            --card-bg: #161d2f;
+            --text: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .detail-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .detail-date {
+            color: var(--primary);
+            font-weight: bold;
+            display: block;
+            margin-bottom: 30px;
+        }
+
+        .news-intro {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-style: italic;
+            border-left: 4px solid var(--primary);
+            padding-left: 20px;
+        }
+
+        .news-gallery {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .news-gallery img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .image-caption {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .news-text p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        /* Tin liên quan */
+        .related-news {
+            margin-top: 60px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 16px;
+        }
+
+        .related-news h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #2d3748;
+            padding-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        #related-news-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #related-news-list li {
+            margin-bottom: 12px;
+        }
+
+        #related-news-list a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        #related-news-list a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 40px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="detail-page">
+        <div class="container">
+            <article class="news-detail" id="news-content-container">
+                <span id="news-date" class="detail-date"></span>
+                <h1 class="detail-title" id="news-title">Đang tải nội dung...</h1>
+
+                <div class="news-content">
+                    <p class="news-intro" id="news-intro"></p>
+
+                    <div class="news-gallery" id="news-gallery">
+                    </div>
+
+                    <div class="news-text" id="news-text">
+                    </div>
+                </div>
+
+                <div class="related-news">
+                    <h3>Tin liên quan</h3>
+                    <ul id="related-news-list"></ul>
+                </div>
+
+                <a href="/pages/news_list.html" class="btn-back"><i class="fas fa-chevron-left"></i> Quay lại danh sách tin</a>
+            </article>
+        </div>
+    </main>
+
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="/js/pages/news_detail.js"></script>
+</body>
+
+</html>
