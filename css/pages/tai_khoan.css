@@ -1,0 +1,458 @@
+/* =========================================================
+   PROFILE PAGE – CINEMA THEME (COMPLETE)
+========================================================= */
+
+/* 1. HEADER PROFILE CARD */
+.profile-header-card {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    border: 1px solid var(--border-divider);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    position: relative;
+    overflow: hidden;
+}
+
+/* AVATAR */
+.avatar-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+}
+
+.avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-gold);
+    box-shadow: 0 0 15px rgba(245, 199, 122, 0.2);
+}
+
+/* Nút sửa avatar (Cây bút) */
+.edit-avatar-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid var(--bg-secondary);
+    transition: transform 0.2s;
+    font-size: 14px;
+}
+
+.edit-avatar-btn:hover {
+    background: var(--accent-gold);
+    transform: scale(1.1);
+}
+
+/* USER INFO */
+#userName {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 5px;
+}
+
+#userRank {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* STATS BOXES (Số phim, Tiền) */
+.stat-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-divider);
+    border-radius: 12px;
+    padding: 12px 20px;
+    min-width: 140px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-box span {
+    display: block;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent-gold);
+}
+
+.stat-box small {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* 2. SIDEBAR MENU (LEFT) */
+.nav-pills {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-divider);
+    border-radius: 16px;
+    padding: 15px;
+}
+
+.nav-pills .nav-link {
+    color: var(--text-secondary);
+    border-radius: 10px;
+    padding: 12px 18px;
+    text-align: left;
+    margin-bottom: 5px;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.nav-pills .nav-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--accent-gold);
+}
+
+.nav-pills .nav-link.active {
+    background: var(--btn-gradient-primary);
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+}
+
+/* 3. CONTENT CARDS (RIGHT) */
+.profile-content-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-divider);
+    border-radius: 16px;
+    padding: 30px;
+    min-height: 400px;
+}
+
+.profile-content-card h4 {
+    color: var(--accent-gold);
+    font-weight: 700;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-divider);
+    padding-bottom: 15px;
+}
+
+/* FORM STYLES */
+.profile-content-card form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.profile-content-card label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.profile-content-card input {
+    height: 45px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-divider);
+    border-radius: 10px;
+    padding: 0 15px;
+    color: var(--text-main);
+    width: 100%;
+    transition: border-color 0.3s;
+}
+
+.profile-content-card input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+}
+
+.profile-content-card input:disabled {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* 4. BILL TABLE & POPUP STYLES */
+#tab-invoices table {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(245,199,122,0.08);
+    background: rgba(0,0,0,0.7);
+}
+
+#tab-invoices thead th {
+    background: rgba(30, 30, 30, 0.95);
+    color: var(--accent-gold);
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    letter-spacing: 0.5px;
+    text-align: left;
+    padding: 16px 18px;
+}
+
+#tab-invoices tbody td {
+    background: rgba(255,255,255,0.01);
+    color: var(--text-main);
+    font-size: 1rem;
+    border: none;
+    text-align: left;
+    padding: 16px 18px;
+    vertical-align: middle;
+    transition: background 0.2s;
+}
+
+#tab-invoices tbody tr {
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+#tab-invoices tbody tr:hover {
+    background: rgba(245,199,122,0.12);
+    box-shadow: 0 2px 12px rgba(245,199,122,0.08);
+}
+
+#tab-invoices .text-gold {
+    color: #fbbf24 !important;
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+#tab-invoices .table-dark {
+    background: transparent;
+}
+#tab-invoices tbody tr {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#tab-invoices tbody tr:hover {
+    background: rgba(245, 199, 122, 0.1);
+    transform: translateX(5px);
+}
+
+/* Styles cho Modal Hóa đơn (Popup) */
+#invoiceModal .modal-content {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+#invoiceModal .modal-header {
+    border: none;
+    padding: 0;
+}
+
+#invoiceModal .modal-header .btn-close {
+    background-color: #fff;
+    opacity: 0.9;
+    border-radius: 50%;
+    position: absolute;
+    right: -15px;
+    top: -10px;
+    z-index: 1056;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Tờ giấy in nhiệt */
+.thermal-receipt {
+    background: #fff;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 25px 20px 40px 20px;
+    color: #000;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+    position: relative;
+    /* Hiệu ứng răng cưa dưới đáy */
+    clip-path: polygon(
+        0% 0%, 100% 0%, 100% 100%, 
+        98% 99%, 96% 100%, 94% 99%, 92% 100%, 90% 99%, 88% 100%, 86% 99%, 84% 100%, 82% 99%, 80% 100%, 
+        78% 99%, 76% 100%, 74% 99%, 72% 100%, 70% 99%, 68% 100%, 66% 99%, 64% 100%, 62% 99%, 60% 100%, 
+        58% 99%, 56% 100%, 54% 99%, 52% 100%, 50% 99%, 48% 100%, 46% 99%, 44% 100%, 42% 99%, 40% 100%, 
+        38% 99%, 36% 100%, 34% 99%, 32% 100%, 30% 99%, 28% 100%, 26% 99%, 24% 100%, 22% 99%, 20% 100%, 
+        18% 99%, 16% 100%, 14% 99%, 12% 100%, 10% 99%, 8% 100%, 6% 99%, 4% 100%, 2% 99%, 0% 100%
+    );
+}
+
+.receipt-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.receipt-line span:last-child {
+    font-weight: 700;
+    text-align: right;
+    max-width: 65%;
+}
+
+.receipt-divider {
+    border-bottom: 2px dashed #333;
+    margin: 15px 0;
+    opacity: 0.4;
+}
+
+.receipt-barcode {
+    height: 40px;
+    width: 100%;
+    background: repeating-linear-gradient(90deg, #000, #000 2px, transparent 2px, transparent 5px);
+    margin-top: 15px;
+    opacity: 0.8;
+}
+
+.journey-timeline {
+    overflow-x: auto;
+    padding-bottom: 30px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-gold) var(--bg-tertiary);
+}
+
+.journey-timeline::-webkit-scrollbar {
+    height: 6px;
+}
+.journey-timeline::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+.journey-timeline::-webkit-scrollbar-thumb {
+    background: var(--accent-gold);
+    border-radius: 4px;
+}
+
+.journey-track {
+    display: flex;
+    gap: 40px;
+    padding: 20px 20px 40px;
+    position: relative;
+    align-items: flex-start;
+    min-width: max-content;
+}
+
+/* Đường kẻ ngang (Timeline Line) */
+.journey-track::before {
+    content: "";
+    position: absolute;
+    top: 273px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(245, 199, 122, 0.3);
+    border-radius: 2px;
+    z-index: 0;
+}
+
+/* Mỗi Item phim */
+.journey-item {
+    width: 140px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Poster */
+.journey-poster {
+    width: 120px;
+    height: 180px;
+    margin: 0 auto 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-divider);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s, border-color 0.3s;
+    background: #000;
+}
+
+.journey-item:hover .journey-poster {
+    transform: translateY(-8px);
+    border-color: var(--accent-gold);
+}
+
+.journey-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.journey-top-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.journey-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.4;
+    height: 55px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    padding: 0 5px;
+}
+
+.journey-dot {
+    width: 16px;
+    height: 16px;
+    background: var(--bg-main);
+    border: 3px solid var(--accent-gold);
+    border-radius: 50%;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 12px;
+    box-shadow: 0 0 10px var(--accent-gold);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.journey-item:hover .journey-dot {
+    transform: scale(1.3);
+    background: var(--accent-red);
+}
+
+/* Ngày xem */
+.journey-date {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border-divider);
+    white-space: nowrap;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.journey-item:hover .journey-date {
+    color: var(--accent-gold);
+    border-color: var(--accent-gold);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .profile-header-card .row {
+        text-align: center;
+    }
+    .col-md-6.d-flex {
+        flex-direction: column;
+        justify-content: center;
+    }
+    .stat-box {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .journey-track {
+        gap: 25px;
+    }
+}

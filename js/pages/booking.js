@@ -1,32 +1,31 @@
-// Thêm hàm sinh mã vào đầu file booking.js
-function generateTransactionID() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    const segment = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-    return `COP-${segment()}-${segment()}`;
-}
-
+/* --- CẤU HÌNH GIÁ VÉ --- */
 const PRICE_CONFIG = {
     movieType: { '2D': 0, '3D': 30000 },
     timeSlots: [
-        { start: 6, end: 10, price: 60000 },  // Trước 10h
-        { start: 10, end: 18, price: 85000 }, // 10h - 18h
-        { start: 18, end: 23, price: 105000 },// 18h - 23h
-        { start: 23, end: 6, price: 75000 }  // Sau 23h
+        { start: 6, end: 10, price: 60000 },
+        { start: 10, end: 18, price: 85000 },
+        { start: 18, end: 23, price: 105000 },
+        { start: 23, end: 6, price: 75000 }
     ],
-    seatType: { 'standard': 0, 'vip': 25000, 'couple': 100000 } // Phụ thu ghế Couple tính trên giá gốc 1 người
+    seatType: { 'standard': 0, 'vip': 25000, 'couple': 100000 }
 };
 
 let currentStep = 0; 
 const steps = ["seat", "food", "payment"];
-
 let selectedSeats = []; 
 let selectedFood = {};  
 let discount = 0;       
 let paymentMethod = ""; 
-let bookingData = null; // Biến lưu dữ liệu phim hiện tại
+let bookingData = null;
+
+// --- HÀM SINH MÃ GIAO DỊCH (MỚI THÊM) ---
+function generateTransactionID() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const segment = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    return `BBX-${segment()}-${segment()}`;
+}
 
 $(document).ready(() => {
-    // 1. Lấy và hiển thị dữ liệu từ localStorage
     bookingData = JSON.parse(localStorage.getItem('currentBooking'));
 
     if (bookingData) {
@@ -50,33 +49,22 @@ $(document).ready(() => {
     renderSummary(); 
 });
 
-/* --- HÀM TÍNH GIÁ VÉ ĐỘNG --- */
 function calculateDynamicPrice(seatType) {
     if (!bookingData) return 0;
-
-    // 1. Lấy giá theo khung giờ (Suất chiếu)
     const hour = parseInt(bookingData.gioChieu.split(':')[0]);
     const slot = PRICE_CONFIG.timeSlots.find(s => hour >= s.start && hour < s.end);
     const basePrice = slot ? slot.price : 85000;
-
-    // 2. Phụ thu loại phim (2D/3D)
     const formatSurcharge = PRICE_CONFIG.movieType[bookingData.dinhDang] || 0;
-
-    // 3. Phụ thu loại ghế
     const seatSurcharge = PRICE_CONFIG.seatType[seatType] || 0;
-
     return basePrice + formatSurcharge + seatSurcharge;
 }
 
-/* --- XỬ LÝ CHỌN GHẾ --- */
 function toggleSeat(id, type, el) {
     $(el).toggleClass('selected');
     const idx = selectedSeats.findIndex(s => s.id === id);
-    
     if(idx > -1) {
         selectedSeats.splice(idx, 1);
     } else {
-        // Tính giá dựa trên phim và khung giờ thực tế
         const price = calculateDynamicPrice(type);
         selectedSeats.push({ id, type, price: price });
     }
@@ -96,7 +84,6 @@ function toggleCoupleSeat(id, el) {
         $(el).removeClass('selected');
         partnerEl.removeClass('selected');
     } else {
-        // Ghế Couple tính theo logic tính giá riêng
         const price = calculateDynamicPrice('couple');
         selectedSeats.push({ id: pairId, type: 'couple', price: price });
         $(el).addClass('selected');
@@ -105,10 +92,8 @@ function toggleCoupleSeat(id, el) {
     renderSummary();
 }
 
-/* --- CẬP NHẬT GIAO DIỆN VÉ --- */
 function renderSummary() {
-    // Phần ghế hiển thị giá cụ thể từng loại
-    let seatHtml = selectedSeats.length > 0 ? '' : '<div class="ticket-item text-main small py-2">Chưa chọn ghế</div>';
+    let seatHtml = selectedSeats.length > 0 ? '' : '<div class="ticket-item text-muted small py-2">Chưa chọn ghế</div>';
     if(selectedSeats.length > 0) {
         const groups = selectedSeats.reduce((acc, seat) => {
             if (!acc[seat.type]) acc[seat.type] = { count: 0, ids: [], price: seat.price };
@@ -118,8 +103,8 @@ function renderSummary() {
         }, {});
 
         const typeNames = { standard: 'Ghế đơn', vip: 'Ghế VIP', couple: 'Ghế Couple' };
-        
-        Object.keys(groups).forEach(type => { group = groups[type];
+        Object.keys(groups).forEach(type => { 
+            const group = groups[type];
             seatHtml += `
             <div class="ticket-item">
                 <div class="ticket-row">
@@ -134,8 +119,7 @@ function renderSummary() {
     }
     $('#side-seat').html(seatHtml);
 
-    // Đồ ăn 
-    let foodHtml = Object.keys(selectedFood).length > 0 ? '' : '<div class="ticket-item text-main small py-2">Chưa chọn đồ ăn</div>';
+    let foodHtml = Object.keys(selectedFood).length > 0 ? '' : '<div class="ticket-item text-muted small py-2">Chưa chọn đồ ăn</div>';
     Object.values(selectedFood).forEach(f => {
         foodHtml += `
         <div class="ticket-item">
@@ -149,7 +133,6 @@ function renderSummary() {
     });
     $('#side-food').html(foodHtml);
 
-    // Tính toán tổng cộng
     const totalSeatPrice = selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
     const totalFoodPrice = Object.values(selectedFood).reduce((sum, food) => sum + (food.price * food.qty), 0);
     const subtotal = totalSeatPrice + totalFoodPrice;
@@ -175,7 +158,6 @@ function renderSummary() {
     $('#side-total').text((subtotal - (subtotal * discount)).toLocaleString() + ' đ');
 }
 
-/* --- HÀM TIỆN ÍCH & ĐIỀU HƯỚNG (Giữ nguyên logic gốc của bạn) --- */
 function showNotification(message) {
     $('#infoModalMsg').text(message);
     const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
@@ -250,8 +232,9 @@ function completeBooking() {
     const totalFoodPrice = Object.values(selectedFood).reduce((sum, food) => sum + (food.price * food.qty), 0);
     const total = (totalSeatPrice + totalFoodPrice) * (1 - discount);
 
+    // TẠO VÉ VÀ SINH MÃ GIAO DỊCH TẠI ĐÂY
     const finalTicket = {
-        transactionID: generateTransactionID(),
+        transactionId: generateTransactionID(),
         tenPhim: bookingData.tenPhim,
         anhPhim: bookingData.anhPhim,
         ngayChieu: bookingData.ngayChieu,
@@ -261,7 +244,7 @@ function completeBooking() {
         foods: Object.values(selectedFood).map(f => `${f.qty}x ${f.name}`).join(', '),
         totalPrice: total,
         payment: paymentMethod,
-        bookingDate: new Date().toLocaleString('vi-VN')
+        bookingDate: new Date().toISOString()
     };
 
     let history = JSON.parse(localStorage.getItem('bookingHistory')) || [];
@@ -269,7 +252,6 @@ function completeBooking() {
     localStorage.setItem('bookingHistory', JSON.stringify(history));
     localStorage.setItem('lastBooking', JSON.stringify(finalTicket));
 
-    // Lưu hóa đơn vào userBookings (theo email hoặc username)
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser) {
         let userBookings = JSON.parse(localStorage.getItem('userBookings') || '{}');

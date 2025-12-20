@@ -98,13 +98,17 @@
 
 <!-- JS -->
 <script src="../js/components/trailer.js"></script>
+<script src="../js/components/header.js"></script>
 <script type="module" src="../js/pages/chi_tiet_phim.js"></script>
 
 <!-- Load-->
 <script>
   fetch('../pages/components/header.html')
     .then(r => r.text())
-    .then(html => document.getElementById('header-container').innerHTML = html);
+    .then(html => {
+      document.getElementById('header-container').innerHTML = html;
+      if (window.initHeaderUserMenu) window.initHeaderUserMenu();
+    });
 
   fetch('../pages/components/footer.html')
     .then(r => r.text())

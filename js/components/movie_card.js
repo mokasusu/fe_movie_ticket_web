@@ -81,8 +81,27 @@ export function createMovieCard(movie, isSapChieu = false) {
   });
 
   // Nút đặt vé/ngày chiếu không bắn click card
-  buttonHTML.addEventListener('click', () => {
-    window.location.href = `${BASE_URL}/pages/chi_tiet_phim.html?maphim=${movie.maPhim}`;
+  buttonHTML.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // Nếu là phim đang chiếu thì chuyển thẳng sang booking
+    if (!isSapChieu) {
+      // Lưu thông tin phim vào localStorage cho booking
+      const data = {
+        maPhim: movie.maPhim,
+        tenPhim: movie.tenPhim,
+        anhPhim: movie.anhPhim,
+        doTuoi: movie.doTuoi,
+        thoiLuong: movie.thoiLuong,
+        dinhDang: movie.dinhDang,
+        ngayChieu: movie.ngayChieu || '',
+        gioChieu: movie.gioChieu || '',
+        phongChieu: movie.phongChieu || 'Phòng chiếu'
+      };
+      localStorage.setItem('currentBooking', JSON.stringify(data));
+      window.location.href = `${BASE_URL}/pages/booking.html`;
+    } else {
+      window.location.href = `${BASE_URL}/pages/chi_tiet_phim.html?maphim=${movie.maPhim}`;
+    }
   });
 
   colDiv.appendChild(card);
