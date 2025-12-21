@@ -13,7 +13,7 @@ function renderNews(page) {
 
     currentItems.forEach(item => {
         const html = `
-            <div class="news-card" onclick="location.href='/pages/news_detail.html?id=${item.id}'">
+            <div class="news-card" onclick="location.href='/cop_cinema/pages/news_detail.html?id=${item.id}'">
                 <img src="${item.thumbnail}" alt="${item.title}">
                 <div class="news-info">
                     <span class="news-date">${item.date}</span>
