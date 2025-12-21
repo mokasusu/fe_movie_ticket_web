@@ -14,7 +14,7 @@ function renderMovieDetail(movie) {
   }
 
   // Cập nhật thông tin cơ bản
-  document.getElementById('movie-poster').src = '../' + movie.anhPhim;
+  document.getElementById('movie-poster').src = movie.anhPhim.startsWith('/cop_cinema/') ? movie.anhPhim : '/cop_cinema/' + movie.anhPhim.replace(/^\/?/, '');
   document.getElementById('breadcrumb-movie-name').textContent = movie.tenPhim;
   document.getElementById('movie-title').textContent = movie.tenPhim;
   document.getElementById('movie-description').textContent = movie.noiDung;
