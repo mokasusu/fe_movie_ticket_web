@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking - Cinema</title>
+    <title>Giá vé - COP Cinema</title>
     <!-- Bootstrap 5 (Chỉ dùng Hệ thống lưới Grid & Logic của Modal) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts: Font chữ Inter hiện đại -->
@@ -27,16 +27,10 @@
             --couple-pink: #f472b6;
         }
 
-        body {
-            background-color: var(--bg-black);
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
-            padding: 50px 20px;
-        }
-
-        .container {
+        .container-gia {
             max-width: 1000px;
             margin: 0 auto;
+            margin-bottom: 30px;
         }
 
         .header {
@@ -47,9 +41,9 @@
 
         .header h1 {
             font-size: 2.5rem;
-            background: linear-gradient(to right, #fff, var(--vip-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--accent-gold);
+            font-weight: bold;
+
         }
 
         .price-section {
@@ -113,7 +107,7 @@
 <body>
     <div id="header-container"></div>
 
-    <div class="container">
+    <div class="container-gia">
         <div class="header">
             <h1>BẢNG GIÁ VÉ NIÊM YẾT</h1>
             <p>Khám phá trải nghiệm điện ảnh đỉnh cao tại COP Cinema</p>

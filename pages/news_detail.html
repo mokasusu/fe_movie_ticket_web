@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>COP - Chi Tiết Tin Tức</title>
+    <title>Chi Tiết Tin Tức - COP Cinema</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/reset.css">
@@ -13,42 +13,31 @@
     <link rel="stylesheet" href="../css/components/footer.css">
     <style>
         :root {
-            --primary: #E50914;
-            --bg: #0b0f19;
             --card-bg: #161d2f;
             --text: #ffffff;
         }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.8;
-        }
-
         .news-detail-page * {
             box-sizing: border-box;
         }
 
         .news-detail-page .news-detail-container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 40px 20px;
-            margin-top: 90px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            min-height: 90vh;
         }
 
         .news-detail-page .detail-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            line-height: 1.2;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent-gold);
+            font-family: 'Inter', 'Montserrat', sans-serif;
         }
 
         .news-detail-page .detail-date {
-            color: var(--primary);
-            font-weight: bold;
+            color: var(--accent-blue);
             display: block;
             margin-bottom: 30px;
         }
@@ -58,7 +47,7 @@
             color: #94a3b8;
             margin-bottom: 30px;
             font-style: italic;
-            border-left: 4px solid var(--primary);
+            border-left: 4px solid var(--accent-red);
             padding-left: 20px;
         }
 
@@ -74,12 +63,13 @@
         }
 
         .news-detail-page .image-caption {
-            color: #64748b;
+            color: #f2ec3f;
             font-size: 0.9rem;
             font-style: italic;
         }
 
         .news-detail-page .news-text p {
+            font-size: 1.3rem;
             margin-bottom: 1.5rem;
             text-align: justify;
         }
@@ -101,7 +91,7 @@
         .news-detail-page #related-news-list {
             list-style: none;
             padding: 0;
-            margin: 0;
+            margin: 10px;
         }
 
         .news-detail-page #related-news-list li {
@@ -122,10 +112,86 @@
         .news-detail-page .btn-back {
             display: inline-block;
             margin-top: 40px;
-            color: var(--primary);
+            color: var(--accent-red);
             text-decoration: none;
             font-weight: bold;
         }
+        /* =====================================================
+   RESPONSIVE – CHỈ ÁP DỤNG CHO TRANG CHI TIẾT TIN TỨC
+===================================================== */
+
+/* MOBILE (≤ 576px) */
+@media (max-width: 576px) {
+
+    .news-detail-page {
+        font-size: 14px;
+    }
+
+    .news-detail-page .news-detail-container {
+        padding: 20px 15px;
+        margin-top: 20px;
+    }
+
+    .news-detail-page .detail-title {
+        font-size: 1.6rem;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+    }
+
+    .news-detail-page .detail-date {
+        font-size: 0.85rem;
+    }
+
+    .news-detail-page .news-intro {
+        font-size: 0.95rem;
+        padding-left: 15px;
+    }
+
+    .news-detail-page .news-text p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .news-detail-page .news-gallery img {
+        border-radius: 10px;
+    }
+
+    .news-detail-page .related-news {
+        padding: 20px;
+        margin-top: 40px;
+    }
+
+    .news-detail-page .btn-back {
+        font-size: 0.9rem;
+    }
+}
+
+/* TABLET (577px – 991px) */
+@media (max-width: 991px) {
+
+    .news-detail-page .detail-title {
+        font-size: 2rem;
+        line-height: 1.25;
+    }
+
+    .news-detail-page .news-text p {
+        font-size: 1rem;
+    }
+}
+
+/* DESKTOP LỚN (≥ 1200px) – OPTIONAL */
+@media (min-width: 1200px) {
+
+    .news-detail-page .news-detail-container {
+        max-width: 1100px;
+    }
+
+    .news-detail-page .detail-title {
+        font-size: 2.8rem;
+    }
+}
+
+
     </style>
 </head>
 
@@ -148,7 +214,7 @@
                 </div>
 
                 <div class="related-news">
-                    <h3>Tin liên quan</h3>
+                    <h3 style="color: var(--accent-red); font-weight: bold;">Tin liên quan</h3>
                     <ul id="related-news-list"></ul>
                 </div>
 
