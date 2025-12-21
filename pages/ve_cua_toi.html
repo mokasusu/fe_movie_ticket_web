@@ -11,14 +11,7 @@
         rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
         <script type="module">
-            // Tự động xác định BASE_PATH đúng cho mọi môi trường
-            let BASE_PATH = '';
-            const pathParts = window.location.pathname.split('/').filter(Boolean);
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                BASE_PATH = '';
-            } else {
-                BASE_PATH = pathParts.length > 0 ? `/${pathParts[0]}` : '';
-            }
+            import { BASE_PATH } from '../js/config.js';
             window.BASE_PATH = BASE_PATH;
             const setCss = (href) => {
                 const l = document.createElement('link');
