@@ -1,5 +1,7 @@
+// Sử dụng hàm renderData từ chung_vecuatoi_bill.js để hiển thị nhiều vé cho mỗi ghế
 document.addEventListener('DOMContentLoaded', () => {
-    const bookingHistory = JSON.parse(localStorage.getItem('bookingHistory')) || [];
+    const lastBooking = JSON.parse(localStorage.getItem('lastBooking'));
+    const bookingHistory = lastBooking ? [lastBooking] : [];
 
     const tContainer = document.getElementById('ticket-container');
     const iContainer = document.getElementById('invoice-container');
@@ -15,6 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Render toàn bộ lịch sử, mới nhất lên đầu
-    renderData([...bookingHistory].reverse(), tContainer, iContainer);
+    // Hiển thị bill mới nhất, mỗi ghế một vé
+    if (typeof renderData === 'function') {
+        renderData(bookingHistory, tContainer, iContainer);
+    } else {
+        // Nếu renderData chưa có, báo lỗi rõ ràng
+        tContainer.innerHTML = '<div class="alert alert-danger">Không tìm thấy hàm renderData để hiển thị vé.</div>';
+    }
 });

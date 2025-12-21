@@ -84,6 +84,13 @@ function bindBookingEvents(movie) {
   
   timeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
+      // Kiểm tra đăng nhập
+      const currentUser = localStorage.getItem('currentUser');
+      if (!currentUser) {
+        alert('Vui lòng đăng nhập để đặt vé!');
+        window.location.href = '/pages/login.html';
+        return;
+      }
       // Đóng gói dữ liệu chuẩn để trang Booking (booking.js) có thể đọc được
       const bookingData = {
         maPhim: movie.maPhim,

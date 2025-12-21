@@ -18,8 +18,7 @@ function initHeaderUserMenu() {
     // Đường dẫn avatar
     const avatarPath = currentUser.avatar || `${basePath ? basePath + '/../' : ''}assets/avatar/avt1.jpg`;
     // Đường dẫn các trang
-    const taiKhoanPath = `${basePath}/tai_khoan.html`;
-    const veCuaToiPath = `${basePath}/ve_cua_toi.html`;
+    const taiKhoanPath = `${basePath}/pages/tai_khoan.html`;
     userMenu.innerHTML = `
       <a href="#" class="d-flex align-items-center" data-bs-toggle="dropdown">
         <img src="${avatarPath}" alt="${currentUser.username}" class="avatar-img">

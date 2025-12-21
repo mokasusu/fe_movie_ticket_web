@@ -83,9 +83,24 @@ export function createMovieCard(movie, isSapChieu = false) {
   // Nút đặt vé/ngày chiếu không bắn click card
   buttonHTML.addEventListener('click', (e) => {
     e.stopPropagation();
-    // Nếu là phim đang chiếu thì chuyển thẳng sang booking
+    // Kiểm tra đăng nhập
+    const currentUser = localStorage.getItem('currentUser');
     if (!isSapChieu) {
-      // Lưu thông tin phim vào localStorage cho booking
+      if (!currentUser) {
+        alert('Vui lòng đăng nhập để đặt vé!');
+        window.location.href = `${BASE_URL}/pages/login.html`;
+        return;
+      }
+      // Lấy suất chiếu đầu tiên nếu có
+      let ngayChieu = '', gioChieu = '', phongChieu = '';
+      if (Array.isArray(movie.lichChieu) && movie.lichChieu.length > 0) {
+        const firstDay = movie.lichChieu[0];
+        ngayChieu = firstDay.ngayChieu || '';
+        if (Array.isArray(firstDay.suatChieu) && firstDay.suatChieu.length > 0) {
+          gioChieu = firstDay.suatChieu[0].gioChieu || '';
+          phongChieu = firstDay.suatChieu[0].phongChieu || '';
+        }
+      }
       const data = {
         maPhim: movie.maPhim,
         tenPhim: movie.tenPhim,
@@ -93,9 +108,9 @@ export function createMovieCard(movie, isSapChieu = false) {
         doTuoi: movie.doTuoi,
         thoiLuong: movie.thoiLuong,
         dinhDang: movie.dinhDang,
-        ngayChieu: movie.ngayChieu || '',
-        gioChieu: movie.gioChieu || '',
-        phongChieu: movie.phongChieu || 'Phòng chiếu'
+        ngayChieu,
+        gioChieu,
+        phongChieu
       };
       localStorage.setItem('currentBooking', JSON.stringify(data));
       window.location.href = `${BASE_URL}/pages/booking.html`;

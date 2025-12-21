@@ -37,38 +37,43 @@ function renderLichChieu(ngayChon) {
 
 function bindSuatClick() {
     document.querySelectorAll(".lcc-showtime").forEach(item => {
-        item.addEventListener("click", () => {
-            const maPhim = item.dataset.maphim;
-            
-            // 1. Tìm phim trong mảng movies bạn vừa cung cấp
-            // Giả sử mảng movies đã được import vào file này
-            const phimInfo = movies.find(p => p.maPhim === maPhim);
+      item.addEventListener("click", () => {
+        // Kiểm tra đăng nhập
+        const currentUser = localStorage.getItem("currentUser");
+        if (!currentUser) {
+          alert("Vui lòng đăng nhập để đặt vé!");
+          window.location.href = "login.html";
+          return;
+        }
 
-            if (!phimInfo) {
-                console.error("Không tìm thấy phim với mã:", maPhim);
-                return;
-            }
+        const maPhim = item.dataset.maphim;
+        // 1. Tìm phim trong mảng movies bạn vừa cung cấp
+        const phimInfo = movies.find(p => p.maPhim === maPhim);
 
-            // 2. Đóng gói dữ liệu cực kỳ chi tiết để trang Booking dùng luôn
-            const data = {
-                maPhim: phimInfo.maPhim,
-                tenPhim: phimInfo.tenPhim,
-                anhPhim: phimInfo.anhPhim,   // Khớp với 'assets/images/posters/...'
-                doTuoi: phimInfo.doTuoi,     // Khớp với 'K', 'C13', 'C16'
-                thoiLuong: phimInfo.thoiLuong,
-                dinhDang: phimInfo.dinhDang,
-                ngayChieu: item.dataset.ngay,
-                gioChieu: item.dataset.gio,
-                phongChieu: item.dataset.phong || "Phòng chiếu"
-            };
+        if (!phimInfo) {
+          console.error("Không tìm thấy phim với mã:", maPhim);
+          return;
+        }
 
-            // 3. Lưu vào localStorage với key 'currentBooking' 
-            // (Vì file booking.js của bạn đang dùng key này)
-            localStorage.setItem("currentBooking", JSON.stringify(data));
+        // 2. Đóng gói dữ liệu cực kỳ chi tiết để trang Booking dùng luôn
+        const data = {
+          maPhim: phimInfo.maPhim,
+          tenPhim: phimInfo.tenPhim,
+          anhPhim: phimInfo.anhPhim,   // Khớp với 'assets/images/posters/...'
+          doTuoi: phimInfo.doTuoi,     // Khớp với 'K', 'C13', 'C16'
+          thoiLuong: phimInfo.thoiLuong,
+          dinhDang: phimInfo.dinhDang,
+          ngayChieu: item.dataset.ngay,
+          gioChieu: item.dataset.gio,
+          phongChieu: item.dataset.phong || "Phòng chiếu"
+        };
 
-            // 4. Chuyển hướng sang màn hình chọn ghế
-            window.location.href = "/pages/booking.html"; 
-        });
+        // 3. Lưu vào localStorage với key 'currentBooking' 
+        localStorage.setItem("currentBooking", JSON.stringify(data));
+
+        // 4. Chuyển hướng sang màn hình chọn ghế
+            window.location.href = "booking.html";
+      });
     });
 }
 

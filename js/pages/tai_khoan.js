@@ -4,35 +4,82 @@ function showInvoiceDetail(inv) {
   let userInfoHTML = '';
   if (user) {
     userInfoHTML = `
-      <div class="receipt-line"><span>Khách:</span><span>${user.fullName || user.username || ''}</span></div>
-      <div class="receipt-line"><span>Email:</span><span>${user.email || ''}</span></div>
-      <div class="receipt-divider"></div>
+      <div class=\"bill-receipt-line\"><span>Khách:</span><span>${user.fullName || user.username || ''}</span></div>
+      <div class=\"bill-receipt-line\"><span>Email:</span><span>${user.email || ''}</span></div>
+      <div class=\"bill-receipt-divider\"></div>
     `;
   }
+  // Định dạng lại thời gian đặt vé
+  let bookingDateStr = '';
+  if (inv.bookingDate) {
+    const d = new Date(inv.bookingDate);
+    const date = d.toLocaleDateString('vi-VN');
+    const hour = d.getHours().toString().padStart(2, '0');
+    const min = d.getMinutes().toString().padStart(2, '0');
+    bookingDateStr = `${hour}:${min}, ${date}`;
+  }
+  // Tính tổng tiền đồ ăn (giống bill.js)
+  let foodsHTML = '';
+  let totalFoodPrice = 0;
+  if (inv.foods && inv.foods.length > 0) {
+    foodsHTML = `<div class=\"bill-receipt-line\"><span>Đồ ăn đã đặt:</span></div>`;
+    if (Array.isArray(inv.foods)) {
+      inv.foods.forEach(f => {
+        if (typeof f === 'object' && f.name && f.qty) {
+          let foodTotal = (typeof f.total === 'number') ? f.total : (f.qty * f.price);
+          totalFoodPrice += foodTotal;
+          foodsHTML += `<div class=\"bill-receipt-line\" style=\"padding-left:24px; display:flex; justify-content:space-between;\"><span>${f.qty}x ${f.name}</span><span>${foodTotal.toLocaleString()}đ</span></div>`;
+        }
+      });
+    } else if (typeof inv.foods === 'string') {
+      let foodsArr = inv.foods.split(',').map(f => f.trim());
+      foodsArr.forEach(f => {
+        let match = f.match(/(\d+)x ([^\(]+)(?:\(([^)]+)\))?/);
+        if (match) {
+          let qty = parseInt(match[1]);
+          let name = match[2].trim();
+          let price = match[3] ? parseInt(match[3].replace(/[^\d]/g, '')) : 0;
+          let foodTotal = qty * price;
+          totalFoodPrice += foodTotal;
+          foodsHTML += `<div class=\"bill-receipt-line\" style=\"padding-left:24px; display:flex; justify-content:space-between;\"><span>${qty}x ${name}</span><span>${foodTotal.toLocaleString()}đ</span></div>`;
+        } else {
+          foodsHTML += `<div class=\"bill-receipt-line\" style=\"padding-left:24px\"><span>${f}</span></div>`;
+        }
+      });
+    }
+    foodsHTML += `<div class=\"bill-receipt-line fw-bold\" style=\"padding-left:24px; display:flex; justify-content:space-between;\"><span>Tổng tiền đồ ăn</span><span>${totalFoodPrice.toLocaleString()}đ</span></div>`;
+  }
   const html = `
-    <div class="modal fade" id="invoiceModal" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">HÓA ĐƠN THANH TOÁN</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <div class=\"modal fade\" id=\"invoiceModal\" tabindex=\"-1\">
+      <div class=\"modal-dialog modal-dialog-centered\">
+        <div class=\"modal-content\">
+          <div class=\"modal-header\">
+            <h5 class=\"modal-title\">HÓA ĐƠN THANH TOÁN</h5>
+            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>
           </div>
-          <div class="modal-body">
-            <div class="thermal-receipt" style="max-width:340px;margin:auto;">
-              <div class="text-center mb-3">
-                <h6 class="mb-1 text-dark">COP CINEMAS PREMIUM</h6>
-                <p style="font-size: 10px;" class="mb-0">COP Cinemas Chùa Bộc, Hà Nội</p>
-                <p style="font-size: 10px;">ID: <strong>${inv.transactionId || '---'}</strong></p>
+          <div class=\"modal-body\">
+            <div class=\"bill-receipt-container\" style=\"max-width:340px;margin:auto;\">
+              <div class=\"bill-thermal-receipt\">
+                <div class=\"text-center mb-3\">
+                  <h6 class=\"mb-1\">COP CINEMAS PREMIUM</h6>
+                  <p style=\"font-size: 10px;\" class=\"mb-0\">COP Cinemas Chùa Bộc, Hà Nội</p>
+                  <p style=\"font-size: 10px;\">Mã GD: <strong>${inv.transactionId || inv.transactionID || '---'}</strong></p>
+                </div>
+                <div class=\"bill-receipt-line\"><span>Thời gian đặt:</span><span>${bookingDateStr}</span></div>
+                ${userInfoHTML}
+                <div class=\"bill-receipt-line\"><span class=\"fw-bold text-uppercase\">${inv.tenPhim || ''}</span></div>
+                <div class=\"bill-receipt-line\"><span>Ngày chiếu:</span><span>${inv.ngayChieu || ''}</span></div>
+                <div class=\"bill-receipt-line\"><span>Suất chiếu:</span><span>${inv.gioChieu || ''}</span></div>
+                <div class=\"bill-receipt-line\"><span>Phòng:</span><span>${inv.phongChieu || ''}</span></div>
+                <div class=\"bill-receipt-line\"><span>Định dạng:</span><span>${inv.dinhDang || '2D Digital'}</span></div>
+                <div class=\"bill-receipt-line\"><span>Danh sách ghế:</span><span>${inv.seats || ''}</span></div>
+                <div class=\"bill-receipt-line\"><span>Giá vé:</span><span>${inv.totalSeatPrice ? Number(inv.totalSeatPrice).toLocaleString() + 'đ' : ''}</span></div>
+                ${foodsHTML}
+                <div class=\"bill-receipt-divider\"></div>
+                <div class=\"bill-receipt-line\"><span>Khuyến mãi:</span><span>${inv.discountValue ? '-' + Number(inv.discountValue).toLocaleString() + 'đ' : '0đ'}</span></div>
+                <div class=\"bill-receipt-line fw-bold fs-5\"><span>TỔNG THANH TOÁN:</span><span>${(inv.totalPrice || 0).toLocaleString()}đ</span></div>
+                <div class=\"text-center mt-3\"><div class=\"bill-receipt-barcode\"></div><p style=\"font-size: 9px;\" class=\"mt-2 mb-0\">Cảm ơn & Hẹn gặp lại!</p></div>
               </div>
-              <div class="receipt-line"><span>Ngày:</span><span>${inv.bookingDate || ''}</span></div>
-              ${userInfoHTML}
-              <div class="fw-bold mb-1" style="font-size: 0.85rem;">${inv.tenPhim || ''}</div>
-              <div class="receipt-line"><span>Suất:</span><span>${inv.gioChieu || ''} - ${inv.ngayChieu || ''}</span></div>
-              <div class="receipt-line"><span>Ghế:</span><span>${inv.seats || ''}</span></div>
-              <div class="receipt-divider"></div>
-              <div class="receipt-line"><span>TỔNG:</span><span>${(inv.totalPrice || 0).toLocaleString()}đ</span></div>
-              <div class="receipt-line"><span>Trạng thái:</span><span>Thành công</span></div>
-              <div class="text-center mt-3"><div class="receipt-barcode"></div><p style="font-size: 9px;" class="mt-2 mb-0">Cảm ơn & Hẹn gặp lại!</p></div>
             </div>
           </div>
         </div>
@@ -87,8 +134,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const userBookings = JSON.parse(localStorage.getItem('userBookings') || '{}');
   const invoices = userBookings[user.email || user.username] || [];
 
-  // Sắp xếp hóa đơn mới nhất trước
-  invoices.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  // Sắp xếp hóa đơn mới nhất trước (ưu tiên bookingDate, fallback createdAt)
+  invoices.sort((a, b) => {
+    const dateA = a.bookingDate ? new Date(a.bookingDate) : (a.createdAt ? new Date(a.createdAt) : 0);
+    const dateB = b.bookingDate ? new Date(b.bookingDate) : (b.createdAt ? new Date(b.createdAt) : 0);
+    return dateB - dateA;
+  });
 
   // --- Hiển thị số phim đã xem & tổng tiền ---
   document.getElementById('statMovies').textContent = invoices.length;
@@ -195,6 +246,15 @@ function renderJourney() {
       if (!poster.startsWith('assets/')) poster = '../assets/images/posters/' + poster.replace(/^\.\//, '');
       else poster = '../' + poster.replace(/^\.\//, '');
     }
+    // Định dạng lại ngày đặt vé
+    let bookingDateStr = '';
+    if (inv.bookingDate) {
+      const d = new Date(inv.bookingDate);
+      const date = d.toLocaleDateString('vi-VN');
+      const hour = d.getHours().toString().padStart(2, '0');
+      const min = d.getMinutes().toString().padStart(2, '0');
+      bookingDateStr = `${hour}:${min}, ${date}`;
+    }
     item.innerHTML = `
       <div class="journey-top-content">
         <div class="journey-poster">
@@ -203,7 +263,7 @@ function renderJourney() {
         <div class="journey-title">${inv.tenPhim || ''}</div>
       </div>
       <div class="journey-dot"></div>
-      <div class="journey-date">${inv.ngayChieu || ''}</div>
+      <div class="journey-date">${bookingDateStr}</div>
     `;
     track.appendChild(item);
   });

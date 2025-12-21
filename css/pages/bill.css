@@ -1,3 +1,12 @@
+  .bill-receipt-line span.movie-title-invoice {
+    max-width: 220px;
+    display: block;
+    margin: 0 auto;
+    word-break: break-word;
+    white-space: pre-line;
+    font-weight: bold;
+    text-align: center;
+  }
   :root {
       --primary-red: #E50914;
       --dark-red: #831010;
@@ -71,7 +80,7 @@
   }
 
   /* --- TICKET CARD DESIGN --- */
-  .ticket-item {
+    .bill-ticket-item {
       background: var(--card-gray);
       border: 1px solid var(--border-color);
       border-radius: 20px;
@@ -82,13 +91,13 @@
       position: relative;
   }
 
-  .ticket-item:hover {
+    .bill-ticket-item:hover {
       transform: scale(1.02);
       border-color: var(--primary-red);
   }
 
   /* Phần bên trái: Thông tin phim */
-  .ticket-main {
+    .bill-ticket-main {
       flex: 1;
       padding: 30px;
       border-right: 2px dashed #2a2a2a;
@@ -96,8 +105,8 @@
   }
 
   /* Hiệu ứng vết cắt vé (Notches) */
-  .ticket-main::before,
-  .ticket-main::after {
+    .bill-ticket-main::before,
+    .bill-ticket-main::after {
       content: "";
       position: absolute;
       right: -12px;
@@ -108,28 +117,28 @@
       z-index: 2;
   }
 
-  .ticket-main::before {
+    .bill-ticket-main::before {
       top: -12px;
   }
 
-  .ticket-main::after {
+    .bill-ticket-main::after {
       bottom: -12px;
   }
 
-  .movie-title {
+    .bill-movie-title {
       font-size: 1.5rem;
       font-weight: 800;
       margin-bottom: 15px;
       display: block;
   }
 
-  .info-grid {
+    .bill-info-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
   }
 
-  .info-label {
+    .bill-info-label {
       color: var(--text-dim);
       font-size: 0.75rem;
       text-transform: uppercase;
@@ -138,13 +147,13 @@
       font-weight: 600;
   }
 
-  .info-value {
+    .bill-info-value {
       font-weight: 600;
       font-size: 0.95rem;
   }
 
   /* Phần bên phải: QR Code */
-  .ticket-side {
+    .bill-ticket-side {
       width: 220px;
       padding: 30px;
       display: flex;
@@ -154,14 +163,14 @@
       background: #161616;
   }
 
-  .qr-wrapper {
+    .bill-qr-wrapper {
       background: #fff;
       padding: 10px;
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
   }
 
-  .ticket-status {
+    .bill-ticket-status {
       font-size: 0.7rem;
       font-weight: 800;
       margin-top: 15px;
@@ -170,7 +179,7 @@
   }
 
   /* Invoice styling nâng cấp */
-  #invoice-container {
+    #bill-invoice-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
@@ -179,19 +188,19 @@
       min-height: 200px;
   }
 
-  .invoice-item-wrapper {
+    .bill-invoice-item-wrapper {
       padding: 10px;
       display: flex;
       justify-content: center;
   }
 
-  .empty-state {
+    .bill-empty-state {
       padding: 100px 0;
       text-align: center;
       color: var(--text-dim);
   }
 
-  .btn-home {
+    .bill-btn-home {
       background: transparent;
       border: 1px solid #333;
       color: #fff;
@@ -201,19 +210,19 @@
       transition: 0.3s;
   }
 
-  .btn-home:hover {
+    .bill-btn-home:hover {
       background: #fff;
       color: #000;
   }
 
   /* CSS cho hóa đơn kiểu chân thực */
-  .receipt-container {
+    .bill-receipt-container {
       max-width: 500px;
       margin: 20px auto;
       perspective: 1000px;
   }
 
-  .thermal-receipt {
+    .bill-thermal-receipt {
       background: #fdfdfd;
       color: #000;
       padding: 20px 15px;
@@ -227,25 +236,25 @@
       clip-path: polygon(0% 0%, 100% 0%, 100% 98%, 98% 100%, 96% 98%, 94% 100%, 92% 98%, 90% 100%, 88% 98%, 86% 100%, 84% 98%, 82% 100%, 80% 98%, 78% 100%, 76% 98%, 74% 100%, 72% 98%, 70% 100%, 68% 98%, 66% 100%, 64% 98%, 62% 100%, 60% 98%, 58% 100%, 56% 98%, 54% 100%, 52% 98%, 50% 100%, 48% 98%, 46% 100%, 44% 98%, 42% 100%, 40% 98%, 38% 100%, 36% 98%, 34% 100%, 32% 98%, 30% 100%, 28% 98%, 26% 100%, 24% 98%, 22% 100%, 20% 98%, 18% 100%, 16% 98%, 14% 100%, 12% 98%, 10% 100%, 8% 98%, 6% 100%, 4% 98%, 2% 100%, 0% 98%);
   }
 
-  .thermal-receipt h6 {
+    .bill-thermal-receipt h6 {
       font-weight: 800;
       font-size: 0.9rem;
       border-bottom: 1px dashed #000;
       padding-bottom: 8px;
   }
 
-  .receipt-line {
+    .bill-receipt-line {
       display: flex;
       justify-content: space-between;
       margin: 5px 0;
   }
 
-  .receipt-divider {
+    .bill-receipt-divider {
       border-top: 1px dashed #888;
       margin: 10px 0;
   }
 
-  .receipt-barcode {
+    .bill-receipt-barcode {
       height: 30px;
       background: repeating-linear-gradient(90deg, #000, #000 1px, transparent 1px, transparent 3px);
       width: 100%;

@@ -40,6 +40,7 @@ $(document).ready(() => {
         $('.cinema-number').text(bookingData.phongChieu);
         $('.showtime-number').text(`Suất chiếu: ${bookingData.gioChieu}`);
         $('.showtime-day').text(bookingData.ngayChieu);
+        // Không hiển thị phần đồ ăn ở thông tin phim
     } else {
         showNotification("Không tìm thấy thông tin đặt vé, vui lòng chọn lại!");
         setTimeout(() => { window.location.href = '/pages/lich_chieu.html'; }, 2000);
@@ -94,6 +95,7 @@ function toggleCoupleSeat(id, el) {
 
 function renderSummary() {
     let seatHtml = selectedSeats.length > 0 ? '' : '<div class="ticket-item text-muted small py-2">Chưa chọn ghế</div>';
+    let totalSeatPrice = 0;
     if(selectedSeats.length > 0) {
         const groups = selectedSeats.reduce((acc, seat) => {
             if (!acc[seat.type]) acc[seat.type] = { count: 0, ids: [], price: seat.price };
@@ -101,7 +103,6 @@ function renderSummary() {
             acc[seat.type].ids.push(seat.id);
             return acc;
         }, {});
-
         const typeNames = { standard: 'Ghế đơn', vip: 'Ghế VIP', couple: 'Ghế Couple' };
         Object.keys(groups).forEach(type => { 
             const group = groups[type];
@@ -115,28 +116,32 @@ function renderSummary() {
                     <div class="ticket-price">${(group.count * group.price).toLocaleString()} đ</div>
                 </div>
             </div>`;
+            totalSeatPrice += group.count * group.price;
         });
     }
+    seatHtml += `<div class="ticket-item fw-bold"><div class="ticket-row"><div class="ticket-label">Tổng giá ghế</div><div class="ticket-price">${totalSeatPrice.toLocaleString()} đ</div></div></div>`;
     $('#side-seat').html(seatHtml);
 
     let foodHtml = Object.keys(selectedFood).length > 0 ? '' : '<div class="ticket-item text-muted small py-2">Chưa chọn đồ ăn</div>';
+    let totalFoodPrice = 0;
     Object.values(selectedFood).forEach(f => {
+        const foodTotal = f.qty * f.price;
+        totalFoodPrice += foodTotal;
         foodHtml += `
         <div class="ticket-item">
             <div class="ticket-row">
                 <div class="ticket-detail">
                     <div class="ticket-label">${f.qty}x ${f.name}</div>
                 </div>
-                <div class="ticket-price">${(f.qty * f.price).toLocaleString()} đ</div>
+                <div class="ticket-price">${foodTotal.toLocaleString()} đ</div>
             </div>
         </div>`;
     });
+    foodHtml += `<div class="ticket-item fw-bold"><div class="ticket-row"><div class="ticket-label">Tổng giá đồ ăn</div><div class="ticket-price">${totalFoodPrice.toLocaleString()} đ</div></div></div>`;
     $('#side-food').html(foodHtml);
 
-    const totalSeatPrice = selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
-    const totalFoodPrice = Object.values(selectedFood).reduce((sum, food) => sum + (food.price * food.qty), 0);
     const subtotal = totalSeatPrice + totalFoodPrice;
-    
+
     $('#side-promo').html(discount > 0 ? `
         <div class="ticket-item" style="color: #10b981;">
             <div class="ticket-row">
@@ -228,44 +233,68 @@ function changeStep(delta) {
 }
 
 function completeBooking() {
-    const totalSeatPrice = selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
-    const totalFoodPrice = Object.values(selectedFood).reduce((sum, food) => sum + (food.price * food.qty), 0);
-    const total = (totalSeatPrice + totalFoodPrice) * (1 - discount);
+    const seatIds = selectedSeats.map(s => s.id);
+    const seatPrices = selectedSeats.map(s => s.price);
+    const totalSeatPrice = seatPrices.reduce((sum, p) => sum + p, 0);
 
-    // TẠO VÉ VÀ SINH MÃ GIAO DỊCH TẠI ĐÂY
+    const foodDetails = Object.values(selectedFood).map(f => ({
+        name: f.name,
+        qty: f.qty,
+        price: f.price,
+        total: f.qty * f.price
+    }));
+
+    const totalFoodPrice = foodDetails.reduce((sum, f) => sum + f.total, 0);
+    const discountValue = Math.round((totalSeatPrice + totalFoodPrice) * discount);
+    const total = totalSeatPrice + totalFoodPrice - discountValue;
+
     const finalTicket = {
         transactionId: generateTransactionID(),
+
+        // PHIM
         tenPhim: bookingData.tenPhim,
         anhPhim: bookingData.anhPhim,
         ngayChieu: bookingData.ngayChieu,
         gioChieu: bookingData.gioChieu,
         phongChieu: bookingData.phongChieu,
-        seats: selectedSeats.map(s => s.id).join(', '),
-        foods: Object.values(selectedFood).map(f => `${f.qty}x ${f.name}`).join(', '),
+        dinhDang: bookingData.dinhDang,
+
+        // GHẾ
+        seats: seatIds.join(', '),
+        seatPrices,
+        totalSeatPrice,
+
+        // ĐỒ ĂN (QUAN TRỌNG)
+        foods: foodDetails,
+        totalFoodPrice,
+
+        // THANH TOÁN
+        discount,
+        discountValue,
         totalPrice: total,
         payment: paymentMethod,
+
         bookingDate: new Date().toISOString()
     };
 
-    let history = JSON.parse(localStorage.getItem('bookingHistory')) || [];
+    // LƯU LỊCH SỬ CHUNG
+    const history = JSON.parse(localStorage.getItem('bookingHistory')) || [];
     history.push(finalTicket);
     localStorage.setItem('bookingHistory', JSON.stringify(history));
+
+    // LƯU VÉ VỪA ĐẶT
     localStorage.setItem('lastBooking', JSON.stringify(finalTicket));
 
+    // LƯU THEO USER
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser) {
-        let userBookings = JSON.parse(localStorage.getItem('userBookings') || '{}');
-        const userKey = currentUser.email || currentUser.username || 'unknown';
-        if (!userBookings[userKey]) {
-            userBookings[userKey] = [];
-        }
-        userBookings[userKey].push({
-            ...finalTicket,
-            createdAt: new Date().toISOString()
-        });
+        const userKey = currentUser.email || currentUser.username;
+        const userBookings = JSON.parse(localStorage.getItem('userBookings') || '{}');
+        userBookings[userKey] = userBookings[userKey] || [];
+        userBookings[userKey].push(finalTicket);
         localStorage.setItem('userBookings', JSON.stringify(userBookings));
     }
 
     localStorage.removeItem('currentBooking');
-    window.location.href = '/pages/bill.html';
+        window.location.href = '/pages/bill.html?justPaid=1';
 }
