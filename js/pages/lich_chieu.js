@@ -69,7 +69,7 @@ function bindSuatClick() {
           phongChieu: item.dataset.phong || "Phòng chiếu"
         };
 
-        // 3. Lưu vào localStorage với key 'currentBooking' 
+        // 3. Lưu vào localStorage với key 'currentBooking'
         localStorage.setItem("currentBooking", JSON.stringify(data));
 
         // 4. Chuyển hướng sang màn hình chọn ghế

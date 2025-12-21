@@ -158,7 +158,7 @@ registerForm.addEventListener('submit', e => {
       username: registerUsername.value.trim(),
       email: registerEmail.value.trim(),
       password: registerPassword.value.trim(),
-      avatar: `${BASE_PATH}/assets/avatar/avt1.jpg`
+      avatar: 'assets/avatar/avt1.jpg'
     };
 
     currentUsers.push(newUser);
