@@ -5,31 +5,82 @@ function initHeaderUserMenu() {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   if (currentUser) {
-    // Nếu đã đăng nhập, hiển thị avatar
+    // Xác định base path từ vị trí hiện tại
+    function getBasePath() {
+      const pathArr = window.location.pathname.split('/');
+      // Nếu đang ở root (index.html)
+      if (pathArr.length <= 2) return '';
+      // Nếu đang ở /pages
+      if (pathArr.includes('pages')) return '/pages';
+      return '';
+    }
+    const basePath = getBasePath();
+    // Đường dẫn avatar
+    const avatarPath = currentUser.avatar || `${basePath ? basePath + '/../' : ''}assets/avatar/avt1.jpg`;
+    // Đường dẫn các trang
+    const taiKhoanPath = `${basePath}/tai_khoan.html`;
+    const veCuaToiPath = `${basePath}/ve_cua_toi.html`;
     userMenu.innerHTML = `
       <a href="#" class="d-flex align-items-center" data-bs-toggle="dropdown">
-        <img src="${currentUser.avatar || '/assets/avatar/avt1.jpg'}" alt="${currentUser.username}" class="avatar-img">
+        <img src="${avatarPath}" alt="${currentUser.username}" class="avatar-img">
       </a>
       <ul class="dropdown-menu dropdown-menu-end user-dropdown">
-        <li><a class="dropdown-item" href="/pages/tai_khoan.html">Thông tin của tôi</a></li>
-        <li><a class="dropdown-item" href="/pages/ve_cua_toi.html">Vé của tôi</a></li>
+        <li><a class="dropdown-item" id="infoMenu" href="#">Thông tin cá nhân</a></li>
+        <li><a class="dropdown-item" id="invoicesMenu" href="#">Hóa đơn</a></li>
+        <li><a class="dropdown-item" id="journeyMenu" href="#">Hành trình điện ảnh</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item logout" href="#" id="logoutBtn">Đăng xuất</a></li>
       </ul>
     `;
 
+    // Hàm đóng dropdown menu
+    function closeDropdown() {
+      const dropdownMenu = userMenu.querySelector('.dropdown-menu');
+      if (dropdownMenu) {
+        dropdownMenu.style.display = 'none';
+      }
+    }
+    // Xử lý chuyển tab thông tin cá nhân
+    const infoMenu = document.getElementById('infoMenu');
+    if (infoMenu) {
+      infoMenu.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeDropdown();
+        window.location.href = `${window.location.origin}${taiKhoanPath}?tab=info`;
+      });
+    }
+    // Xử lý chuyển tab hóa đơn
+    const invoicesMenu = document.getElementById('invoicesMenu');
+    if (invoicesMenu) {
+      invoicesMenu.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeDropdown();
+        window.location.href = `${window.location.origin}${taiKhoanPath}?tab=invoices`;
+      });
+    }
+    // Xử lý chuyển tab hành trình điện ảnh
+    const journeyMenu = document.getElementById('journeyMenu');
+    if (journeyMenu) {
+      journeyMenu.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeDropdown();
+        window.location.href = `${window.location.origin}${taiKhoanPath}?tab=journey`;
+      });
+    }
+
     // Xử lý logout
     const logoutBtn = document.getElementById('logoutBtn');
     logoutBtn.addEventListener('click', e => {
       e.preventDefault();
-      // Xoá thông tin đăng nhập và về trang chủ
+      // Xoá thông tin đăng nhập
       localStorage.removeItem('currentUser');
-      // Có thể dọn dẹp thêm các state liên quan đặt vé nếu cần
+
       localStorage.removeItem('selectedShowtime');
-      window.location.href = '/index.html';
+      // Quay về trang chủ (index.html) ở root
+      window.location.href = `${window.location.origin}/index.html`;
     });
 
-    // Hover dropdown (giữ hiệu ứng fadeIn/fadeOut)
+    // Hover dropdown
     if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
       $(userMenu).hover(
         function () {
@@ -48,10 +99,10 @@ function initHeaderUserMenu() {
 
     const loginBtn = document.getElementById('loginBtn');
     loginBtn.addEventListener('click', () => {
-      window.location.href = '../../pages/login.html';
+      // Đường dẫn login.html
+      window.location.href = `${window.location.origin}/pages/login.html`;
     });
   }
 }
 
-// Cho phép gọi lại sau khi header được inject
 window.initHeaderUserMenu = initHeaderUserMenu;

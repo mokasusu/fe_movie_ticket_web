@@ -123,6 +123,9 @@ body {
   border: 1px solid var(--border-divider);
   min-width: 200px;
   padding: 8px 0;
+  left: auto !important;
+  right: 0 !important;
+  transform: none !important;
 }
 
 .user-dropdown .dropdown-item {

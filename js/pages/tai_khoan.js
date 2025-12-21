@@ -56,6 +56,19 @@ function showInvoiceDetail(inv) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Chuyển tab nếu có tham số tab trên URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam === 'journey' || tabParam === 'invoices' || tabParam === 'info') {
+      setTimeout(() => {
+        let tabSelector = '';
+        if (tabParam === 'journey') tabSelector = '[data-bs-target="#tab-journey"]';
+        if (tabParam === 'invoices') tabSelector = '[data-bs-target="#tab-invoices"]';
+        if (tabParam === 'info') tabSelector = '[data-bs-target="#tab-info"]';
+        const tabBtn = document.querySelector(tabSelector);
+        if (tabBtn) tabBtn.click();
+      }, 100);
+    }
   const user = JSON.parse(localStorage.getItem('currentUser'));
   if (!user) {
     location.href = 'login.html';
