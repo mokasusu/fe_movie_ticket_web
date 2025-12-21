@@ -6,19 +6,11 @@ function initHeaderUserMenu() {
 
   if (currentUser) {
     // Xác định base path từ vị trí hiện tại
-    function getBasePath() {
-      const pathArr = window.location.pathname.split('/');
-      // Nếu đang ở root (index.html)
-      if (pathArr.length <= 2) return '';
-      // Nếu đang ở /pages
-      if (pathArr.includes('pages')) return '/pages';
-      return '';
-    }
-    const basePath = getBasePath();
     // Đường dẫn avatar
-    const avatarPath = currentUser.avatar || `${basePath ? basePath + '/../' : ''}assets/avatar/avt1.jpg`;
-    // Đường dẫn các trang
-    const taiKhoanPath = `${basePath}/pages/tai_khoan.html`;
+      const avatarPath = currentUser.avatar || 'assets/avatar/avt1.jpg';
+      // Đường dẫn các trang: tự động nhận diện vị trí
+      const isInPages = window.location.pathname.includes('/pages/');
+      const taiKhoanPath = isInPages ? 'tai_khoan.html' : 'pages/tai_khoan.html';
     userMenu.innerHTML = `
       <a href="#" class="d-flex align-items-center" data-bs-toggle="dropdown">
         <img src="${avatarPath}" alt="${currentUser.username}" class="avatar-img">
@@ -45,7 +37,7 @@ function initHeaderUserMenu() {
       infoMenu.addEventListener('click', function(e) {
         e.preventDefault();
         closeDropdown();
-        window.location.href = `${window.location.origin}${taiKhoanPath}?tab=info`;
+          window.location.href = `${taiKhoanPath}?tab=info`;
       });
     }
     // Xử lý chuyển tab hóa đơn
@@ -54,7 +46,7 @@ function initHeaderUserMenu() {
       invoicesMenu.addEventListener('click', function(e) {
         e.preventDefault();
         closeDropdown();
-        window.location.href = `${window.location.origin}${taiKhoanPath}?tab=invoices`;
+          window.location.href = `${taiKhoanPath}?tab=invoices`;
       });
     }
     // Xử lý chuyển tab hành trình điện ảnh
@@ -63,7 +55,7 @@ function initHeaderUserMenu() {
       journeyMenu.addEventListener('click', function(e) {
         e.preventDefault();
         closeDropdown();
-        window.location.href = `${window.location.origin}${taiKhoanPath}?tab=journey`;
+          window.location.href = `${taiKhoanPath}?tab=journey`;
       });
     }
 
@@ -76,7 +68,8 @@ function initHeaderUserMenu() {
 
       localStorage.removeItem('selectedShowtime');
       // Quay về trang chủ (index.html) ở root
-      window.location.href = `${window.location.origin}/index.html`;
+        const homePath = isInPages ? '../index.html' : 'index.html';
+        window.location.href = homePath;
     });
 
     // Hover dropdown
@@ -98,8 +91,8 @@ function initHeaderUserMenu() {
 
     const loginBtn = document.getElementById('loginBtn');
     loginBtn.addEventListener('click', () => {
-      // Đường dẫn login.html
-      window.location.href = `${window.location.origin}/pages/login.html`;
+        const loginPath = isInPages ? 'login.html' : 'pages/login.html';
+        window.location.href = loginPath;
     });
   }
 }
