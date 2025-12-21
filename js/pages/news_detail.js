@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const relatedList = document.getElementById('related-news-list');
     if (news.relatedNews && news.relatedNews.length > 0) {
         relatedList.innerHTML = news.relatedNews.map(item => `
-            <li><a href="/pages/news_detail.html?id=${item.id}">${item.title}</a></li>
+            <li><a href="/cop_cinema/pages/news_detail.html?id=${item.id}">${item.title}</a></li>
         `).join('');
     } else {
         relatedList.innerHTML = "<li>Không có tin tức liên quan.</li>";
