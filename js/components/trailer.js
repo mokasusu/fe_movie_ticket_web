@@ -3,7 +3,7 @@ let trailerLoaded = false;
 async function loadTrailerComponent() {
   if (trailerLoaded) return;
 
-  const res = await fetch('pages/components/trailer.html');
+  const res = await fetch('/cop_cinema/pages/components/trailer.html');
   document.body.insertAdjacentHTML('beforeend', await res.text());
 
   initTrailerEvents();
