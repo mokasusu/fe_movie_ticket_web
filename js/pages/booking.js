@@ -30,7 +30,13 @@ $(document).ready(() => {
 
     if (bookingData) {
         $('.movie-title').text(bookingData.tenPhim.toUpperCase());
-        $('.movie-image img').attr('src', "../" + bookingData.anhPhim); 
+        // Đảm bảo đường dẫn ảnh luôn đúng chuẩn /cop_cinema/ và không bị lặp
+        let posterSrc = bookingData.anhPhim;
+        if (!posterSrc.startsWith('/cop_cinema/')) {
+            posterSrc = '/cop_cinema/' + posterSrc.replace(/^\/?/, '');
+        }
+        posterSrc = posterSrc.replace(/(\/cop_cinema\/)+/, '/cop_cinema/');
+        $('.movie-image img').attr('src', posterSrc);
         $('.movie-age').text(bookingData.doTuoi);
         $('.movie-content ul').html(`
             <li>${bookingData.dinhDang}</li>

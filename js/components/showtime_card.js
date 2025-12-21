@@ -37,8 +37,6 @@ export function createLichChieuCard(phim, suatChieuList) {
               >
                 ${suat.gio}
               </span>
-              <span class="lcc-room">${suat.phong || ''}</span>
-              <span class="lcc-price">${phim.giaVe ? phim.giaVe.toLocaleString() + 'đ' : 'Giá: 75.000đ'}</span>
             </div>
           `
           )
