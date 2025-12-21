@@ -1,4 +1,6 @@
 import { BASE_PATH } from "../config.js";
+
+// --- XỬ LÝ CHUYỂN TAB ---
 const tabs = document.querySelectorAll('.tab-btn');
 const forms = document.querySelectorAll('.form-tab');
 
@@ -12,17 +14,32 @@ tabs.forEach(tab => {
   });
 });
 
-let users = JSON.parse(localStorage.getItem('users')) || [];
+// Hàm lấy user mới nhất từ LocalStorage
+function getUsers() {
+    return JSON.parse(localStorage.getItem('users')) || [];
+}
 
+// --- HELPER FUNCTIONS ---
+function showError(input, message) {
+  const group = input.parentElement;
+  group.classList.add('error');
+  const errorDisplay = group.querySelector('.error-msg');
+  if (errorDisplay) errorDisplay.textContent = message;
+}
+
+function resetErrors(form) {
+  form.querySelectorAll('.input-group').forEach(g => g.classList.remove('error'));
+  form.querySelectorAll('.error-msg').forEach(s => s.textContent = '');
+}
+
+// --- LOGIC ĐĂNG NHẬP ---
 const loginForm = document.getElementById('loginForm');
 const loginUsername = document.getElementById('loginUsername');
 const loginPassword = document.getElementById('loginPassword');
 const loginInputs = [loginUsername, loginPassword];
 
 loginInputs.forEach(input => {
-  input.touched = false;
   input.addEventListener('input', () => {
-    input.touched = true;
     input.parentElement.classList.remove('error');
     input.parentElement.querySelector('.error-msg').textContent = '';
   });
@@ -35,7 +52,7 @@ loginForm.addEventListener('submit', e => {
   let isValid = true;
 
   loginInputs.forEach(input => {
-    if(!input.touched || input.value.trim() === '') {
+    if(input.value.trim() === '') {
       showError(input, 'Vui lòng nhập thông tin');
       isValid = false;
     }
@@ -44,23 +61,30 @@ loginForm.addEventListener('submit', e => {
   if(isValid) {
     const userInput = loginUsername.value.trim();
     const passInput = loginPassword.value.trim();
+    const currentUsers = getUsers(); // Lấy dữ liệu mới nhất
 
-    const matchedUser = users.find(u => 
+    // Tìm user khớp username HOẶC email
+    const matchedUser = currentUsers.find(u =>
       (u.username === userInput || u.email === userInput) && u.password === passInput
     );
 
     if(matchedUser) {
+      // Lưu thông tin phiên đăng nhập
       localStorage.setItem('currentUser', JSON.stringify(matchedUser));
+      
+      // Reset form
       loginForm.reset();
-      loginInputs.forEach(i => i.touched = false);
+      
+      // Chuyển hướng
       window.location.href = `${BASE_PATH}/index.html`;
     } else {
-      showError(loginUsername, 'Tên đăng nhập/email hoặc mật khẩu không đúng');
-      showError(loginPassword, '');
+      showError(loginUsername, 'Tài khoản hoặc mật khẩu không chính xác');
+      loginPassword.value = '';
     }
   }
 });
 
+// --- LOGIC ĐĂNG KÝ ---
 const registerForm = document.getElementById('registerForm');
 const registerFullName = document.getElementById('registerFullName');
 const registerUsername = document.getElementById('registerUsername');
@@ -69,9 +93,7 @@ const registerPassword = document.getElementById('registerPassword');
 const registerInputs = [registerFullName, registerUsername, registerEmail, registerPassword];
 
 registerInputs.forEach(input => {
-  input.touched = false;
   input.addEventListener('input', () => {
-    input.touched = true;
     input.parentElement.classList.remove('error');
     input.parentElement.querySelector('.error-msg').textContent = '';
   });
@@ -83,39 +105,54 @@ registerForm.addEventListener('submit', e => {
 
   let isValid = true;
 
+  // 1. Check rỗng
   registerInputs.forEach(input => {
-    if(!input.touched || input.value.trim() === '') {
+    if(input.value.trim() === '') {
       showError(input, 'Vui lòng nhập thông tin');
       isValid = false;
     }
   });
 
-  if(registerFullName.value.trim() !== '' && registerFullName.value.trim().length < 2) {
+  if(!isValid) return;
+
+  // 2. Validate chi tiết
+  if(registerFullName.value.trim().length < 2) {
     showError(registerFullName, 'Họ tên phải có ít nhất 2 ký tự');
     isValid = false;
   }
 
-  if(registerUsername.value.trim() !== '' && !/^[\w.@-]{3,30}$/.test(registerUsername.value.trim())) {
-    showError(registerUsername, 'Tên đăng nhập không hợp lệ');
+  // Regex username: chỉ chữ, số, gạch dưới, gạch ngang
+  if(!/^[\w.@-]{3,30}$/.test(registerUsername.value.trim())) {
+    showError(registerUsername, 'Tên đăng nhập 3-30 ký tự, không dấu');
     isValid = false;
   }
 
-  if(registerEmail.value.trim() !== '' && !/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(registerEmail.value.trim())) {
+  if(!/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(registerEmail.value.trim())) {
     showError(registerEmail, 'Email không hợp lệ');
     isValid = false;
   }
 
-  if(registerPassword.value.trim() !== '' && registerPassword.value.trim().length < 6) {
+  if(registerPassword.value.trim().length < 6) {
     showError(registerPassword, 'Mật khẩu phải ít nhất 6 ký tự');
     isValid = false;
   }
 
   if(isValid) {
-    if(users.find(u => u.username === registerUsername.value.trim() || u.email === registerEmail.value.trim())) {
-      alert('Tên đăng nhập hoặc email đã tồn tại');
-      return;
+    const currentUsers = getUsers();
+    
+    const isUsernameTaken = currentUsers.some(u => u.username === registerUsername.value.trim());
+    const isEmailTaken = currentUsers.some(u => u.email === registerEmail.value.trim());
+
+    if (isUsernameTaken) {
+        showError(registerUsername, 'Tên đăng nhập đã tồn tại');
+        return;
+    }
+    if (isEmailTaken) {
+        showError(registerEmail, 'Email này đã được đăng ký');
+        return;
     }
 
+    // Tạo user mới
     const newUser = {
       fullName: registerFullName.value.trim(),
       username: registerUsername.value.trim(),
@@ -124,23 +161,13 @@ registerForm.addEventListener('submit', e => {
       avatar: `${BASE_PATH}/assets/avatar/avt1.jpg`
     };
 
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
+    currentUsers.push(newUser);
+    localStorage.setItem('users', JSON.stringify(currentUsers));
 
-    alert('Đăng ký thành công!');
+    alert('Đăng ký thành công! Vui lòng đăng nhập.');
     registerForm.reset();
-    registerInputs.forEach(i => i.touched = false);
+    
+    // Tự động chuyển sang tab đăng nhập
     document.querySelector('.tab-btn[data-tab="login"]').click();
   }
 });
-
-function showError(input, message) {
-  const group = input.parentElement;
-  group.classList.add('error');
-  group.querySelector('.error-msg').textContent = message;
-}
-
-function resetErrors(form) {
-  form.querySelectorAll('.input-group').forEach(g => g.classList.remove('error'));
-  form.querySelectorAll('.error-msg').forEach(s => s.textContent = '');
-}
