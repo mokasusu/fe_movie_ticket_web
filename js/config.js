@@ -1,12 +1,9 @@
-// Xác định BASE_PATH động cho cả localhost (Live Server) và GitHub Pages
-// Nếu chạy ở localhost: BASE_PATH = ''
-// Nếu chạy ở GitHub Pages: BASE_PATH = '/cop_cinema'
-let BASE_PATH = '';
-if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-	BASE_PATH = '';
-} else {
-	// Lấy phần đầu tiên sau domain, ví dụ: /cop_cinema
-	const pathParts = window.location.pathname.split('/').filter(Boolean);
-	BASE_PATH = pathParts.length > 0 ? `/${pathParts[0]}` : '';
-}
-export { BASE_PATH };
+// js/config.js
+
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const repoName = 'cop_cinema'; // Tên chính xác của repo trên GitHub
+
+// Nếu là localhost thì rỗng, nếu là GitHub thì thêm /cop_cinema
+export const BASE_PATH = isLocal ? '' : `/${repoName}`;
+
+console.log('Current BASE_PATH:', BASE_PATH); 

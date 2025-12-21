@@ -1,6 +1,5 @@
-// Giả sử mảng dữ liệu này nằm trong uudai_data.js
-// Bạn nhớ thêm export default hoặc nhúng file script này trước uudai_list.js
 import { BASE_PATH } from "../config.js";
+
 const UUDAI_DATA = [
     {
         id: '01',
@@ -32,7 +31,7 @@ const UUDAI_DATA = [
         image: BASE_PATH + "/assets/images/uudai/uudai3.jpg",
         description: "CHÀO TẾT, VÉ XEM PHIM ƯU ĐÃI THẢ GA ",
         content: `
-            *Đặt vé xem phim trên Ứng dụng Ngân hàng di động (Mobile banking) VCB Digibank, BIDV SmartBanking, VietinBank iPay Mobile, Agribank E-Mobile Banking, BAOVIET Smart, AB Ditizen, Easy OceanBank Mobile và Ví điện tử VNPAY.<br>
+            *Đặt vé xem phim trên Ứng dụng Ngân hàng di động...<br>
             Nhập mã "PHIMTET" để nhận ưu đãi:<br>
                 - Giảm 10% khi mua 1 vé xem phim <br>
                 - Giảm 20% khi mua 2 vé xem phim <br>
@@ -53,24 +52,34 @@ const UUDAI_DATA = [
             Mỗi nhóm chỉ mua 1 gói khuyến mãi mỗi ngày.
         `
     },
-
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
+// --- HÀM KHỞI TẠO (Thay thế cho DOMContentLoaded) ---
+function initUudaiPage() {
+    console.log("Init Uudai Page..."); // Log kiểm tra
     const container = document.getElementById('uudai-container');
     const modal = document.getElementById('promoModal');
     const closeBtn = document.querySelector('.close-btn');
 
+    if (!container) {
+        console.error("Không tìm thấy phần tử #uudai-container");
+        return;
+    }
+
     // 1. Render danh sách thẻ ưu đãi
+    container.innerHTML = ''; // Xóa nội dung cũ nếu có
     UUDAI_DATA.forEach(item => {
         const card = document.createElement('div');
         card.className = 'promo-card';
-        // Luôn render src là BASE_PATH + '/' + path (loại bỏ dấu / thừa)
-        let imgSrc = item.image.replace(/^\/+/, '');
-        imgSrc = `${BASE_PATH}/${imgSrc}`.replace(/\/+/g, '/');
+        
+        // Xử lý đường dẫn ảnh an toàn (tránh ///)
+        // Cách xử lý: Nếu item.image đã chứa BASE_PATH (do nối chuỗi ở trên), ta dùng luôn
+        // Nếu muốn an toàn tuyệt đối:
+        let displayImage = item.image;
+        
         card.innerHTML = `
             <div class="promo-img">
-                <img src="${imgSrc}" alt="${item.title}">
+                <img src="${displayImage}" alt="${item.title}" onerror="this.src='${BASE_PATH}/assets/images/posters/default.jpg'">
             </div>
             <div class="promo-info">
                 <div class="promo-title">${item.title}</div>
@@ -79,20 +88,24 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         // Sự kiện click mở Modal
-        card.onclick = () => openPromo(item);
+        card.onclick = () => openPromo(item, modal);
         container.appendChild(card);
     });
 
     // 2. Hàm mở Modal chi tiết
-    function openPromo(item) {
+    function openPromo(item, modalEl) {
         document.getElementById('modal-title').textContent = item.title;
         document.getElementById('modal-body').innerHTML = item.content;
-        modal.style.display = 'flex';
+        modalEl.style.display = 'flex';
     }
 
     // 3. Đóng Modal
-    closeBtn.onclick = () => modal.style.display = 'none';
+    if (closeBtn) closeBtn.onclick = () => modal.style.display = 'none';
+    
     window.onclick = (event) => {
         if (event.target == modal) modal.style.display = 'none';
     };
-});
+}
+
+// Gọi hàm chạy ngay lập tức
+initUudaiPage();
