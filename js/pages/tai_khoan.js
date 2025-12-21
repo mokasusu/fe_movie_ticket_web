@@ -1,19 +1,22 @@
 import { BASE_PATH } from "../config.js";
 
 // --- HÀM TIỆN ÍCH XỬ LÝ ẢNH (Quan trọng) ---
+// Thay thế hàm cũ bằng hàm này
 function resolveImagePath(path, defaultImg = '/assets/avatar/avt1.jpg') {
+    // 1. Nếu không có path, trả về ảnh mặc định (có kèm Base Path)
     if (!path) return BASE_PATH + defaultImg;
-    if (path.startsWith('data:')) return path; // Base64
-    if (path.startsWith('http')) return path;  // Link online
+
+    // 2. Nếu là ảnh base64 hoặc link online -> giữ nguyên
+    if (path.startsWith('data:') || path.startsWith('http')) return path;
     
-    // Xử lý đường dẫn tương đối để tránh lặp BASE_PATH
-    let cleanPath = path.replace(/^\.\//, '').replace(/^\//, '');
-    const baseName = BASE_PATH.replace(/^\//, ''); 
-    
-    // Nếu path đã chứa folder gốc thì thêm / ở đầu
-    if (baseName && cleanPath.startsWith(baseName)) {
-        return '/' + cleanPath;
+    // 3. Nếu là ảnh nội bộ nhưng đã có BASE_PATH -> giữ nguyên
+    if (BASE_PATH && path.includes(BASE_PATH)) {
+        return path;
     }
+
+    let cleanPath = path.replace(/^\.\//, '').replace(/^\//, '');
+    
+    // 5. Cộng BASE_PATH vào
     return `${BASE_PATH}/${cleanPath}`;
 }
 
