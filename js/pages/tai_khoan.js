@@ -217,6 +217,7 @@ function initPage() {
 }
 
 // --- HÀM RENDER HÀNH TRÌNH ---
+// --- HÀM RENDER HÀNH TRÌNH ---
 function renderJourney(invoices) {
     const track = document.getElementById("journeyTrack");
     if (!track) return;
@@ -227,8 +228,7 @@ function renderJourney(invoices) {
         return;
     }
 
-    // Đảo ngược lại để hiển thị theo dòng thời gian (hoặc giữ nguyên tùy ý)
-    // invoices đang là mới nhất -> cũ nhất. Nếu muốn hành trình từ trái qua phải là cũ -> mới thì reverse.
+    // Đảo ngược để xếp theo thứ tự thời gian (Cũ -> Mới) để hiển thị hành trình
     const journeyList = [...invoices].reverse(); 
 
     journeyList.forEach(inv => {
@@ -238,10 +238,22 @@ function renderJourney(invoices) {
         // Poster xử lý bằng hàm chuẩn
         const posterSrc = resolveImagePath(inv.anhPhim, '/assets/images/posters/default.jpg');
         
-        let dateStr = '';
-        if(inv.bookingDate) {
-             dateStr = new Date(inv.bookingDate).toLocaleDateString('vi-VN');
+        // --- SỬA LỖI NGÀY THÁNG TẠI ĐÂY ---
+        let dateStr = 'N/A';
+        // Kiểm tra ưu tiên: bookingDate -> createdAt -> date -> Fallback về ngày chiếu
+        const rawDate = inv.bookingDate || inv.createdAt || inv.date;
+
+        if (rawDate) {
+             const d = new Date(rawDate);
+             // Kiểm tra nếu date hợp lệ
+             if (!isNaN(d.getTime())) {
+                dateStr = d.toLocaleDateString('vi-VN'); // dd/mm/yyyy
+             }
+        } else if (inv.ngayChieu) {
+            // Nếu không có ngày đặt vé thì lấy tạm ngày chiếu
+            dateStr = inv.ngayChieu;
         }
+        // -----------------------------------
 
         item.innerHTML = `
             <div class="journey-top-content">
@@ -251,7 +263,7 @@ function renderJourney(invoices) {
                 <div class="journey-title mt-2 fw-bold text-white" style="font-size:0.9rem">${inv.tenPhim}</div>
             </div>
             <div class="journey-dot"></div>
-            <div class="journey-date text-muted small">${dateStr}</div>
+            <div class="journey-date text-white-50 small" style="margin-top: 5px;">${dateStr}</div>
         `;
         track.appendChild(item);
     });

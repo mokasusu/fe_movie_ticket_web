@@ -407,7 +407,7 @@
 .journey-poster {
     width: 120px;
     height: 180px;
-    margin: 0 auto 10px;
+    margin: 0 auto 4px;
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid var(--border-divider);
