@@ -43,7 +43,7 @@ $(document).ready(() => {
         // Không hiển thị phần đồ ăn ở thông tin phim
     } else {
         showNotification("Không tìm thấy thông tin đặt vé, vui lòng chọn lại!");
-        setTimeout(() => { window.location.href = '/pages/lich_chieu.html'; }, 2000);
+        setTimeout(() => { window.location.href = '/cop_cinema/pages/lich_chieu.html'; }, 2000);
     }
 
     generateSeatMap();
@@ -104,7 +104,7 @@ function renderSummary() {
             return acc;
         }, {});
         const typeNames = { standard: 'Ghế đơn', vip: 'Ghế VIP', couple: 'Ghế Couple' };
-        Object.keys(groups).forEach(type => { 
+        Object.keys(groups).forEach(type => {
             const group = groups[type];
             seatHtml += `
             <div class="ticket-item">
@@ -296,5 +296,5 @@ function completeBooking() {
     }
 
     localStorage.removeItem('currentBooking');
-        window.location.href = '/pages/bill.html?justPaid=1';
+        window.location.href = '/cop_cinema/pages/bill.html?justPaid=1';
 }

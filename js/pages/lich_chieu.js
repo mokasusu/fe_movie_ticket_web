@@ -42,7 +42,7 @@ function bindSuatClick() {
         const currentUser = localStorage.getItem("currentUser");
         if (!currentUser) {
           alert("Vui lòng đăng nhập để đặt vé!");
-          window.location.href = "login.html";
+          window.location.href = "/cop_cinema/pages/login.html";
           return;
         }
 
@@ -72,7 +72,7 @@ function bindSuatClick() {
         localStorage.setItem("currentBooking", JSON.stringify(data));
 
         // 4. Chuyển hướng sang màn hình chọn ghế
-            window.location.href = "booking.html";
+            window.location.href = "/cop_cinema/pages/booking.html";
       });
     });
 }

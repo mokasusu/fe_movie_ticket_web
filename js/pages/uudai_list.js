@@ -4,7 +4,7 @@ const UUDAI_DATA = [
     {
         id: '01',
         title: "VOUCHER 30.000Đ",
-        image: "/assets/images/uudai/uudai1.jpg",
+        image: "/cop_cinema/assets/images/uudai/uudai1.jpg",
         description: "TẶNG VOUCHER 30.000Đ KHI ĐẶT VÉ XEM PHIM QUA VÍ MOMO",
         content: `
             🎭Voucher xem phim trị giá <strong>30.000đ</strong> khi đặt vé xem phim của COP Cinema trên Ví điện tử MOMO.<br>
@@ -15,7 +15,7 @@ const UUDAI_DATA = [
     {
         id: '02',
         title: "GIÁ VÉ 55.000Đ/VÉ 2D",
-        image: "/assets/images/uudai/uudai2.jpg",
+        image: "/cop_cinema/assets/images/uudai/uudai2.jpg",
         description: "ƯU ĐÃI GIÁ VÉ 55.000Đ/VÉ 2D CHO THÀNH VIÊN U22",
         content: `
             Học sinh, sinh viên, hoặc khán giả từ 22 tuổi trở xuống đều đăng ký được.<br>
@@ -28,7 +28,7 @@ const UUDAI_DATA = [
     {
         id: '03',
         title: "CHÀO TẾT, VÉ XEM PHIM ƯU ĐÃI THẢ GA",
-        image: "/assets/images/uudai/uudai3.jpg",
+        image: "/cop_cinema/assets/images/uudai/uudai3.jpg",
         description: "CHÀO TẾT, VÉ XEM PHIM ƯU ĐÃI THẢ GA ",
         content: `
             *Đặt vé xem phim trên Ứng dụng Ngân hàng di động (Mobile banking) VCB Digibank, BIDV SmartBanking, VietinBank iPay Mobile, Agribank E-Mobile Banking, BAOVIET Smart, AB Ditizen, Easy OceanBank Mobile và Ví điện tử VNPAY.<br>
@@ -43,7 +43,7 @@ const UUDAI_DATA = [
     {
         id: '04',
         title: "NGÀY HỘI GIA ĐÌNH",
-        image: "/assets/images/uudai/uudai4.jpg",
+        image: "/cop_cinema/assets/images/uudai/uudai4.jpg",
         description: "Gói vé gia đình 4 người chỉ 150.000đ, áp dụng cuối tuần.",
         content: `
             Gói vé 4 người chỉ 150.000đ.

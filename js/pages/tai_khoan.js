@@ -118,13 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   const user = JSON.parse(localStorage.getItem('currentUser'));
   if (!user) {
-    location.href = 'login.html';
+    location.href = '/cop_cinema/pages/login.html';
     return;
   }
 
   // --- Hiển thị thông tin user ---
   const avatarEl = document.getElementById('profile-avatar');
-  avatarEl.src = user.avatar || '../assets/avatar/avt1.jpg';
+  avatarEl.src = user.avatar || '/cop_cinema/assets/avatar/avt1.jpg';
   document.getElementById('userName').textContent = user.fullName || user.username || '';
   document.getElementById('profileFullName').value = user.fullName || '';
   document.getElementById('profileUsername').value = user.username || '';
@@ -243,8 +243,8 @@ function renderJourney() {
     let poster = inv.anhPhim || 'default.jpg';
     // Nếu poster không phải là đường dẫn tuyệt đối thì thêm prefix
     if (!/^https?:\/\//.test(poster) && !poster.startsWith('/')) {
-      if (!poster.startsWith('assets/')) poster = '../assets/images/posters/' + poster.replace(/^\.\//, '');
-      else poster = '../' + poster.replace(/^\.\//, '');
+      if (!poster.startsWith('assets/')) poster = '/cop_cinema/assets/images/posters/' + poster.replace(/^\.\//, '');
+      else poster = '/cop_cinema/' + poster.replace(/^\.\//, '');
     }
     // Định dạng lại ngày đặt vé
     let bookingDateStr = '';

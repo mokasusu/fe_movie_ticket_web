@@ -9,15 +9,15 @@ export function createLichChieuCard(phim, suatChieuList) {
     <!-- ROW 1: POSTER + INFO -->
     <div class="lcc-row lcc-row-top">
       <div class="lcc-poster">
-        <img src="../${phim.anhPhim}" alt="${phim.tenPhim}">
+        <img src="/cop_cinema/${phim.anhPhim.replace(/^.*assets\//, 'assets/') }" alt="${phim.tenPhim}">
         <span class="lcc-age">${phim.doTuoi || "C13"}</span>
       </div>
-
-      <div class="lcc-info">
-        <h3 class="lcc-title">${phim.tenPhim}</h3>
-
-        <p class="lcc-meta">
-          ${phim.theLoai.join(" · ")} · ${phim.thoiLuong} phút
+        <a
+          class="lcc-detail"
+          href="/cop_cinema/pages/chi_tiet_phim.html?maphim=${phim.maPhim}"
+        >
+          Xem chi tiết →
+        </a>
         </p>
 
         ${phim.noiDung ? `<p class="lcc-desc">${phim.noiDung}</p>` : ""}

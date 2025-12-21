@@ -88,7 +88,7 @@ function bindBookingEvents(movie) {
       const currentUser = localStorage.getItem('currentUser');
       if (!currentUser) {
         alert('Vui lòng đăng nhập để đặt vé!');
-        window.location.href = '/pages/login.html';
+        window.location.href = '/cop_cinema/pages/login.html';
         return;
       }
       // Đóng gói dữ liệu chuẩn để trang Booking (booking.js) có thể đọc được
@@ -108,7 +108,7 @@ function bindBookingEvents(movie) {
       localStorage.setItem('currentBooking', JSON.stringify(bookingData));
 
       // Chuyển hướng sang màn hình chọn ghế
-      window.location.href = '/pages/booking.html';
+      window.location.href = '/cop_cinema/pages/booking.html';
     });
   });
 }

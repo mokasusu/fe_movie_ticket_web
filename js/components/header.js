@@ -37,7 +37,7 @@ function initHeaderUserMenu() {
       infoMenu.addEventListener('click', function(e) {
         e.preventDefault();
         closeDropdown();
-          window.location.href = `${taiKhoanPath}?tab=info`;
+          window.location.href = '/cop_cinema/pages/tai_khoan.html?tab=info';
       });
     }
     // Xử lý chuyển tab hóa đơn
@@ -46,7 +46,7 @@ function initHeaderUserMenu() {
       invoicesMenu.addEventListener('click', function(e) {
         e.preventDefault();
         closeDropdown();
-          window.location.href = `${taiKhoanPath}?tab=invoices`;
+          window.location.href = '/cop_cinema/pages/tai_khoan.html?tab=invoices';
       });
     }
     // Xử lý chuyển tab hành trình điện ảnh
@@ -55,7 +55,7 @@ function initHeaderUserMenu() {
       journeyMenu.addEventListener('click', function(e) {
         e.preventDefault();
         closeDropdown();
-          window.location.href = `${taiKhoanPath}?tab=journey`;
+          window.location.href = '/cop_cinema/pages/tai_khoan.html?tab=journey';
       });
     }
 
@@ -68,8 +68,7 @@ function initHeaderUserMenu() {
 
       localStorage.removeItem('selectedShowtime');
       // Quay về trang chủ (index.html) ở root
-        const homePath = isInPages ? '../index.html' : 'index.html';
-        window.location.href = homePath;
+        window.location.href = '/cop_cinema/index.html';
     });
 
     // Hover dropdown
@@ -91,8 +90,8 @@ function initHeaderUserMenu() {
 
     const loginBtn = document.getElementById('loginBtn');
     loginBtn.addEventListener('click', () => {
-        const loginPath = isInPages ? 'login.html' : 'pages/login.html';
-        window.location.href = loginPath;
+      // Luôn chuyển hướng tới trang login.html theo đường dẫn tuyệt đối từ root repo
+      window.location.href = '/cop_cinema/pages/login.html';
     });
   }
 }

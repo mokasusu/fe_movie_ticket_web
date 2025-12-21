@@ -12,13 +12,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="../css/reset.css">
-  <link rel="stylesheet" href="../css/theme.css">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/components/trailer.css">
-  <link rel="stylesheet" href="../css/components/header.css">
-  <link rel="stylesheet" href="../css/components/footer.css">
-  <link rel="stylesheet" href="../css/pages/chi_tiet_phim.css">
+  <link rel="stylesheet" href="/cop_cinema/css/reset.css">
+  <link rel="stylesheet" href="/cop_cinema/css/theme.css">
+  <link rel="stylesheet" href="/cop_cinema/css/style.css">
+  <link rel="stylesheet" href="/cop_cinema/css/components/trailer.css">
+  <link rel="stylesheet" href="/cop_cinema/css/components/header.css">
+  <link rel="stylesheet" href="/cop_cinema/css/components/footer.css">
+  <link rel="stylesheet" href="/cop_cinema/css/pages/chi_tiet_phim.css">
 </head>
 
 <body>
@@ -33,7 +33,7 @@
 <div class="breadcrumb-wrapper">
   <div class="container">
     <nav class="movie-breadcrumb" aria-label="breadcrumb">
-      <a href="../index.html" class="breadcrumb-link">
+      <a href="/cop_cinema/index.html" class="breadcrumb-link">
         <i class="fas fa-home"></i> Trang chủ
       </a>
       <span class="breadcrumb-separator">›</span>
@@ -97,23 +97,23 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- JS -->
-<script src="../js/components/trailer.js"></script>
-<script src="../js/components/header.js"></script>
-<script type="module" src="../js/pages/chi_tiet_phim.js"></script>
+<script src="/cop_cinema/js/components/trailer.js"></script>
+<script src="/cop_cinema/js/components/header.js"></script>
+<script type="module" src="/cop_cinema/js/pages/chi_tiet_phim.js"></script>
 
 <!-- Load-->
 <script>
-  fetch('../pages/components/header.html')
+  fetch('/cop_cinema/pages/components/header.html')
     .then(r => r.text())
     .then(html => {
       document.getElementById('header-container').innerHTML = html;
       if (window.initHeaderUserMenu) window.initHeaderUserMenu();
     });
 
-  fetch('../pages/components/footer.html')
+  fetch('/cop_cinema/pages/components/footer.html')
     .then(r => r.text())
     .then(html => document.getElementById('footer-container').innerHTML = html);
-  fetch('../pages/components/trailer.html')
+  fetch('/cop_cinema/pages/components/trailer.html')
     .then(r => r.text())
     .then(html => {
       document.getElementById('trailer-container').innerHTML = html;

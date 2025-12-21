@@ -3,11 +3,11 @@ const NEWS_DATA = [
         id: 'news01',
         title: 'ZOOTOPIA 2 chính thức trở lại sau 9 năm chờ đợi!',
         date: '25/11/2025',
-        thumbnail: '/assets/images/news/zootopia_1.png', // Ảnh đại diện danh sách
+        thumbnail: '/cop_cinema/assets/images/news/zootopia_1.png', // Ảnh đại diện danh sách
         intro: 'Sau gần một thập kỷ kể từ thành công vang dội của phần đầu, Zootopia 2 đã được Disney xác nhận ra rạp.',
         images: [
             {
-                src: '/assets/images/news/zootopia_1.png',
+                src: '/cop_cinema/assets/images/news/zootopia_1.png',
                 caption: 'Bộ phim Zootopia 2'
             }
         ],
@@ -25,19 +25,19 @@ const NEWS_DATA = [
         id: 'news02',
         title: 'CINETOUR “TAY ANH GIỮ MỘT VÌ SAO” tại COP Cinema ngày 10/10/2025',
         date: '10/10/2025',
-        thumbnail: '/assets/images/news/tayanhgiu_1.jpg', // Ảnh đại diện danh sách
+        thumbnail: '/cop_cinema/assets/images/news/tayanhgiu_1.jpg', // Ảnh đại diện danh sách
         intro: '🎬💫 CINETOUR “TAY ANH GIỮ MỘT VÌ SAO” đổ bộ COP Cinema!',
         images: [
             {
-                src: '/assets/images/news/tayanhgiu_1.jpg',
+                src: '/cop_cinema/assets/images/news/tayanhgiu_1.jpg',
                 caption: 'Lee Kwang Soo – hoàng tử châu Á giao lưu cùng toàn rạp'
             },
             {
-                src: '/assets/images/news/tayanhgiu_2.jpg',
+                src: '/cop_cinema/assets/images/news/tayanhgiu_2.jpg',
                 caption: 'Lee Kwang Soo - Hoàng Hà chụp ảnh giao lưu cùng fan Việt'
             },
             {
-                src: '/assets/images/news/tayanhgiu_3.jpg',
+                src: '/cop_cinema/assets/images/news/tayanhgiu_3.jpg',
                 caption: 'Sự cuồng nhiệt của phòng chiếu COP Cinema dành cho Lee Kwang Soo'
             },
         ],
@@ -56,19 +56,19 @@ const NEWS_DATA = [
         id: 'news03',
         title: '🎓🎬 HOẠT ĐỘNG GIÁO DỤC - TRẢI NGHIỆM CỦA HỌC SINH KHỐI 10 TRƯỜNG THPT LÂM NGHIỆP CÙNG BỘ PHIM “MƯA ĐỎ” TẠI COP CINEMA',
         date: '29/09/2025',
-        thumbnail: '/assets/images/news/hoatdonggiaoduc_1.jpg', // Ảnh đại diện danh sách
+        thumbnail: '/cop_cinema/assets/images/news/hoatdonggiaoduc_1.jpg', // Ảnh đại diện danh sách
         intro: 'Ngày 27/9/2025, gần 700 học sinh khối 10, cùng Ban Giám hiệu, thầy cô giáo, cán bộ nhân viên và đại diện phụ huynh Trường THPT Lâm Nghiệp đã tham gia một hoạt động giáo dục – trải nghiệm đầy ý nghĩa tại COP Cinema.',
         images: [
             {
-                src: '/assets/images/news/hoatdonggiaoduc_1.jpg',
+                src: '/cop_cinema/assets/images/news/hoatdonggiaoduc_1.jpg',
                 caption: 'Toàn thể thầy cô, phụ huynh và học sinh cùng nhau cất vang Quốc ca dưới Lá cờ Tổ quốc'
             },
             {
-                src: '/assets/images/news/hoatdonggiaoduc_2.jpg',
+                src: '/cop_cinema/assets/images/news/hoatdonggiaoduc_2.jpg',
                 caption: 'Các em học sinh Trường THPT Lâm Nghiệp'
             },
             {
-                src: '/assets/images/news/hoatdonggiaoduc_3.jpg',
+                src: '/cop_cinema/assets/images/news/hoatdonggiaoduc_3.jpg',
                 caption: 'Các em học sinh tham quan triển lãm về lịch sử điện ảnh Việt Nam tại COP Cinema'
             },
         ],
@@ -87,23 +87,23 @@ const NEWS_DATA = [
         id: 'news04',
         title: '🎬✨ Buổi ra mắt và họp báo bộ phim “Tử Chiến Trên Không” tại COP Cinema',
         date: '24/09/2025',
-        thumbnail: '/assets/images/news/tuchientrenkhong_4.jpg', // Ảnh đại diện danh sách
+        thumbnail: '/cop_cinema/assets/images/news/tuchientrenkhong_4.jpg', // Ảnh đại diện danh sách
         intro: 'Buổi ra mắt và họp báo bộ phim “Tử Chiến Trên Không” đã chính thức diễn ra tại COP Cinema trong bầu không khí trang trọng, sôi nổi và đầy cảm xúc. Sự kiện thu hút sự quan tâm của đông đảo khán giả, giới truyền thông và những người yêu điện ảnh.',
         images: [
             {
-                src: '/assets/images/news/tuchientrenkhong_1.jpg',
+                src: '/cop_cinema/assets/images/news/tuchientrenkhong_1.jpg',
                 caption: ''
             },
             {
-                src: '/assets/images/news/tuchientrenkhong_2.jpg',
+                src: '/cop_cinema/assets/images/news/tuchientrenkhong_2.jpg',
                 caption: ''
             },
             {
-                src: '/assets/images/news/tuchientrenkhong_3.jpg',
+                src: '/cop_cinema/assets/images/news/tuchientrenkhong_3.jpg',
                 caption: ''
             },
             {
-                src: '/assets/images/news/tuchientrenkhong_5.jpg',
+                src: '/cop_cinema/assets/images/news/tuchientrenkhong_5.jpg',
                 caption: ''
             }
         ],
@@ -121,19 +121,19 @@ const NEWS_DATA = [
         id: 'news05',
         title: '“MƯA ĐỎ” CÙNG CÁC BÁC CỰU CHIẾN BINH CHIẾN TRƯỜNG QUẢNG TRỊ TẠI COP CINEMA',
         date: '18/09/2025',
-        thumbnail: '/assets/images/news/muado_1.jpg', // Ảnh đại diện danh sách
+        thumbnail: '/cop_cinema/assets/images/news/muado_1.jpg', // Ảnh đại diện danh sách
         intro: 'Ngày hôm nay, tại COP Cinema, chúng tôi vô cùng vinh dự được đón tiếp hơn một trăm Bác Cựu chiến binh - những người đã từng trực tiếp chiến đấu trên chiến trường Quảng Trị khốc liệt năm xưa - cùng nhau tham dự buổi chiếu đặc biệt bộ phim “Mưa Đỏ”.',
         images: [
             {
-                src: '/assets/images/news/muado_1.jpg',
+                src: '/cop_cinema/assets/images/news/muado_1.jpg',
                 caption: ''
             },
             {
-                src: '/assets/images/news/muado_2.jpg',
+                src: '/cop_cinema/assets/images/news/muado_2.jpg',
                 caption: ''
             },
             {
-                src: '/assets/images/news/muado_3.jpg',
+                src: '/cop_cinema/assets/images/news/muado_3.jpg',
                 caption: ''
             }
         ],
@@ -152,23 +152,23 @@ const NEWS_DATA = [
         id: 'news06',
         title: 'Lan tỏa lý tưởng cách mạng cho tuổi trẻ qua phim "Mưa đỏ"',
         date: '18/09/2025',
-        thumbnail: '/assets/images/news/lantoa_1.jpg', // Ảnh đại diện danh sách
+        thumbnail: '/cop_cinema/assets/images/news/lantoa_1.jpg', // Ảnh đại diện danh sách
         intro: 'Đoàn Thanh niên Bộ Văn hóa, Thể thao và Du lịch phối hợp với các đơn vị Đoàn Thanh niên Chính phủ đã tổ chức Chương trình “Sinh hoạt chính trị, giáo dục lý tưởng cách mạng cho đoàn viên, thanh niên” thông qua phim truyện điện ảnh “Mưa Đỏ”.',
         images: [
             {
-                src: '/assets/images/news/lantoa_1.jpg',
+                src: '/cop_cinema/assets/images/news/lantoa_1.jpg',
                 caption: ''
             },
             {
-                src: '/assets/images/news/lantoa_2.jpg',
+                src: '/cop_cinema/assets/images/news/lantoa_2.jpg',
                 caption: ''
             },
             {
-                src: '/assets/images/news/lantoa_4.jpg',
+                src: '/cop_cinema/assets/images/news/lantoa_4.jpg',
                 caption: ''
             },
             {
-                src: '/assets/images/news/lantoa_3.jpg',
+                src: '/cop_cinema/assets/images/news/lantoa_3.jpg',
                 caption: ''
             }
         ],
@@ -187,11 +187,11 @@ const NEWS_DATA = [
         id: 'news07',
         title: '🎬📣 TUYỂN DỤNG CỘNG TÁC VIÊN THÁNG 9 TẠI COP CINEMA',
         date: '10/09/2025',
-        thumbnail: '/assets/images/news/tuyendung_1.jpg', // Ảnh đại diện danh sách
+        thumbnail: '/cop_cinema/assets/images/news/tuyendung_1.jpg', // Ảnh đại diện danh sách
         intro: 'Nhằm bổ sung nhân sự phục vụ hoạt động chiếu phim và nâng cao chất lượng phục vụ khán giả, COP Cinema thông báo tuyển dụng Cộng tác viên tháng 9 dành cho các bạn trẻ yêu thích điện ảnh và mong muốn làm việc trong môi trường năng động, chuyên nghiệp.',
         images: [
             {
-                src: '/assets/images/news/tuyendung_1.jpg',
+                src: '/cop_cinema/assets/images/news/tuyendung_1.jpg',
                 caption: ''
             }
         ],

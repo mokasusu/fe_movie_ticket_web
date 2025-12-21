@@ -8,7 +8,7 @@ const cinemaData = {
         phone: '024.247.6886',
         email: 'chuaboc@popcinema.vn',
         openHours: '8:00 - 24:00 hàng ngày',
-        image: '../assets/icons/rap_1.png',
+        image: '/cop_cinema/assets/icons/rap_1.png',
         mapLink: 'https://www.google.com/search?q=King+Building%2C+7+P.+Ch%C3%B9a+B%E1%BB%99c%2C+Kim+Li%C3%AAn%2C+H%C3%A0+N%E1%BB%99i'
     }
 };
