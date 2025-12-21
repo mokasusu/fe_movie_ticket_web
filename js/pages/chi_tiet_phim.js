@@ -14,7 +14,14 @@ function renderMovieDetail(movie) {
   }
 
   // Cập nhật thông tin cơ bản
-  document.getElementById('movie-poster').src = movie.anhPhim.startsWith('/cop_cinema/') ? movie.anhPhim : '/cop_cinema/' + movie.anhPhim.replace(/^\/?/, '');
+  // Đảm bảo không lặp /cop_cinema/ trong src ảnh
+  let posterSrc = movie.anhPhim;
+  if (!posterSrc.startsWith('/cop_cinema/')) {
+    posterSrc = '/cop_cinema/' + posterSrc.replace(/^\/?/, '');
+  }
+  // Loại bỏ lặp /cop_cinema/ nếu có
+  posterSrc = posterSrc.replace(/(\/cop_cinema\/)+/, '/cop_cinema/');
+  document.getElementById('movie-poster').src = posterSrc;
   document.getElementById('breadcrumb-movie-name').textContent = movie.tenPhim;
   document.getElementById('movie-title').textContent = movie.tenPhim;
   document.getElementById('movie-description').textContent = movie.noiDung;
