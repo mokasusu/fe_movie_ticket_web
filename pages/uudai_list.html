@@ -7,21 +7,31 @@
     <title>Ưu Đãi - COP Cinema</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script type="module">
-            import { BASE_PATH } from '../js/config.js';
-            window.BASE_PATH = BASE_PATH;
-            const setCss = (href) => {
-                const l = document.createElement('link');
-                l.rel = 'stylesheet';
-                l.href = BASE_PATH + href;
-                document.head.appendChild(l);
-            };
-            setCss('/css/reset.css');
-            setCss('/css/theme.css');
-            setCss('/css/style.css');
-            setCss('/css/components/header.css');
-            setCss('/css/components/footer.css');
-        </script>
+    
+    <script type="module">
+        // Lùi 1 cấp (..) để từ pages ra root tìm js
+        import { BASE_PATH } from '../js/config.js'; 
+        
+        // Gán vào window để debug nếu cần
+        window.BASE_PATH = BASE_PATH;
+
+        const setCss = (href) => {
+            const l = document.createElement('link');
+            l.rel = 'stylesheet';
+            // Luôn cộng BASE_PATH vào trước đường dẫn
+            l.href = BASE_PATH + href; 
+            document.head.appendChild(l);
+        };
+
+        // Load các file CSS
+        setCss('/css/reset.css');
+        setCss('/css/theme.css');
+        setCss('/css/style.css');
+        setCss('/css/components/header.css');
+        setCss('/css/components/footer.css');
+        // Thêm CSS riêng cho trang này nếu có (ví dụ uudai_list.css chưa có trong cấu trúc cây bạn gửi, nhưng nếu có thì thêm ở đây)
+    </script>
+
     <style>
         :root {
             --primary: #E50914;
@@ -30,110 +40,27 @@
             --text: #ffffff;
             --text-dim: #94a3b8;
         }
-
-        .uudai-page * {
-            box-sizing: border-box;
-        }
-
-        .uudai-page .uudai-container {
-            min-height: 90vh;
-            max-width: 1200px;
-            margin: 50px auto 0 auto;
-            padding: 0 20px;
-        }
-
-        .uudai-page .uudai-header-section {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .uudai-page .uudai-header-section h1 {
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            color: var(--accent-gold);
-            font-weight: bold;
-        }
-
-        /* Lưới ưu đãi */
-        .uudai-page .uudai-promotion-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-        }
-
-        .uudai-page .promo-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.3s;
-            cursor: pointer;
-        }
-
-        .uudai-page .promo-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-        }
-
-        .uudai-page .promo-img img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .uudai-page .promo-info {
-            padding: 25px;
-        }
-
-        .uudai-page .promo-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-
-        .uudai-page .promo-desc {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        /* Modal hiển thị chi tiết */
-        .uudai-page .uudai-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            align-items: center;
-            justify-content: center;
-        }
-
-        .uudai-page .uudai-modal-content {
-            background: var(--card-bg);
-            width: 90%;
-            max-width: 600px;
-            border-radius: 20px;
-            padding: 40px;
-            position: relative;
-        }
-
-        .uudai-page .uudai-close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--text-dim);
-        }
+        /* ... (Giữ nguyên phần CSS của bạn) ... */
+        .uudai-page * { box-sizing: border-box; }
+        .uudai-page .uudai-container { min-height: 90vh; max-width: 1200px; margin: 50px auto 0 auto; padding: 0 20px; }
+        .uudai-page .uudai-header-section { text-align: center; margin-bottom: 50px; }
+        .uudai-page .uudai-header-section h1 { font-size: 2.5rem; text-transform: uppercase; color: var(--accent-gold); font-weight: bold; }
+        .uudai-page .uudai-promotion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
+        .uudai-page .promo-card { background: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; cursor: pointer; }
+        .uudai-page .promo-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        .uudai-page .promo-img img { width: 100%; height: 200px; object-fit: cover; }
+        .uudai-page .promo-info { padding: 25px; }
+        .uudai-page .promo-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 10px; color: var(--primary); }
+        .uudai-page .promo-desc { color: var(--text-dim); font-size: 0.9rem; line-height: 1.5; }
+        .uudai-page .uudai-modal { display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); align-items: center; justify-content: center; }
+        .uudai-page .uudai-modal-content { background: var(--card-bg); width: 90%; max-width: 600px; border-radius: 20px; padding: 40px; position: relative; }
+        .uudai-page .uudai-close-btn { position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer; color: var(--text-dim); }
     </style>
 </head>
 
 <body>
     <div id="header-container"></div>
+    
     <div class="uudai-page">
         <div class="uudai-container container">
             <div class="uudai-header-section header-section">
@@ -142,6 +69,7 @@
             </div>
             <div class="uudai-promotion-grid promotion-grid" id="uudai-container"></div>
         </div>
+        
         <div id="promoModal" class="uudai-modal modal">
             <div class="uudai-modal-content modal-content">
                 <span class="uudai-close-btn close-btn">&times;</span>
@@ -150,37 +78,50 @@
             </div>
         </div>
     </div>
+
     <div id="footer-container"></div>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script type="module">
-            import { BASE_PATH } from '../../js/config.js';
-            async function loadComponents() {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script type="module">
+        // SỬA QUAN TRỌNG: Dùng '../js/config.js' thay vì '../../js/config.js'
+        import { BASE_PATH } from '../js/config.js';
+        
+        async function loadComponents() {
+            try {
+                // Header HTML
+                const headerRes = await fetch(BASE_PATH + '/pages/components/header.html');
+                if (!headerRes.ok) throw new Error('Header not found');
+                document.getElementById('header-container').innerHTML = await headerRes.text();
+                
+                // Header JS
                 try {
-                    // Header
-                    const headerRes = await fetch(BASE_PATH + '/pages/components/header.html');
-                    document.getElementById('header-container').innerHTML = await headerRes.text();
-                    try {
-                        const headerModule = await import(BASE_PATH + '/js/components/header.js');
-                        if (headerModule && typeof headerModule.initHeader === 'function') headerModule.initHeader();
-                    } catch(e) { console.warn('header.js import failed', e); }
+                    const headerModule = await import(BASE_PATH + '/js/components/header.js');
+                    if (headerModule && typeof headerModule.initHeader === 'function') headerModule.initHeader();
+                } catch(e) { console.log('Header JS not found (optional)'); }
 
-                    // Footer
-                    const footerRes = await fetch(BASE_PATH + '/pages/components/footer.html');
-                    document.getElementById('footer-container').innerHTML = await footerRes.text();
-                    try {
-                        const footerModule = await import(BASE_PATH + '/js/components/footer.js');
-                        if (footerModule && typeof footerModule.initFooter === 'function') footerModule.initFooter();
-                    } catch(e) { console.warn('footer.js import failed', e); }
+                // Footer HTML
+                const footerRes = await fetch(BASE_PATH + '/pages/components/footer.html');
+                if (!footerRes.ok) throw new Error('Footer not found');
+                document.getElementById('footer-container').innerHTML = await footerRes.text();
+                
+                // Footer JS
+                try {
+                    const footerModule = await import(BASE_PATH + '/js/components/footer.js');
+                    if (footerModule && typeof footerModule.initFooter === 'function') footerModule.initFooter();
+                } catch(e) { console.log('Footer JS not found (optional)'); }
 
-                } catch (err) {
-                    console.error('Load layout error:', err);
-                }
+            } catch (err) {
+                console.error('Lỗi tải giao diện:', err);
             }
-            loadComponents();
-            // Load page logic
-            import(BASE_PATH + '/js/pages/uudai_list.js');
-        </script>
+        }
+        
+        // Chạy hàm load layout
+        loadComponents();
+        
+        // Load Logic chính của trang ưu đãi
+        import(BASE_PATH + '/js/pages/uudai_list.js')
+            .catch(err => console.error("Không tìm thấy file JS ưu đãi:", err));
+    </script>
 </body>
-
 </html>
