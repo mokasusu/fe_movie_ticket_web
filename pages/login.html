@@ -5,16 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Đăng nhập / Đăng ký - Movie Ticket</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="/cop_cinema/css/reset.css">
-<link rel="stylesheet" href="/cop_cinema/css/theme.css">
-<link rel="stylesheet" href="/cop_cinema/css/style.css">
-<link rel="stylesheet" href="/cop_cinema/css/pages/login.css">
+<script type="module">
+  import { BASE_PATH } from '../../js/config.js';
+  window.BASE_PATH = BASE_PATH;
+  const setCss = (href) => {
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = BASE_PATH + href;
+    document.head.appendChild(l);
+  };
+  setCss('/css/reset.css');
+  setCss('/css/theme.css');
+  setCss('/css/style.css');
+  setCss('/css/pages/login.css');
+  // Set logo src after DOM loaded
+  window.addEventListener('DOMContentLoaded', () => {
+    const logo = document.querySelector('.login-logo');
+    if (logo) logo.src = BASE_PATH + '/assets/icons/logo.png';
+  });
+</script>
 </head>
 <body class="login-page-body">
 
 <div class="login-container">
   <div class="login-form-card">
-    <img src="/cop_cinema/assets/icons/logo.png" alt="Logo Movie Ticket" class="login-logo">
+    <img alt="Logo Movie Ticket" class="login-logo">
 
     <div class="form-tabs">
       <button class="tab-btn active" data-tab="login">Đăng nhập</button>
@@ -59,6 +74,9 @@
   </div>
 </div>
 
-<script src="/cop_cinema/js/pages/login.js"></script>
+<script type="module">
+  import { BASE_PATH } from '../../js/config.js';
+  import(BASE_PATH + '/js/pages/login.js');
+</script>
 </body>
 </html>

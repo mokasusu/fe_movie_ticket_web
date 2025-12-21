@@ -9,40 +9,50 @@ const PRICE_DATA = [
 // 2. Phụ thu cho phim 3D
 const SURCHARGE_3D = 30000;
 
-document.addEventListener('DOMContentLoaded', () => {
+
+function renderPrices() {
     const tbody2d = document.getElementById('tbody-2d');
     const tbody3d = document.getElementById('tbody-3d');
+    if (!tbody2d || !tbody3d) return;
+    let html2d = '';
+    let html3d = '';
 
-    // Hàm render bảng
-    function renderPrices() {
-        let html2d = '';
-        let html3d = '';
+    PRICE_DATA.forEach(item => {
+        // Render cho bảng 2D
+        html2d += `
+            <tr>
+                <td class="time-slot">${item.time}</td>
+                <td>${item.standard.toLocaleString()}đ</td>
+                <td class="col-vip">${item.vip.toLocaleString()}đ</td>
+                <td class="col-couple">${item.couple.toLocaleString()}đ</td>
+            </tr>
+        `;
 
-        PRICE_DATA.forEach(item => {
-            // Render cho bảng 2D
-            html2d += `
-                <tr>
-                    <td class="time-slot">${item.time}</td>
-                    <td>${item.standard.toLocaleString()}đ</td>
-                    <td class="col-vip">${item.vip.toLocaleString()}đ</td>
-                    <td class="col-couple">${item.couple.toLocaleString()}đ</td>
-                </tr>
-            `;
+        // Render cho bảng 3D (Tự động cộng thêm phụ thu)
+        html3d += `
+            <tr>
+                <td class="time-slot">${item.time}</td>
+                <td>${(item.standard + SURCHARGE_3D).toLocaleString()}đ</td>
+                <td class="col-vip">${(item.vip + SURCHARGE_3D).toLocaleString()}đ</td>
+                <td class="col-couple">${(item.couple + SURCHARGE_3D).toLocaleString()}đ</td>
+            </tr>
+        `;
+    });
 
-            // Render cho bảng 3D (Tự động cộng thêm phụ thu)
-            html3d += `
-                <tr>
-                    <td class="time-slot">${item.time}</td>
-                    <td>${(item.standard + SURCHARGE_3D).toLocaleString()}đ</td>
-                    <td class="col-vip">${(item.vip + SURCHARGE_3D).toLocaleString()}đ</td>
-                    <td class="col-couple">${(item.couple + SURCHARGE_3D + 0).toLocaleString()}đ</td>
-                </tr>
-            `;
-        });
+    tbody2d.innerHTML = html2d;
+    tbody3d.innerHTML = html3d;
+}
 
-        tbody2d.innerHTML = html2d;
-        tbody3d.innerHTML = html3d;
+function waitAndRenderPrices(retries = 30, interval = 50) {
+    const tbody2d = document.getElementById('tbody-2d');
+    const tbody3d = document.getElementById('tbody-3d');
+    if (tbody2d && tbody3d) {
+        renderPrices();
+    } else if (retries > 0) {
+        setTimeout(() => waitAndRenderPrices(retries - 1, interval), interval);
+    } else {
+        console.warn('gia_ve.js: tbody-2d or tbody-3d not found after waiting.');
     }
+}
 
-    renderPrices();
-});
+waitAndRenderPrices();

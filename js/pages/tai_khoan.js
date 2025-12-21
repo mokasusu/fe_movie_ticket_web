@@ -1,84 +1,102 @@
-// Hiển thị popup chi tiết hóa đơn
+import { BASE_PATH } from "../config.js";
+
+// --- HÀM TIỆN ÍCH XỬ LÝ ẢNH (Quan trọng) ---
+function resolveImagePath(path, defaultImg = '/assets/avatar/avt1.jpg') {
+    if (!path) return BASE_PATH + defaultImg;
+    if (path.startsWith('data:')) return path; // Base64
+    if (path.startsWith('http')) return path;  // Link online
+    
+    // Xử lý đường dẫn tương đối để tránh lặp BASE_PATH
+    let cleanPath = path.replace(/^\.\//, '').replace(/^\//, '');
+    const baseName = BASE_PATH.replace(/^\//, ''); 
+    
+    // Nếu path đã chứa folder gốc thì thêm / ở đầu
+    if (baseName && cleanPath.startsWith(baseName)) {
+        return '/' + cleanPath;
+    }
+    return `${BASE_PATH}/${cleanPath}`;
+}
+
+// --- HÀM HIỂN THỊ CHI TIẾT HÓA ĐƠN ---
 function showInvoiceDetail(inv) {
   const user = JSON.parse(localStorage.getItem('currentUser'));
   let userInfoHTML = '';
   if (user) {
     userInfoHTML = `
-      <div class=\"bill-receipt-line\"><span>Khách:</span><span>${user.fullName || user.username || ''}</span></div>
-      <div class=\"bill-receipt-line\"><span>Email:</span><span>${user.email || ''}</span></div>
-      <div class=\"bill-receipt-divider\"></div>
+      <div class="bill-receipt-line"><span>Khách:</span><span>${user.fullName || user.username || ''}</span></div>
+      <div class="bill-receipt-line"><span>Email:</span><span>${user.email || ''}</span></div>
+      <div class="bill-receipt-divider"></div>
     `;
   }
-  // Định dạng lại thời gian đặt vé
+
+  // Format ngày
   let bookingDateStr = '';
   if (inv.bookingDate) {
     const d = new Date(inv.bookingDate);
-    const date = d.toLocaleDateString('vi-VN');
-    const hour = d.getHours().toString().padStart(2, '0');
-    const min = d.getMinutes().toString().padStart(2, '0');
-    bookingDateStr = `${hour}:${min}, ${date}`;
+    bookingDateStr = `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}, ${d.toLocaleDateString('vi-VN')}`;
   }
-  // Tính tổng tiền đồ ăn (giống bill.js)
+
+  // Xử lý đồ ăn
   let foodsHTML = '';
   let totalFoodPrice = 0;
-  if (inv.foods && inv.foods.length > 0) {
-    foodsHTML = `<div class=\"bill-receipt-line\"><span>Đồ ăn đã đặt:</span></div>`;
-    if (Array.isArray(inv.foods)) {
-      inv.foods.forEach(f => {
-        if (typeof f === 'object' && f.name && f.qty) {
-          let foodTotal = (typeof f.total === 'number') ? f.total : (f.qty * f.price);
-          totalFoodPrice += foodTotal;
-          foodsHTML += `<div class=\"bill-receipt-line\" style=\"padding-left:24px; display:flex; justify-content:space-between;\"><span>${f.qty}x ${f.name}</span><span>${foodTotal.toLocaleString()}đ</span></div>`;
-        }
+  
+  // Chuẩn hóa mảng foods
+  let foodsArray = [];
+  if (Array.isArray(inv.foods)) {
+      foodsArray = inv.foods;
+  } else if (typeof inv.foods === 'string') {
+      inv.foods.split(',').forEach(f => {
+          let match = f.trim().match(/(\d+)x ([^\(]+)(?:\(([^)]+)\))?/);
+          if (match) foodsArray.push({ qty: parseInt(match[1]), name: match[2].trim(), price: 0, total: 0 });
       });
-    } else if (typeof inv.foods === 'string') {
-      let foodsArr = inv.foods.split(',').map(f => f.trim());
-      foodsArr.forEach(f => {
-        let match = f.match(/(\d+)x ([^\(]+)(?:\(([^)]+)\))?/);
-        if (match) {
-          let qty = parseInt(match[1]);
-          let name = match[2].trim();
-          let price = match[3] ? parseInt(match[3].replace(/[^\d]/g, '')) : 0;
-          let foodTotal = qty * price;
-          totalFoodPrice += foodTotal;
-          foodsHTML += `<div class=\"bill-receipt-line\" style=\"padding-left:24px; display:flex; justify-content:space-between;\"><span>${qty}x ${name}</span><span>${foodTotal.toLocaleString()}đ</span></div>`;
-        } else {
-          foodsHTML += `<div class=\"bill-receipt-line\" style=\"padding-left:24px\"><span>${f}</span></div>`;
-        }
-      });
-    }
-    foodsHTML += `<div class=\"bill-receipt-line fw-bold\" style=\"padding-left:24px; display:flex; justify-content:space-between;\"><span>Tổng tiền đồ ăn</span><span>${totalFoodPrice.toLocaleString()}đ</span></div>`;
   }
+
+  if (foodsArray.length > 0) {
+    foodsHTML = `<div class="bill-receipt-line"><span>Đồ ăn đã đặt:</span></div>`;
+    foodsArray.forEach(f => {
+        let itemTotal = f.total || (f.qty * f.price) || 0;
+        totalFoodPrice += itemTotal;
+        foodsHTML += `<div class="bill-receipt-line ps-3 d-flex justify-content-between">
+                        <span>${f.qty}x ${f.name}</span>
+                        <span>${itemTotal.toLocaleString()}đ</span>
+                      </div>`;
+    });
+    foodsHTML += `<div class="bill-receipt-line fw-bold ps-3 d-flex justify-content-between"><span>Tổng tiền đồ ăn</span><span>${totalFoodPrice.toLocaleString()}đ</span></div>`;
+  }
+
+  // HTML Modal
   const html = `
-    <div class=\"modal fade\" id=\"invoiceModal\" tabindex=\"-1\">
-      <div class=\"modal-dialog modal-dialog-centered\">
-        <div class=\"modal-content\">
-          <div class=\"modal-header\">
-            <h5 class=\"modal-title\">HÓA ĐƠN THANH TOÁN</h5>
-            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>
+    <div class="modal fade" id="invoiceModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">HÓA ĐƠN THANH TOÁN</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <div class=\"modal-body\">
-            <div class=\"bill-receipt-container\" style=\"max-width:340px;margin:auto;\">
-              <div class=\"bill-thermal-receipt\">
-                <div class=\"text-center mb-3\">
-                  <h6 class=\"mb-1\">COP CINEMAS PREMIUM</h6>
-                  <p style=\"font-size: 10px;\" class=\"mb-0\">COP Cinemas Chùa Bộc, Hà Nội</p>
-                  <p style=\"font-size: 10px;\">Mã GD: <strong>${inv.transactionId || inv.transactionID || '---'}</strong></p>
+          <div class="modal-body">
+            <div class="bill-receipt-container" style="max-width:340px;margin:auto;">
+              <div class="bill-thermal-receipt p-3 border shadow-sm" style="background:#fff; color:#000; font-family: monospace;">
+                <div class="text-center mb-3">
+                  <h6 class="mb-1 fw-bold">COP CINEMAS PREMIUM</h6>
+                  <p style="font-size: 10px;" class="mb-0">COP Cinemas Chùa Bộc, Hà Nội</p>
+                  <p style="font-size: 10px;">Mã GD: <strong>${inv.transactionId || '---'}</strong></p>
                 </div>
-                <div class=\"bill-receipt-line\"><span>Thời gian đặt:</span><span>${bookingDateStr}</span></div>
+                <div class="bill-receipt-line d-flex justify-content-between"><span>Thời gian:</span><span>${bookingDateStr}</span></div>
                 ${userInfoHTML}
-                <div class=\"bill-receipt-line\"><span class=\"fw-bold text-uppercase\">${inv.tenPhim || ''}</span></div>
-                <div class=\"bill-receipt-line\"><span>Ngày chiếu:</span><span>${inv.ngayChieu || ''}</span></div>
-                <div class=\"bill-receipt-line\"><span>Suất chiếu:</span><span>${inv.gioChieu || ''}</span></div>
-                <div class=\"bill-receipt-line\"><span>Phòng:</span><span>${inv.phongChieu || ''}</span></div>
-                <div class=\"bill-receipt-line\"><span>Định dạng:</span><span>${inv.dinhDang || '2D Digital'}</span></div>
-                <div class=\"bill-receipt-line\"><span>Danh sách ghế:</span><span>${inv.seats || ''}</span></div>
-                <div class=\"bill-receipt-line\"><span>Giá vé:</span><span>${inv.totalSeatPrice ? Number(inv.totalSeatPrice).toLocaleString() + 'đ' : ''}</span></div>
+                <div class="bill-receipt-line text-center my-2"><span class="fw-bold text-uppercase">${inv.tenPhim || ''}</span></div>
+                <div class="bill-receipt-line d-flex justify-content-between"><span>Ngày chiếu:</span><span>${inv.ngayChieu || ''}</span></div>
+                <div class="bill-receipt-line d-flex justify-content-between"><span>Suất chiếu:</span><span>${inv.gioChieu || ''}</span></div>
+                <div class="bill-receipt-line d-flex justify-content-between"><span>Phòng:</span><span>${inv.phongChieu || ''}</span></div>
+                <div class="bill-receipt-line d-flex justify-content-between"><span>Ghế:</span><span>${inv.seats || ''}</span></div>
+                <div class="bill-receipt-line d-flex justify-content-between"><span>Giá vé:</span><span>${(inv.totalSeatPrice || 0).toLocaleString()}đ</span></div>
                 ${foodsHTML}
-                <div class=\"bill-receipt-divider\"></div>
-                <div class=\"bill-receipt-line\"><span>Khuyến mãi:</span><span>${inv.discountValue ? '-' + Number(inv.discountValue).toLocaleString() + 'đ' : '0đ'}</span></div>
-                <div class=\"bill-receipt-line fw-bold fs-5\"><span>TỔNG THANH TOÁN:</span><span>${(inv.totalPrice || 0).toLocaleString()}đ</span></div>
-                <div class=\"text-center mt-3\"><div class=\"bill-receipt-barcode\"></div><p style=\"font-size: 9px;\" class=\"mt-2 mb-0\">Cảm ơn & Hẹn gặp lại!</p></div>
+                <div class="bill-receipt-divider border-top border-dashed my-2"></div>
+                <div class="bill-receipt-line d-flex justify-content-between"><span>Khuyến mãi:</span><span>-${(inv.discountValue || 0).toLocaleString()}đ</span></div>
+                <div class="bill-receipt-line fw-bold fs-5 d-flex justify-content-between mt-2"><span>TỔNG:</span><span>${(inv.totalPrice || 0).toLocaleString()}đ</span></div>
+                <div class="text-center mt-3">
+                    <div class="receipt-barcode" style="height:30px; background: repeating-linear-gradient(90deg,#000,#000 1px,transparent 1px,transparent 3px);"></div>
+                    <p style="font-size: 9px;" class="mt-2 mb-0">Cảm ơn & Hẹn gặp lại!</p>
+                </div>
               </div>
             </div>
           </div>
@@ -86,187 +104,210 @@ function showInvoiceDetail(inv) {
       </div>
     </div>
   `;
+
   let modalDiv = document.getElementById('invoiceModal');
   if (modalDiv) modalDiv.remove();
   document.body.insertAdjacentHTML('beforeend', html);
   const modal = new bootstrap.Modal(document.getElementById('invoiceModal'));
   modal.show();
-  setTimeout(() => {
-    const bars = document.querySelector('#invoiceModal .receipt-barcode');
-    if (bars) {
-      bars.style.background = 'repeating-linear-gradient(90deg, #000, #000 1px, transparent 1px, transparent 3px)';
-      bars.style.height = '30px';
-      bars.style.width = '100%';
-      bars.style.marginTop = '10px';
-    }
-  }, 200);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Chuyển tab nếu có tham số tab trên URL
+// --- HÀM KHỞI TẠO TRANG (CHẠY NGAY) ---
+function initPage() {
+    console.log("Init Tai Khoan Page...");
+
+    // 1. Kiểm tra User
+    let user = null;
+    try {
+        user = JSON.parse(localStorage.getItem('currentUser'));
+    } catch (e) { console.warn(e); }
+
+    if (!user) {
+        alert('Bạn chưa đăng nhập!');
+        window.location.href = `${BASE_PATH}/pages/login.html`;
+        return;
+    }
+
+    // 2. Load Thông tin User lên giao diện
+    const avatarEl = document.getElementById('profile-avatar');
+    if (avatarEl) {
+        // Sử dụng hàm resolveImagePath để đảm bảo ảnh luôn hiển thị đúng
+        avatarEl.src = resolveImagePath(user.avatar);
+    }
+
+    const userNameEl = document.getElementById('userName');
+    if (userNameEl) userNameEl.textContent = user.fullName || user.username || 'Khách hàng';
+
+    const fullNameInput = document.getElementById('profileFullName');
+    if (fullNameInput) fullNameInput.value = user.fullName || '';
+
+    const usernameInput = document.getElementById('profileUsername');
+    if (usernameInput) usernameInput.value = user.username || '';
+
+    const emailInput = document.getElementById('profileEmail');
+    if (emailInput) emailInput.value = user.email || '';
+
+    // 3. Lấy dữ liệu hóa đơn
+    let userBookings = {};
+    try {
+        userBookings = JSON.parse(localStorage.getItem('userBookings') || '{}');
+    } catch (e) {}
+    
+    // Key có thể là email hoặc username
+    const invoices = userBookings[user.email] || userBookings[user.username] || [];
+
+    // Sắp xếp mới nhất trước
+    invoices.sort((a, b) => new Date(b.bookingDate || b.createdAt) - new Date(a.bookingDate || a.createdAt));
+
+    // Thống kê
+    const statMoviesEl = document.getElementById('statMovies');
+    if (statMoviesEl) statMoviesEl.textContent = invoices.length;
+    
+    const totalMoney = invoices.reduce((sum, inv) => sum + (inv.totalPrice || 0), 0);
+    const statMoneyEl = document.getElementById('statMoney');
+    if (statMoneyEl) statMoneyEl.textContent = totalMoney.toLocaleString() + 'đ';
+
+    // 4. Render Bảng Hóa Đơn
+    const billTbody = document.querySelector('#tab-invoices tbody');
+    if (billTbody) {
+        billTbody.innerHTML = '';
+        if (invoices.length === 0) {
+            billTbody.innerHTML = '<tr><td colspan="4" class="text-center">Chưa có giao dịch nào</td></tr>';
+        } else {
+            invoices.forEach(inv => {
+                const tr = document.createElement('tr');
+                tr.style.cursor = 'pointer';
+                
+                let dateStr = '';
+                if (inv.bookingDate) {
+                    const d = new Date(inv.bookingDate);
+                    dateStr = `${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}, ${d.toLocaleDateString('vi-VN')}`;
+                }
+
+                tr.innerHTML = `
+                    <td>${dateStr}</td>
+                    <td>${inv.tenPhim || ''}</td>
+                    <td>${inv.ngayChieu || ''}</td>
+                    <td class="text-warning fw-bold">${(inv.totalPrice || 0).toLocaleString()}đ</td>
+                `;
+                
+                // Gắn sự kiện click trực tiếp
+                tr.addEventListener('click', () => showInvoiceDetail(inv));
+                billTbody.appendChild(tr);
+            });
+        }
+    }
+
+    // 5. Render Hành Trình (Journey)
+    renderJourney(invoices);
+
+    // 6. Logic Chỉnh sửa Profile
+    setupProfileActions(user, avatarEl);
+
+    // 7. Xử lý Tab từ URL (nếu có)
     const urlParams = new URLSearchParams(window.location.search);
     const tabParam = urlParams.get('tab');
-    if (tabParam === 'journey' || tabParam === 'invoices' || tabParam === 'info') {
-      setTimeout(() => {
-        let tabSelector = '';
-        if (tabParam === 'journey') tabSelector = '[data-bs-target="#tab-journey"]';
-        if (tabParam === 'invoices') tabSelector = '[data-bs-target="#tab-invoices"]';
-        if (tabParam === 'info') tabSelector = '[data-bs-target="#tab-info"]';
-        const tabBtn = document.querySelector(tabSelector);
-        if (tabBtn) tabBtn.click();
-      }, 100);
-    }
-  const user = JSON.parse(localStorage.getItem('currentUser'));
-  if (!user) {
-    location.href = '/cop_cinema/pages/login.html';
-    return;
-  }
-
-  // --- Hiển thị thông tin user ---
-  const avatarEl = document.getElementById('profile-avatar');
-  avatarEl.src = user.avatar || '/cop_cinema/assets/avatar/avt1.jpg';
-  document.getElementById('userName').textContent = user.fullName || user.username || '';
-  document.getElementById('profileFullName').value = user.fullName || '';
-  document.getElementById('profileUsername').value = user.username || '';
-  document.getElementById('profileEmail').value = user.email || '';
-
-  // --- Lấy hóa đơn của user ---
-  const userBookings = JSON.parse(localStorage.getItem('userBookings') || '{}');
-  const invoices = userBookings[user.email || user.username] || [];
-
-  // Sắp xếp hóa đơn mới nhất trước (ưu tiên bookingDate, fallback createdAt)
-  invoices.sort((a, b) => {
-    const dateA = a.bookingDate ? new Date(a.bookingDate) : (a.createdAt ? new Date(a.createdAt) : 0);
-    const dateB = b.bookingDate ? new Date(b.bookingDate) : (b.createdAt ? new Date(b.createdAt) : 0);
-    return dateB - dateA;
-  });
-
-  // --- Hiển thị số phim đã xem & tổng tiền ---
-  document.getElementById('statMovies').textContent = invoices.length;
-  const totalMoney = invoices.reduce((sum, inv) => sum + (inv.totalPrice || 0), 0);
-  document.getElementById('statMoney').textContent = totalMoney.toLocaleString() + 'đ';
-
-  // --- Hiển thị hóa đơn trong bảng ---
-  const billTbody = document.querySelector('#tab-invoices tbody');
-  if (billTbody) {
-    billTbody.innerHTML = '';
-    if (invoices.length === 0) {
-      billTbody.innerHTML = '<tr><td colspan="4" class="text-center">Chưa có hóa đơn nào</td></tr>';
-    } else {
-      invoices.forEach(inv => {
-        const tr = document.createElement('tr');
-        // Định dạng lại ngày đặt
-        let bookingDateStr = '';
-        if (inv.bookingDate) {
-          const d = new Date(inv.bookingDate);
-          const date = d.toLocaleDateString('vi-VN');
-          const hour = d.getHours().toString().padStart(2, '0');
-          const min = d.getMinutes().toString().padStart(2, '0');
-          bookingDateStr = `${hour}:${min}, ${date}`;
+    if (tabParam) {
+        const tabTrigger = document.querySelector(`button[data-bs-target="#tab-${tabParam}"]`);
+        if (tabTrigger) {
+            // Đợi 1 chút cho Bootstrap load
+            setTimeout(() => tabTrigger.click(), 100);
         }
-        tr.innerHTML = `
-          <td>${bookingDateStr}</td>
-          <td>${inv.tenPhim || ''}</td>
-          <td>${inv.ngayChieu || ''}</td>
-          <td class="text-gold">${(inv.totalPrice || 0).toLocaleString()}đ</td>
-        `;
-        tr.addEventListener('click', () => showInvoiceDetail(inv));
-        billTbody.appendChild(tr);
-      });
     }
-  }
-
-  // --- Chỉnh sửa profile ---
-  const btnEdit = document.getElementById('btn-edit-profile');
-  const btnSave = document.getElementById('btn-save-profile');
-  const inputName = document.getElementById('profileFullName');
-
-  btnEdit.onclick = () => {
-    inputName.disabled = false;
-    btnEdit.classList.add('d-none');
-    btnSave.classList.remove('d-none');
-  };
-
-  document.querySelector('form').onsubmit = e => {
-    e.preventDefault();
-    user.fullName = inputName.value.trim();
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    document.getElementById('userName').textContent = user.fullName;
-    inputName.disabled = true;
-    btnSave.classList.add('d-none');
-    btnEdit.classList.remove('d-none');
-    alert('Cập nhật thành công');
-  };
-
-  document.getElementById('avatar-upload').onchange = e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      user.avatar = reader.result;
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      avatarEl.src = reader.result;
-      setTimeout(() => location.reload(), 300);
-    };
-    reader.readAsDataURL(file);
-  };
-});
-    renderJourney();
-
-// --- Render hành trình phim ---
-function renderJourney() {
-  const user = JSON.parse(localStorage.getItem("currentUser"));
-  const track = document.getElementById("journeyTrack");
-  track.innerHTML = "";
-  if (!user) {
-    track.innerHTML = '<div class="text-center text-muted">Bạn chưa có hành trình phim nào.</div>';
-    return;
-  }
-
-  const userBookings = JSON.parse(localStorage.getItem('userBookings') || '{}');
-  const invoices = userBookings[user.email || user.username] || [];
-  if (invoices.length === 0) {
-    track.innerHTML = '<div class="text-center text-muted">Bạn chưa có hành trình phim nào.</div>';
-    return;
-  }
-
-  invoices.sort((a, b) => {
-    const dateA = a.bookingDate ? new Date(a.bookingDate) : (a.createdAt ? new Date(a.createdAt) : 0);
-    const dateB = b.bookingDate ? new Date(b.bookingDate) : (b.createdAt ? new Date(b.createdAt) : 0);
-    return dateA.getTime() - dateB.getTime();
-  });
-  invoices.reverse();
-
-  invoices.forEach(inv => {
-    const item = document.createElement("div");
-    item.className = "journey-item";
-    let poster = inv.anhPhim || 'default.jpg';
-    // Nếu poster không phải là đường dẫn tuyệt đối thì thêm prefix
-    if (!/^https?:\/\//.test(poster) && !poster.startsWith('/')) {
-      if (!poster.startsWith('assets/')) poster = '/cop_cinema/assets/images/posters/' + poster.replace(/^\.\//, '');
-      else poster = '/cop_cinema/' + poster.replace(/^\.\//, '');
-    }
-    // Định dạng lại ngày đặt vé
-    let bookingDateStr = '';
-    if (inv.bookingDate) {
-      const d = new Date(inv.bookingDate);
-      const date = d.toLocaleDateString('vi-VN');
-      const hour = d.getHours().toString().padStart(2, '0');
-      const min = d.getMinutes().toString().padStart(2, '0');
-      bookingDateStr = `${hour}:${min}, ${date}`;
-    }
-    item.innerHTML = `
-      <div class="journey-top-content">
-        <div class="journey-poster">
-          <img src="${poster}" alt="${inv.tenPhim || ''}">
-        </div>
-        <div class="journey-title">${inv.tenPhim || ''}</div>
-      </div>
-      <div class="journey-dot"></div>
-      <div class="journey-date">${bookingDateStr}</div>
-    `;
-    track.appendChild(item);
-  });
 }
 
-renderJourney();
+// --- HÀM RENDER HÀNH TRÌNH ---
+function renderJourney(invoices) {
+    const track = document.getElementById("journeyTrack");
+    if (!track) return;
+    track.innerHTML = "";
+
+    if (invoices.length === 0) {
+        track.innerHTML = '<div class="text-muted text-center w-100 mt-4">Bạn chưa có hành trình phim nào.</div>';
+        return;
+    }
+
+    // Đảo ngược lại để hiển thị theo dòng thời gian (hoặc giữ nguyên tùy ý)
+    // invoices đang là mới nhất -> cũ nhất. Nếu muốn hành trình từ trái qua phải là cũ -> mới thì reverse.
+    const journeyList = [...invoices].reverse(); 
+
+    journeyList.forEach(inv => {
+        const item = document.createElement("div");
+        item.className = "journey-item";
+        
+        // Poster xử lý bằng hàm chuẩn
+        const posterSrc = resolveImagePath(inv.anhPhim, '/assets/images/posters/default.jpg');
+        
+        let dateStr = '';
+        if(inv.bookingDate) {
+             dateStr = new Date(inv.bookingDate).toLocaleDateString('vi-VN');
+        }
+
+        item.innerHTML = `
+            <div class="journey-top-content">
+                <div class="journey-poster">
+                    <img src="${posterSrc}" alt="${inv.tenPhim}" onerror="this.src='${BASE_PATH}/assets/images/posters/default.jpg'">
+                </div>
+                <div class="journey-title mt-2 fw-bold text-white" style="font-size:0.9rem">${inv.tenPhim}</div>
+            </div>
+            <div class="journey-dot"></div>
+            <div class="journey-date text-muted small">${dateStr}</div>
+        `;
+        track.appendChild(item);
+    });
+}
+
+// --- LOGIC CHỈNH SỬA PROFILE ---
+function setupProfileActions(user, avatarEl) {
+    const btnEdit = document.getElementById('btn-edit-profile');
+    const btnSave = document.getElementById('btn-save-profile');
+    const inputName = document.getElementById('profileFullName');
+    const avatarInput = document.getElementById('avatar-upload');
+
+    if (btnEdit && btnSave && inputName) {
+        btnEdit.onclick = () => {
+            inputName.disabled = false;
+            inputName.focus();
+            btnEdit.classList.add('d-none');
+            btnSave.classList.remove('d-none');
+        };
+
+        const form = document.querySelector('form');
+        if (form) {
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                user.fullName = inputName.value.trim();
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Cập nhật giao diện
+                const userNameEl = document.getElementById('userName');
+                if (userNameEl) userNameEl.textContent = user.fullName;
+
+                inputName.disabled = true;
+                btnSave.classList.add('d-none');
+                btnEdit.classList.remove('d-none');
+                alert('Cập nhật thông tin thành công!');
+            };
+        }
+    }
+
+    if (avatarInput) {
+        avatarInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const base64 = evt.target.result;
+                user.avatar = base64;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                if (avatarEl) avatarEl.src = base64;
+                // Reload nhẹ để đồng bộ header
+                location.reload();
+            };
+            reader.readAsDataURL(file);
+        };
+    }
+}
+
+// --- CHẠY CODE ---
+initPage();

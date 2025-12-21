@@ -1,3 +1,4 @@
+import { BASE_PATH } from "../config.js";
 // Sử dụng hàm renderData từ chung_vecuatoi_bill.js để hiển thị nhiều vé cho mỗi ghế
 document.addEventListener('DOMContentLoaded', () => {
     const lastBooking = JSON.parse(localStorage.getItem('lastBooking'));

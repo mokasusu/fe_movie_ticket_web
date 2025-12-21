@@ -8,11 +8,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/cop_cinema/css/reset.css">
-    <link rel="stylesheet" href="/cop_cinema/css/theme.css">
-    <link rel="stylesheet" href="/cop_cinema/css/components/header.css">
-    <link rel="stylesheet" href="/cop_cinema/css/components/footer.css">
-    <link rel="stylesheet" href="/cop_cinema/css/pages/booking.css">
+        <script type="module">
+            import { BASE_PATH } from '../../js/config.js';
+            window.BASE_PATH = BASE_PATH;
+            const setCss = (href) => {
+                const l = document.createElement('link');
+                l.rel = 'stylesheet';
+                l.href = BASE_PATH + href;
+                document.head.appendChild(l);
+            };
+            setCss('/css/reset.css');
+            setCss('/css/theme.css');
+            setCss('/css/components/header.css');
+            setCss('/css/components/footer.css');
+            setCss('/css/pages/booking.css');
+        </script>
+    <!-- Removed static booking.css link, all CSS loaded via BASE_PATH in module script -->
 </head>
 
 <body>
@@ -25,7 +36,7 @@
                 <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
 
                     <!-- BƯỚC 1: GHẾ -->
-                    <div id="seat" class="step active">
+                    <div id="seat" class="step">
                         <div class="step-title">Bước 1: Chọn chỗ ngồi</div>
                         <div class="theatre-view">
                             <div class="screen-bar"></div>
@@ -43,9 +54,9 @@
                                     <div class="food-price">60.000 đ</div>
                                 </div>
                                 <div class="qty-box">
-                                    <button class="qty-btn" onclick="updateFood('f1', -1)">-</button>
+                                    <button class="qty-btn" id="f1-minus">-</button>
                                     <input type="text" class="qty-input" id="f1-qty" value="0" readonly>
-                                    <button class="qty-btn" onclick="updateFood('f1', 1, 'Bỏng ngô', 60000)">+</button>
+                                    <button class="qty-btn" id="f1-plus">+</button>
                                 </div>
                             </div>
                             <div class="food-card">
@@ -54,10 +65,9 @@
                                     <div class="food-price">35.000 đ</div>
                                 </div>
                                 <div class="qty-box">
-                                    <button class="qty-btn" onclick="updateFood('f2', -1)">-</button>
+                                    <button class="qty-btn" id="f2-minus">-</button>
                                     <input type="text" class="qty-input" id="f2-qty" value="0" readonly>
-                                    <button class="qty-btn"
-                                        onclick="updateFood('f2', 1, 'Nước ngọt Pepsi', 35000)">+</button>
+                                    <button class="qty-btn" id="f2-plus">+</button>
                                 </div>
                             </div>
                             <div class="food-card">
@@ -66,10 +76,9 @@
                                     <div class="food-price">85.000 đ</div>
                                 </div>
                                 <div class="qty-box">
-                                    <button class="qty-btn" onclick="updateFood('f3', -1)">-</button>
+                                    <button class="qty-btn" id="f3-minus">-</button>
                                     <input type="text" class="qty-input" id="f3-qty" value="0" readonly>
-                                    <button class="qty-btn"
-                                        onclick="updateFood('f3', 1, 'Combo Bỏng ngô + Pepsi', 85000)">+</button>
+                                    <button class="qty-btn" id="f3-plus">+</button>
                                 </div>
                             </div>
                         </div>
@@ -102,10 +111,8 @@
 
                     <!-- NÚT CHUYỂN BƯỚC -->
                     <div class="navigation-controls">
-                        <button class="btn-prev" id="prevBtn" onclick="changeStep(-1)" style="visibility: hidden;">
-                            QUAY LẠI
-                        </button>
-                        <button class="btn-next" id="nextBtn" onclick="changeStep(1)">TIẾP THEO</button>
+                        <button class="btn-prev" id="prevBtn" style="visibility: hidden;">QUAY LẠI</button>
+                        <button class="btn-next" id="nextBtn">TIẾP THEO</button>
                     </div>
                 </div>
 
@@ -185,26 +192,68 @@
     <div id="footer-container"></div>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/cop_cinema/js/components/header.js"></script>
-    <script src="/cop_cinema/js/pages/booking.js"></script>
-    <script>
-        async function loadLayout() {
-            try {
-                const headerRes = await fetch('/cop_cinema/pages/components/header.html');
-                const headerHtml = await headerRes.text();
-                document.getElementById('header-container').innerHTML = headerHtml;
-                if (window.initHeaderUserMenu) window.initHeaderUserMenu();
+    <!-- Removed all static script tags for /cop_cinema/...; all layout and logic loaded via BASE_PATH module script below -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script type="module">
+            import { BASE_PATH } from '../../js/config.js';
+            async function loadComponents() {
+                try {
+                    // Header
+                    const headerRes = await fetch(BASE_PATH + '/pages/components/header.html');
+                    document.getElementById('header-container').innerHTML = await headerRes.text();
+                    try {
+                        const headerModule = await import(BASE_PATH + '/js/components/header.js');
+                        if (headerModule && typeof headerModule.initHeader === 'function') headerModule.initHeader();
+                    } catch(e) { console.warn('header.js import failed', e); }
 
-                const footerRes = await fetch('/cop_cinema/pages/components/footer.html');
-                document.getElementById('footer-container').innerHTML = await footerRes.text();
-            } catch (err) {
-                console.error('Load layout error:', err);
+                    // Footer
+                    const footerRes = await fetch(BASE_PATH + '/pages/components/footer.html');
+                    document.getElementById('footer-container').innerHTML = await footerRes.text();
+                    try {
+                        const footerModule = await import(BASE_PATH + '/js/components/footer.js');
+                        if (footerModule && typeof footerModule.initFooter === 'function') footerModule.initFooter();
+                    } catch(e) { console.warn('footer.js import failed', e); }
+
+                } catch (err) {
+                    console.error('Load layout error:', err);
+                }
             }
-        }
-        loadLayout();
-    </script>
+            loadComponents();
+            // Load page logic
+            import(BASE_PATH + '/js/pages/booking.js');
+        </script>
+        <script>
+        // Attach navigation button events after DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            if (prevBtn) prevBtn.addEventListener('click', function() { window.changeStep(-1); });
+            if (nextBtn) nextBtn.addEventListener('click', function() { window.changeStep(1); });
+
+            // Attach food quantity button events
+            const foodBtns = [
+                { minus: 'f1-minus', plus: 'f1-plus', id: 'f1', name: 'Bỏng ngô', price: 60000 },
+                { minus: 'f2-minus', plus: 'f2-plus', id: 'f2', name: 'Nước ngọt Pepsi', price: 35000 },
+                { minus: 'f3-minus', plus: 'f3-plus', id: 'f3', name: 'Combo Bỏng ngô + Pepsi', price: 85000 }
+            ];
+            foodBtns.forEach(f => {
+                const minusBtn = document.getElementById(f.minus);
+                const plusBtn = document.getElementById(f.plus);
+                if (minusBtn) minusBtn.addEventListener('click', function() { window.updateFood(f.id, -1, f.name, f.price); });
+                if (plusBtn) plusBtn.addEventListener('click', function() { window.updateFood(f.id, 1, f.name, f.price); });
+            });
+        });
+        </script>
+        <!-- <script>
+        // Attach navigation button events after DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            if (prevBtn) prevBtn.addEventListener('click', function() { window.changeStep(-1); });
+            if (nextBtn) nextBtn.addEventListener('click', function() { window.changeStep(1); });
+        });
+        </script> -->
 </body>
 
 </html>

@@ -1,6 +1,6 @@
 <div class="movie-card shadow-sm">
     <div class="movie-poster">
-        <img src="/cop_cinema/assets/images/posters/your_image.jpg" alt="Tên Phim" class="img-fluid">
+        <img id="movie-card-poster" alt="Tên Phim" class="img-fluid">
         
         <span class="age-badge badge-c13">C13</span>
         
@@ -24,3 +24,17 @@
         </div>
     </div>
 </div>
+<script>
+  (function() {
+    function getBasePath() {
+      if (window.BASE_PATH) return window.BASE_PATH;
+      if (window.config && window.config.BASE_PATH) return window.config.BASE_PATH;
+      var path = window.location.pathname;
+      var match = path.match(/^(\/[^\/]+)(\/|$)/);
+      return match ? match[1] : '';
+    }
+    var BASE_PATH = getBasePath();
+    var poster = document.getElementById('movie-card-poster');
+    if (poster) poster.src = BASE_PATH + '/assets/images/posters/your_image.jpg';
+  })();
+</script>

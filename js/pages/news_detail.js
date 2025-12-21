@@ -1,6 +1,8 @@
+
+import { BASE_PATH } from '../config.js';
 import NEWS_DATA from '../data/news_data.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+function renderNewsDetail() {
     // 1. Lấy ID từ URL (ví dụ: ?id=new01)
     const urlParams = new URLSearchParams(window.location.search);
     const newsId = urlParams.get('id');
@@ -23,8 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Đổ hình ảnh đầu tiên (nếu có)
     if (news.images && news.images.length > 0) {
         const gallery = document.getElementById('news-gallery');
+        let imgSrc = news.images[0].src.replace(/^\/+/, '');
+        imgSrc = `${BASE_PATH}/${imgSrc}`.replace(/\/+/g, '/');
         gallery.innerHTML = `
-            <img src="${news.images[0].src}" alt="${news.title}">
+            <img src="${imgSrc}" alt="${news.title}">
             <div class="image-caption">${news.images[0].caption}</div>
         `;
     }
@@ -36,10 +40,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Đổ danh sách tin liên quan
     const relatedList = document.getElementById('related-news-list');
     if (news.relatedNews && news.relatedNews.length > 0) {
-        relatedList.innerHTML = news.relatedNews.map(item => `
-            <li><a href="/cop_cinema/pages/news_detail.html?id=${item.id}">${item.title}</a></li>
-        `).join('');
+        relatedList.innerHTML = news.relatedNews.map(item => {
+            return `<li><a href="${BASE_PATH}/pages/news_detail.html?id=${item.id}">${item.title}</a></li>`;
+        }).join('');
     } else {
         relatedList.innerHTML = "<li>Không có tin tức liên quan.</li>";
     }
-});
+}
+
+// Poll for #news-title to exist before rendering
+function waitAndRenderNewsDetail(retries = 30, interval = 50) {
+    const el = document.getElementById('news-title');
+    if (el) {
+        renderNewsDetail();
+    } else if (retries > 0) {
+        setTimeout(() => waitAndRenderNewsDetail(retries - 1, interval), interval);
+    } else {
+        console.warn('news_detail.js: #news-title not found after waiting.');
+    }
+}
+
+waitAndRenderNewsDetail();

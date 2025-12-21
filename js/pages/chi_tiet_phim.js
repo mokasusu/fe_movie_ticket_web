@@ -1,3 +1,4 @@
+import { BASE_PATH } from "../config.js";
 import dsPhim from '../data/phim.js';
 
 /* Lấy ID phim từ URL */
@@ -16,11 +17,14 @@ function renderMovieDetail(movie) {
   // Cập nhật thông tin cơ bản
   // Đảm bảo không lặp /cop_cinema/ trong src ảnh
   let posterSrc = movie.anhPhim;
-  if (!posterSrc.startsWith('/cop_cinema/')) {
-    posterSrc = '/cop_cinema/' + posterSrc.replace(/^\/?/, '');
+  // Robust BASE_PATH join for image
+  function joinPath(base, rel) {
+    if (!base) return rel.startsWith('/') ? rel : '/' + rel;
+    if (rel.startsWith(base)) return rel;
+    if (rel.startsWith('/')) return base + rel;
+    return base + '/' + rel;
   }
-  // Loại bỏ lặp /cop_cinema/ nếu có
-  posterSrc = posterSrc.replace(/(\/cop_cinema\/)+/, '/cop_cinema/');
+  posterSrc = joinPath(BASE_PATH, posterSrc).replace(/\/+/, '/').replace(/([^:])\/\//g, '$1/');
   document.getElementById('movie-poster').src = posterSrc;
   document.getElementById('breadcrumb-movie-name').textContent = movie.tenPhim;
   document.getElementById('movie-title').textContent = movie.tenPhim;
@@ -95,7 +99,7 @@ function bindBookingEvents(movie) {
       const currentUser = localStorage.getItem('currentUser');
       if (!currentUser) {
         alert('Vui lòng đăng nhập để đặt vé!');
-        window.location.href = '/cop_cinema/pages/login.html';
+        window.location.href = `${BASE_PATH}/pages/login.html`;
         return;
       }
       // Đóng gói dữ liệu chuẩn để trang Booking (booking.js) có thể đọc được
@@ -115,15 +119,34 @@ function bindBookingEvents(movie) {
       localStorage.setItem('currentBooking', JSON.stringify(bookingData));
 
       // Chuyển hướng sang màn hình chọn ghế
-      window.location.href = '/cop_cinema/pages/booking.html';
+      window.location.href = `${BASE_PATH}/pages/booking.html`;
     });
   });
 }
 
 /* KHỞI CHẠY */
-document.addEventListener('DOMContentLoaded', () => {
-  const movieId = getMovieIdFromURL();
-  const movie = dsPhim.find(p => p.maPhim === movieId);
-  
-  renderMovieDetail(movie);
-});
+
+function waitAndRenderMovieDetail(retries = 30, interval = 50) {
+  // Wait for #movie-poster, #movie-title, #movie-description, #movie-director, #movie-actors, #movie-genre, #movie-duration, #movie-release, #movie-schedule
+  if (
+    document.getElementById('movie-poster') &&
+    document.getElementById('movie-title') &&
+    document.getElementById('movie-description') &&
+    document.getElementById('movie-director') &&
+    document.getElementById('movie-actors') &&
+    document.getElementById('movie-genre') &&
+    document.getElementById('movie-duration') &&
+    document.getElementById('movie-release') &&
+    document.getElementById('movie-schedule')
+  ) {
+    const movieId = getMovieIdFromURL();
+    const movie = dsPhim.find(p => p.maPhim === movieId);
+    renderMovieDetail(movie);
+  } else if (retries > 0) {
+    setTimeout(() => waitAndRenderMovieDetail(retries - 1, interval), interval);
+  } else {
+    console.warn('chi_tiet_phim.js: Required DOM elements not found after waiting.');
+  }
+}
+
+waitAndRenderMovieDetail();
