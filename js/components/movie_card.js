@@ -1,4 +1,3 @@
-import { BASE_PATH } from "../config.js";
 
 
 export function createMovieCard(movie, isSapChieu = false) {
@@ -30,12 +29,7 @@ export function createMovieCard(movie, isSapChieu = false) {
   const posterDiv = document.createElement('div');
   posterDiv.className = 'movie-poster position-relative';
   const img = document.createElement('img');
-  let posterSrc = movie.anhPhim;
-  if (!posterSrc.startsWith(BASE_PATH)) {
-    posterSrc = BASE_PATH + (posterSrc.startsWith('/') ? posterSrc : '/' + posterSrc);
-  }
-  posterSrc = posterSrc.replace(new RegExp(`(${BASE_PATH}/)+`), `${BASE_PATH}/`);
-  img.src = posterSrc;
+  img.src = movie.anhPhim;
   img.alt = movie.tenPhim;
   img.loading = 'lazy';
   posterDiv.appendChild(img);
@@ -77,7 +71,7 @@ export function createMovieCard(movie, isSapChieu = false) {
 
   // Click card -> detail page
   card.addEventListener('click', () => {
-    window.location.href = `${BASE_PATH}/pages/chi_tiet_phim.html?maphim=${movie.maPhim}`;
+    window.location.href = `/cop_cinema/pages/chi_tiet_phim.html?maphim=${movie.maPhim}`;
   });
 
   // Trailer click
@@ -94,7 +88,7 @@ export function createMovieCard(movie, isSapChieu = false) {
     if (!isSapChieu) {
       if (!currentUser) {
         alert('Vui lòng đăng nhập để đặt vé!');
-        window.location.href = `${BASE_PATH}/pages/login.html`;
+        window.location.href = `/cop_cinema/pages/login.html`;
         return;
       }
       // Lấy suất chiếu đầu tiên nếu có
@@ -119,9 +113,9 @@ export function createMovieCard(movie, isSapChieu = false) {
         phongChieu
       };
       localStorage.setItem('currentBooking', JSON.stringify(data));
-      window.location.href = `${BASE_PATH}/pages/booking.html`;
+      window.location.href = `/cop_cinema/pages/booking.html`;
     } else {
-      window.location.href = `${BASE_PATH}/pages/chi_tiet_phim.html?maphim=${movie.maPhim}`;
+      window.location.href = `/cop_cinema/pages/chi_tiet_phim.html?maphim=${movie.maPhim}`;
     }
   });
 

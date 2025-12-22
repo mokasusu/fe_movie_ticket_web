@@ -1,4 +1,3 @@
-import { BASE_PATH } from "../config.js";
 import movies from "../data/phim.js";
 import { createLichChieuCard } from "../components/showtime_card.js";
 
@@ -43,7 +42,7 @@ function bindSuatClick() {
         const currentUser = localStorage.getItem("currentUser");
         if (!currentUser) {
           alert("Vui lòng đăng nhập để đặt vé!");
-          window.location.href = `${BASE_PATH}/pages/login.html`;
+          window.location.href = "/cop_cinema/pages/login.html";
           return;
         }
 
@@ -73,7 +72,7 @@ function bindSuatClick() {
         localStorage.setItem("currentBooking", JSON.stringify(data));
 
         // 4. Chuyển hướng sang màn hình chọn ghế
-            window.location.href = `${BASE_PATH}/pages/booking.html`;
+            window.location.href = "/cop_cinema/pages/booking.html";
       });
     });
 }

@@ -1,5 +1,4 @@
 import NEWS_DATA from '../data/news_data.js';
-import { BASE_PATH } from '../config.js';
 
 const itemsPerPage = 6;
 let currentPage = 1;
@@ -13,12 +12,9 @@ function renderNews(page) {
     const currentItems = NEWS_DATA.slice(start, end);
 
     currentItems.forEach(item => {
-        // Đảm bảo đường dẫn ảnh luôn đúng chuẩn BASE_PATH
-        let thumbSrc = item.thumbnail.replace(/^\/+/, '');
-        thumbSrc = `${BASE_PATH}/${thumbSrc}`.replace(/\/+/g, '/');
         const html = `
-            <div class="news-card" onclick="location.href='${BASE_PATH}/pages/news_detail.html?id=${item.id}'">
-                <img src="${thumbSrc}" alt="${item.title}">
+            <div class="news-card" onclick="location.href='/pages/news_detail.html?id=${item.id}'">
+                <img src="${item.thumbnail}" alt="${item.title}">
                 <div class="news-info">
                     <span class="news-date">${item.date}</span>
                     <h3 class="news-title">${item.title}</h3>

@@ -1,4 +1,3 @@
-import { BASE_PATH } from "../config.js";
 const tabs = document.querySelectorAll('.tab-btn');
 const forms = document.querySelectorAll('.form-tab');
 
@@ -53,7 +52,7 @@ loginForm.addEventListener('submit', e => {
       localStorage.setItem('currentUser', JSON.stringify(matchedUser));
       loginForm.reset();
       loginInputs.forEach(i => i.touched = false);
-      window.location.href = `${BASE_PATH}/index.html`;
+      window.location.href = '/cop_cinema/index.html';
     } else {
       showError(loginUsername, 'Tên đăng nhập/email hoặc mật khẩu không đúng');
       showError(loginPassword, '');
@@ -121,7 +120,7 @@ registerForm.addEventListener('submit', e => {
       username: registerUsername.value.trim(),
       email: registerEmail.value.trim(),
       password: registerPassword.value.trim(),
-      avatar: `${BASE_PATH}/assets/avatar/avt1.jpg`
+      avatar: '/cop_cinema/assets/avatar/avt1.jpg'
     };
 
     users.push(newUser);

@@ -1,28 +1,3 @@
-import { BASE_PATH } from "../config.js";
-
-export function initHeader() {
-  // Logo link and image
-  var logoLink = document.getElementById('header-logo-link');
-  if (logoLink) logoLink.href = (BASE_PATH ? BASE_PATH : '') + '/index.html';
-  var logoImg = document.getElementById('header-logo-img');
-  var logoPath = (BASE_PATH ? BASE_PATH : '') + '/assets/icons/logo.png';
-  if (logoImg) logoImg.src = logoPath;
-  // Nav links
-  var navs = [
-    { id: 'nav-lich-chieu', path: '/pages/lich_chieu.html' },
-    { id: 'nav-rap', path: '/pages/rap.html' },
-    { id: 'nav-news', path: '/pages/news_list.html' },
-    { id: 'nav-uudai', path: '/pages/uudai_list.html' },
-    { id: 'nav-giave', path: '/pages/gia_ve.html' }
-  ];
-  navs.forEach(function(nav) {
-    var el = document.getElementById(nav.id);
-    if (el) el.href = (BASE_PATH ? BASE_PATH : '') + nav.path;
-  });
-  // User menu logic
-  initHeaderUserMenu();
-}
-
 function initHeaderUserMenu() {
   const userMenu = document.querySelector('.user-menu');
   if (!userMenu) return;
@@ -32,19 +7,10 @@ function initHeaderUserMenu() {
   if (currentUser) {
     // Xác định base path từ vị trí hiện tại
     // Đường dẫn avatar
-    let avatarPath = currentUser.avatar || 'assets/avatar/avt1.jpg';
-    // Nếu là base64 (data:), giữ nguyên
-    if (avatarPath && avatarPath.startsWith('data:')) {
-      // giữ nguyên
-    } else if (avatarPath && !/^https?:\/\//.test(avatarPath)) {
-      // Nếu là đường dẫn tương đối thì ghép BASE_PATH
-      if (avatarPath.startsWith('/')) {
-        avatarPath = BASE_PATH + avatarPath;
-      } else {
-        avatarPath = BASE_PATH + '/' + avatarPath;
-      }
-    }
-    const taiKhoanPath = `${BASE_PATH}/pages/tai_khoan.html`;
+      const avatarPath = currentUser.avatar || 'assets/avatar/avt1.jpg';
+      // Đường dẫn các trang: tự động nhận diện vị trí
+      const isInPages = window.location.pathname.includes('/pages/');
+      const taiKhoanPath = isInPages ? 'tai_khoan.html' : 'pages/tai_khoan.html';
     userMenu.innerHTML = `
       <a href="#" class="d-flex align-items-center" data-bs-toggle="dropdown">
         <img src="${avatarPath}" alt="${currentUser.username}" class="avatar-img">
@@ -71,7 +37,7 @@ function initHeaderUserMenu() {
       infoMenu.addEventListener('click', function(e) {
         e.preventDefault();
         closeDropdown();
-          window.location.href = `${BASE_PATH}/pages/tai_khoan.html?tab=info`;
+          window.location.href = '/cop_cinema/pages/tai_khoan.html?tab=info';
       });
     }
     // Xử lý chuyển tab hóa đơn
@@ -80,7 +46,7 @@ function initHeaderUserMenu() {
       invoicesMenu.addEventListener('click', function(e) {
         e.preventDefault();
         closeDropdown();
-          window.location.href = `${BASE_PATH}/pages/tai_khoan.html?tab=invoices`;
+          window.location.href = '/cop_cinema/pages/tai_khoan.html?tab=invoices';
       });
     }
     // Xử lý chuyển tab hành trình điện ảnh
@@ -89,7 +55,7 @@ function initHeaderUserMenu() {
       journeyMenu.addEventListener('click', function(e) {
         e.preventDefault();
         closeDropdown();
-          window.location.href = `${BASE_PATH}/pages/tai_khoan.html?tab=journey`;
+          window.location.href = '/cop_cinema/pages/tai_khoan.html?tab=journey';
       });
     }
 
@@ -102,7 +68,7 @@ function initHeaderUserMenu() {
 
       localStorage.removeItem('selectedShowtime');
       // Quay về trang chủ (index.html) ở root
-        window.location.href = `${BASE_PATH}/index.html`;
+        window.location.href = '/cop_cinema/index.html';
     });
 
     // Hover dropdown
@@ -125,9 +91,9 @@ function initHeaderUserMenu() {
     const loginBtn = document.getElementById('loginBtn');
     loginBtn.addEventListener('click', () => {
       // Luôn chuyển hướng tới trang login.html theo đường dẫn tuyệt đối từ root repo
-      window.location.href = `${BASE_PATH}/pages/login.html`;
+      window.location.href = '/cop_cinema/pages/login.html';
     });
   }
 }
 
-
+window.initHeaderUserMenu = initHeaderUserMenu;

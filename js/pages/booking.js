@@ -1,4 +1,3 @@
-import { BASE_PATH } from "../config.js";
 /* --- CẤU HÌNH GIÁ VÉ --- */
 const PRICE_CONFIG = {
     movieType: { '2D': 0, '3D': 30000 },
@@ -26,21 +25,17 @@ function generateTransactionID() {
     return `BBX-${segment()}-${segment()}`;
 }
 
-
-function renderBookingPage() {
+$(document).ready(() => {
     bookingData = JSON.parse(localStorage.getItem('currentBooking'));
 
     if (bookingData) {
         $('.movie-title').text(bookingData.tenPhim.toUpperCase());
-        // Đảm bảo đường dẫn ảnh luôn đúng chuẩn BASE_PATH và không bị lặp
+        // Đảm bảo đường dẫn ảnh luôn đúng chuẩn /cop_cinema/ và không bị lặp
         let posterSrc = bookingData.anhPhim;
-        function joinPath(base, rel) {
-            if (!base) return rel.startsWith('/') ? rel : '/' + rel;
-            if (rel.startsWith(base)) return rel;
-            if (rel.startsWith('/')) return base + rel;
-            return base + '/' + rel;
+        if (!posterSrc.startsWith('/cop_cinema/')) {
+            posterSrc = '/cop_cinema/' + posterSrc.replace(/^\/?/, '');
         }
-        posterSrc = joinPath(BASE_PATH, posterSrc).replace(/\/+/, '/').replace(/([^:])\/\//g, '$1/');
+        posterSrc = posterSrc.replace(/(\/cop_cinema\/)+/, '/cop_cinema/');
         $('.movie-image img').attr('src', posterSrc);
         $('.movie-age').text(bookingData.doTuoi);
         $('.movie-content ul').html(`
@@ -51,90 +46,15 @@ function renderBookingPage() {
         $('.cinema-number').text(bookingData.phongChieu);
         $('.showtime-number').text(`Suất chiếu: ${bookingData.gioChieu}`);
         $('.showtime-day').text(bookingData.ngayChieu);
+        // Không hiển thị phần đồ ăn ở thông tin phim
     } else {
         showNotification("Không tìm thấy thông tin đặt vé, vui lòng chọn lại!");
-        setTimeout(() => { window.location.href = `${BASE_PATH}/pages/lich_chieu.html`; }, 2000);
+        setTimeout(() => { window.location.href = '/cop_cinema/pages/lich_chieu.html'; }, 2000);
     }
-
-    // Render food step if not present
-    if (!document.getElementById('food')) {
-        const foodStep = document.createElement('div');
-        foodStep.id = 'food';
-        foodStep.className = 'step';
-        foodStep.innerHTML = `
-            <div class="step-title">Bước 2: Chọn đồ ăn kèm</div>
-            <div class="food-list">
-                <div class="food-card">
-                    <div class="food-info">
-                        <div class="food-name">Bỏng ngô</div>
-                        <div class="food-price">60.000 đ</div>
-                    </div>
-                    <div class="qty-box">
-                        <button class="qty-btn" id="f1-minus">-</button>
-                        <input type="text" class="qty-input" id="f1-qty" value="0" readonly>
-                        <button class="qty-btn" id="f1-plus">+</button>
-                    </div>
-                </div>
-                <div class="food-card">
-                    <div class="food-info">
-                        <div class="food-name">Nước ngọt Pepsi</div>
-                        <div class="food-price">35.000 đ</div>
-                    </div>
-                    <div class="qty-box">
-                        <button class="qty-btn" id="f2-minus">-</button>
-                        <input type="text" class="qty-input" id="f2-qty" value="0" readonly>
-                        <button class="qty-btn" id="f2-plus">+</button>
-                    </div>
-                </div>
-                <div class="food-card">
-                    <div class="food-info">
-                        <div class="food-name">Combo Bỏng ngô + Pepsi</div>
-                        <div class="food-price">85.000 đ</div>
-                    </div>
-                    <div class="qty-box">
-                        <button class="qty-btn" id="f3-minus">-</button>
-                        <input type="text" class="qty-input" id="f3-qty" value="0" readonly>
-                        <button class="qty-btn" id="f3-plus">+</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        // Insert after seat step
-        const seatStep = document.getElementById('seat');
-        seatStep.parentNode.insertBefore(foodStep, seatStep.nextSibling);
-    }
-    // Always reset steps to show only the first (seat) as active on render
-    document.querySelectorAll('.step').forEach((el, idx) => {
-        el.classList.remove('active');
-    });
-    // Explicitly set seat step as active
-    const seatStep = document.getElementById('seat');
-    if (seatStep) seatStep.classList.add('active');
-    currentStep = 0;
 
     generateSeatMap();
     renderSummary(); 
-}
-
-function waitAndRenderBookingPage(retries = 30, interval = 50) {
-    // Wait for .movie-title, .movie-image img, .movie-content ul, .cinema-number, .showtime-number, .showtime-day
-    if (
-        document.querySelector('.movie-title') &&
-        document.querySelector('.movie-image img') &&
-        document.querySelector('.movie-content ul') &&
-        document.querySelector('.cinema-number') &&
-        document.querySelector('.showtime-number') &&
-        document.querySelector('.showtime-day')
-    ) {
-        renderBookingPage();
-    } else if (retries > 0) {
-        setTimeout(() => waitAndRenderBookingPage(retries - 1, interval), interval);
-    } else {
-        console.warn('booking.js: Required DOM elements not found after waiting.');
-    }
-}
-
-waitAndRenderBookingPage();
+});
 
 function calculateDynamicPrice(seatType) {
     if (!bookingData) return 0;
@@ -159,32 +79,22 @@ function toggleSeat(id, type, el) {
 }
 
 function toggleCoupleSeat(id, el) {
-    // Only allow even-odd pairs (H1-H2, H3-H4, ...)
     const num = parseInt(id.substring(1));
-    let partnerNum;
-    if (num % 2 === 0) {
-        partnerNum = num - 1;
-    } else {
-        partnerNum = num + 1;
-    }
-    // Only allow valid pairs (1-2, 3-4, ... 9-10)
-    if (partnerNum < 1 || partnerNum > 10) return;
+    const partnerNum = num % 2 === 0 ? num - 1 : num + 1;
     const partnerId = 'H' + partnerNum;
     const pairId = num % 2 === 0 ? `${partnerId}-${id}` : `${id}-${partnerId}`;
-    const partnerEl = document.querySelector(`.seat-item.couple[data-seat='${partnerId}']`);
+    const partnerEl = $(`.seat-item[onclick*="'${partnerId}'"]`);
 
     const idx = selectedSeats.findIndex(s => s.id === pairId);
     if(idx > -1) {
         selectedSeats.splice(idx, 1);
-        el.classList.remove('selected');
-        if (partnerEl) partnerEl.classList.remove('selected');
+        $(el).removeClass('selected');
+        partnerEl.removeClass('selected');
     } else {
-        // Prevent selecting if partner is already selected in another pair
-        if (partnerEl && partnerEl.classList.contains('selected')) return;
         const price = calculateDynamicPrice('couple');
         selectedSeats.push({ id: pairId, type: 'couple', price: price });
-        el.classList.add('selected');
-        if (partnerEl) partnerEl.classList.add('selected');
+        $(el).addClass('selected');
+        partnerEl.addClass('selected');
     }
     renderSummary();
 }
@@ -261,60 +171,36 @@ function renderSummary() {
 
 function showNotification(message) {
     $('#infoModalMsg').text(message);
-    const infoModalEl = document.getElementById('infoModal');
-    const infoModal = bootstrap.Modal.getOrCreateInstance(infoModalEl);
+    const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
     infoModal.show();
-    // Ensure modal closes and overlay is removed on close
-    infoModalEl.addEventListener('hidden.bs.modal', function cleanup() {
-        document.body.classList.remove('modal-open');
-        // Remove any lingering modal-backdrop
-        document.querySelectorAll('.modal-backdrop').forEach(e => e.remove());
-        infoModalEl.removeEventListener('hidden.bs.modal', cleanup);
-    });
 }
-
 
 function generateSeatMap() {
     let html = '';
     ['A', 'B', 'C'].forEach(r => {
         html += `<div class="seat-row"><div class="row-label">${r}</div>`;
-        for(let i=1; i<=12; i++) html += `<div class="seat-item" data-seat="${r}${i}" data-type="standard">${i}</div>`;
+        for(let i=1; i<=12; i++) html += `<div class="seat-item" onclick="toggleSeat('${r}${i}', 'standard', this)">${i}</div>`;
         html += `</div>`;
     });
     ['D', 'E', 'F', 'G'].forEach(r => {
         html += `<div class="seat-row"><div class="row-label">${r}</div>`;
-        for(let i=1; i<=12; i++) html += `<div class="seat-item vip" data-seat="${r}${i}" data-type="vip">${i}</div>`;
+        for(let i=1; i<=12; i++) html += `<div class="seat-item vip" onclick="toggleSeat('${r}${i}', 'vip', this)">${i}</div>`;
         html += `</div>`;
     });
     html += `<div class="seat-row"><div class="row-label">H</div>`;
-    for(let i=1; i<=10; i++) html += `<div class="seat-item couple" data-seat="H${i}" data-type="couple">${i}</div>`;
+    for(let i=1; i<=10; i++) html += `<div class="seat-item couple" onclick="toggleCoupleSeat('H${i}', this)">${i}</div>`;
     html += `</div>`;
     $('#seat-map-container').html(html);
-
-    // Attach event listeners after rendering
-    document.querySelectorAll('.seat-item').forEach(el => {
-        const seatId = el.getAttribute('data-seat');
-        const type = el.getAttribute('data-type');
-        if (type === 'couple') {
-            el.addEventListener('click', function() { toggleCoupleSeat(seatId, el); });
-        } else {
-            el.addEventListener('click', function() { toggleSeat(seatId, type, el); });
-        }
-    });
 }
 
 function updateFood(id, delta, name, price) {
     let qty = (selectedFood[id]?.qty || 0) + delta;
     if(qty < 0) return;
-    const qtyInput = document.getElementById(`${id}-qty`);
-    if (qtyInput) qtyInput.value = qty;
+    $(`#${id}-qty`).val(qty);
     if(qty === 0) delete selectedFood[id];
     else selectedFood[id] = { name, qty, price };
     renderSummary();
 }
-
-
-window.updateFood = updateFood;
 
 function setDiscount(val, el) {
     discount = val;
@@ -323,9 +209,6 @@ function setDiscount(val, el) {
     renderSummary();
 }
 
-window.setDiscount = setDiscount;
-
-
 function setPayMethod(method, el) {
     paymentMethod = method;
     $('.pay-card').removeClass('active');
@@ -333,55 +216,29 @@ function setPayMethod(method, el) {
     renderSummary();
 }
 
-window.setPayMethod = setPayMethod;
-
 function changeStep(delta) {
-    const stepIds = ['seat', 'food', 'payment'];
-    if (delta === 1) {
-        if (currentStep === 0) {
-            if (selectedSeats.length === 0) {
-                showNotification("Bạn vui lòng chọn ghế trước khi tiếp tục nhé!");
-                return;
-            }
-            currentStep = 1;
-        } else if (currentStep === 1) {
-            currentStep = 2;
-        } else if (currentStep === 2) {
-            if (!paymentMethod) {
-                showNotification("Bạn hãy chọn một phương thức thanh toán để hoàn tất.");
-                return;
-            }
-            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-            successModal.show();
-            // Auto redirect after 1.5s
-            setTimeout(() => {
-                completeBooking();
-            }, 1500);
-            return;
-        }
-    } else if (delta === -1 && currentStep > 0) {
-        currentStep--;
-    } else {
+    if(delta === 1 && currentStep === 0 && selectedSeats.length === 0) {
+        showNotification("Bạn vui lòng chọn ghế trước khi tiếp tục nhé!");
         return;
     }
-    // Hide all steps, show only the current step by ID
-    stepIds.forEach((id, idx) => {
-        const el = document.getElementById(id);
-        if (el) el.classList.toggle('active', idx === currentStep);
-    });
+    if(delta === 1 && currentStep === 2) {
+        if(!paymentMethod) {
+            showNotification("Bạn hãy chọn một phương thức thanh toán để hoàn tất.");
+            return;
+        }
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+        return;
+    }
+    currentStep += delta;
+    $('.step').removeClass('active');
+    $(`#${steps[currentStep]}`).addClass('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     $('#prevBtn').css('visibility', currentStep === 0 ? 'hidden' : 'visible');
     $('#nextBtn').text(currentStep === 2 ? 'THANH TOÁN' : 'TIẾP THEO');
 }
 
-// Expose changeStep globally for navigation button event handlers
-window.changeStep = changeStep;
-
-// Ensure only run once
-let bookingCompleted = false;
 function completeBooking() {
-    if (bookingCompleted) return;
-    bookingCompleted = true;
     const seatIds = selectedSeats.map(s => s.id);
     const seatPrices = selectedSeats.map(s => s.price);
     const totalSeatPrice = seatPrices.reduce((sum, p) => sum + p, 0);
@@ -445,5 +302,5 @@ function completeBooking() {
     }
 
     localStorage.removeItem('currentBooking');
-        window.location.href = `${BASE_PATH}/pages/bill.html?justPaid=1`;
+        window.location.href = '/cop_cinema/pages/bill.html?justPaid=1';
 }

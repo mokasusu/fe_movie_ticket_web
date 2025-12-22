@@ -1,18 +1,15 @@
 
-import { BASE_PATH } from "../config.js";
+import { BASE_URL } from "../config.js";
 
 export function createLichChieuCard(phim, suatChieuList) {
   const card = document.createElement("div");
   card.className = "lcc-card";
 
-  let posterPath = phim.anhPhim.replace(/^\/+/, '');
-  // Luôn render posterPath là `${BASE_PATH}/assets/images/posters/xxx.png` (BASE_PATH có thể rỗng)
-  posterPath = `${BASE_PATH}/${posterPath}`.replace(/\/+/g, '/');
   card.innerHTML = `
     <!-- ROW 1: POSTER + INFO -->
     <div class="lcc-row lcc-row-top">
       <div class="lcc-poster">
-        <img src="${posterPath}" alt="${phim.tenPhim}">
+        <img src="/cop_cinema/${phim.anhPhim.replace(/^.*assets\//, 'assets/') }" alt="${phim.tenPhim}">
         <span class="lcc-age">${phim.doTuoi || "C13"}</span>
       </div>
       <div class="lcc-info">
@@ -21,7 +18,7 @@ export function createLichChieuCard(phim, suatChieuList) {
           <span>Thời lượng: ${phim.thoiLuong} phút</span> | <span>Định dạng: ${phim.dinhDang}</span>
         </div>
         ${phim.noiDung ? `<p class="lcc-desc">${phim.noiDung}</p>` : ""}
-        <a class="lcc-detail" href="${BASE_PATH}/pages/chi_tiet_phim.html?maphim=${phim.maPhim}">Xem chi tiết →</a>
+        <a class="lcc-detail" href="/cop_cinema/pages/chi_tiet_phim.html?maphim=${phim.maPhim}">Xem chi tiết →</a>
       </div>
     </div>
 
