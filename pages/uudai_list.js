@@ -1,0 +1,94 @@
+// Giả sử mảng dữ liệu này nằm trong uudai_data.js
+// Bạn nhớ thêm export default hoặc nhúng file script này trước uudai_list.js
+const UUDAI_DATA = [
+    {
+        id: '01',
+        title: "VOUCHER 30.000Đ",
+        image: "/cop_cinema/assets/images/uudai/uudai1.jpg",
+        description: "TẶNG VOUCHER 30.000Đ KHI ĐẶT VÉ XEM PHIM QUA VÍ MOMO",
+        content: `
+            🎭Voucher xem phim trị giá <strong>30.000đ</strong> khi đặt vé xem phim của COP Cinema trên Ví điện tử MOMO.<br>
+            🍿Áp dụng giao dịch có giá trị từ 99.000đ trở lên.<br>
+            📅Thời gian áp dụng: 15/12/2025 đến hết ngày 28/12/2025.<br>
+        `
+    },
+    {
+        id: '02',
+        title: "GIÁ VÉ 55.000Đ/VÉ 2D",
+        image: "/cop_cinema/assets/images/uudai/uudai2.jpg",
+        description: "ƯU ĐÃI GIÁ VÉ 55.000Đ/VÉ 2D CHO THÀNH VIÊN U22",
+        content: `
+            Học sinh, sinh viên, hoặc khán giả từ 22 tuổi trở xuống đều đăng ký được.<br>
+            Áp dụng từ Thứ 2 đến Thứ 6.<br>
+            Mỗi ngày mua được 1 vé giá ưu đãi.<br>
+            Chỉ áp dụng mua trực tiếp tại quầy, không dùng cho ghế đôi.<br>
+            Nhớ mang theo thẻ U22 (bản cứng hoặc bản điện tử trên thiết bị di động) khi mua vé nha!
+        `
+    },
+    {
+        id: '03',
+        title: "CHÀO TẾT, VÉ XEM PHIM ƯU ĐÃI THẢ GA",
+        image: "/cop_cinema/assets/images/uudai/uudai3.jpg",
+        description: "CHÀO TẾT, VÉ XEM PHIM ƯU ĐÃI THẢ GA ",
+        content: `
+            *Đặt vé xem phim trên Ứng dụng Ngân hàng di động (Mobile banking) VCB Digibank, BIDV SmartBanking, VietinBank iPay Mobile, Agribank E-Mobile Banking, BAOVIET Smart, AB Ditizen, Easy OceanBank Mobile và Ví điện tử VNPAY.<br>
+            Nhập mã "PHIMTET" để nhận ưu đãi:<br>
+                - Giảm 10% khi mua 1 vé xem phim <br>
+                - Giảm 20% khi mua 2 vé xem phim <br>
+                - Giảm 30% tối đa 60K khi mua từ 3 vé xem phim <br>
+                - Thời gian: Từ 10/02 đến hết 20/02 <br>
+            Lưu ý: Ưu đãi chỉ áp dụng 01 lần/khách hàng 
+        `
+    },
+    {
+        id: '04',
+        title: "NGÀY HỘI GIA ĐÌNH",
+        image: "/cop_cinema/assets/images/uudai/uudai4.jpg",
+        description: "Gói vé gia đình 4 người chỉ 150.000đ, áp dụng cuối tuần.",
+        content: `
+            Gói vé 4 người chỉ 150.000đ.
+            Áp dụng cuối tuần (Thứ 7 & CN).
+            Không áp dụng kèm khuyến mãi khác.
+            Mỗi nhóm chỉ mua 1 gói khuyến mãi mỗi ngày.
+        `
+    },
+
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('uudai-container');
+    const modal = document.getElementById('promoModal');
+    const closeBtn = document.querySelector('.close-btn');
+
+    // 1. Render danh sách thẻ ưu đãi
+    UUDAI_DATA.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'promo-card';
+        card.innerHTML = `
+            <div class="promo-img">
+                <img src="${item.image}" alt="${item.title}">
+            </div>
+            <div class="promo-info">
+                <div class="promo-title">${item.title}</div>
+                <div class="promo-desc">${item.description}</div>
+            </div>
+        `;
+
+        // Sự kiện click mở Modal
+        card.onclick = () => openPromo(item);
+        container.appendChild(card);
+    });
+
+    // 2. Hàm mở Modal chi tiết
+    function openPromo(item) {
+        document.getElementById('modal-title').textContent = item.title;
+        document.getElementById('modal-body').innerHTML = item.content;
+        modal.style.display = 'flex';
+    }
+
+    // 3. Đóng Modal
+    closeBtn.onclick = () => modal.style.display = 'none';
+    window.onclick = (event) => {
+        if (event.target == modal) modal.style.display = 'none';
+    };
+});
