@@ -9,26 +9,15 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-        <!-- Custom CSS -->
-        <script type="module">
-            import { BASE_PATH } from './js/config.js';
-            window.BASE_PATH = BASE_PATH;
-            console.log('BASE_PATH:', BASE_PATH);
-            const setCss = (href) => {
-                const l = document.createElement('link');
-                l.rel = 'stylesheet';
-                l.href = BASE_PATH + href;
-                document.head.appendChild(l);
-            };
-            setCss('/css/reset.css');
-            setCss('/css/theme.css');
-            setCss('/css/style.css');
-            setCss('/css/components/trailer.css');
-            setCss('/css/components/header.css');
-            setCss('/css/components/footer.css');
-            setCss('/css/components/promotion.css');
-            setCss('/css/components/movie_card.css');
-        </script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/cop_cinema/css/reset.css">
+    <link rel="stylesheet" href="/cop_cinema/css/theme.css">
+    <link rel="stylesheet" href="/cop_cinema/css/style.css">
+    <link rel="stylesheet" href="/cop_cinema/css/components/trailer.css">
+    <link rel="stylesheet" href="/cop_cinema/css/components/header.css">
+    <link rel="stylesheet" href="/cop_cinema/css/components/footer.css">
+    <link rel="stylesheet" href="/cop_cinema/css/components/promotion.css">
+    <link rel="stylesheet" href="/cop_cinema/css/components/movie_card.css">
 </head>
 <body>
     <!-- HEADER -->
@@ -53,64 +42,51 @@
     <!-- FOOTER -->
     <div id="footer-container"></div>
 
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script type="module">
-            import { BASE_PATH } from './js/config.js';
-            // Import trailer.js để đảm bảo window.showTrailer luôn khả dụng
-            import('./js/components/trailer.js');
-            // Load header, promotion, footer HTML
-            async function loadComponents() {
-                try {
-                    const headerRes = await fetch(BASE_PATH + '/pages/components/header.html');
-                    document.getElementById('header-container').innerHTML = await headerRes.text();
-                    // Dynamically import header.js after HTML injected and call initHeader
-                    try {
-                        const headerModule = await import(BASE_PATH + '/js/components/header.js');
-                        if (headerModule && typeof headerModule.initHeader === 'function') headerModule.initHeader();
-                    } catch(e) { console.warn('header.js import failed', e); }
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/cop_cinema/js/components/trailer.js"></script>
+    <script src="/cop_cinema/js/components/promotion.js"></script>
+    <script src="/cop_cinema/js/components/header.js"></script>
+    <script src="/cop_cinema/js/components/footer.js"></script>
+    
+    <!-- Custom JS -->
+    <script type="module">
+        import dsPhim from '/cop_cinema/js/data/phim.js';
+        import { createMovieCard } from '/cop_cinema/js/components/movie_card.js';
 
-                    const promoRes = await fetch(BASE_PATH + '/pages/components/promotion.html');
-                    document.getElementById('promotion-container').innerHTML = await promoRes.text();
-                    try {
-                        const promoModule = await import(BASE_PATH + '/js/components/promotion.js');
-                        if (promoModule && typeof promoModule.initPromotion === 'function') promoModule.initPromotion();
-                    } catch(e) { console.warn('promotion.js import failed', e); }
+        // Render Phim Đang Chiếu / Sắp Chiếu
+        const dangChieuContainer = document.getElementById('movie-list-dang-chieu');
+        const sapChieuContainer = document.getElementById('movie-list-sap-chieu');
 
-                    const footerRes = await fetch(BASE_PATH + '/pages/components/footer.html');
-                    document.getElementById('footer-container').innerHTML = await footerRes.text();
-                    try {
-                        const footerModule = await import(BASE_PATH + '/js/components/footer.js');
-                        if (footerModule && typeof footerModule.initFooter === 'function') footerModule.initFooter();
-                    } catch(e) { console.warn('footer.js import failed', e); }
-                } catch (err) {
-                    console.error('Load components error:', err);
-                }
+        dsPhim.forEach(phim => {
+            const card = createMovieCard(phim, new Date(phim.ngayKhoiChieu) > new Date());
+            if (new Date(phim.ngayKhoiChieu) <= new Date()) {
+                dangChieuContainer.appendChild(card);
+            } else {
+                sapChieuContainer.appendChild(card);
             }
-            loadComponents();
+        });
 
-            // Load and render movies
-            (async () => {
-                try {
-                    const phimModule = await import(BASE_PATH + '/js/data/phim.js');
-                    const dsPhim = phimModule.default || phimModule.movies || phimModule.dsPhim || [];
-                    const { createMovieCard } = await import(BASE_PATH + '/js/components/movie_card.js');
-                    const dangChieuContainer = document.getElementById('movie-list-dang-chieu');
-                    const sapChieuContainer = document.getElementById('movie-list-sap-chieu');
-                    dsPhim.forEach(phim => {
-                        const card = createMovieCard(phim, new Date(phim.ngayKhoiChieu) > new Date());
-                        if (new Date(phim.ngayKhoiChieu) <= new Date()) {
-                            dangChieuContainer.appendChild(card);
-                        } else {
-                            sapChieuContainer.appendChild(card);
-                        }
-                    });
-                } catch (err) {
-                    console.error('Render movies error:', err);
-                }
-            })();
-        </script>
+        // Load Header, Footer, Promotion
+        async function loadComponents() {
+            try {
+                const headerRes = await fetch('/cop_cinema/pages/components/header.html');
+                document.getElementById('header-container').innerHTML = await headerRes.text();
+                if (window.initHeaderUserMenu) window.initHeaderUserMenu();
+
+                const promoRes = await fetch('/cop_cinema/pages/components/promotion.html');
+                document.getElementById('promotion-container').innerHTML = await promoRes.text();
+                if (window.initPromotion) initPromotion();
+
+                const footerRes = await fetch('/cop_cinema/pages/components/footer.html');
+                document.getElementById('footer-container').innerHTML = await footerRes.text();
+            } catch (err) {
+                console.error('Load components error:', err);
+            }
+        }
+        loadComponents();
+    </script>
     <div id="trailer-container"></div>
 </body>
 </html>
