@@ -1,0 +1,57 @@
+.support-menu {
+    background: #020617;
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 0 25px rgba(239,68,68,0.15);
+}
+
+.support-menu h3 {
+    color: #facc15;
+    margin-bottom: 16px;
+}
+
+.support-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.support-menu li {
+    margin-bottom: 12px;
+}
+
+.support-menu a {
+    color: #e5e7eb;
+    transition: 0.3s;
+}
+
+.support-menu a:hover {
+    color: #ef4444;
+}
+
+/* ===== SECTION ===== */
+.support-section {
+    background: #020617;
+    border-radius: 14px;
+    padding: 36px;
+    margin-bottom: 40px;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 0 25px rgba(239,68,68,0.12);
+}
+
+/* ===== TITLE ===== */
+.support-section h2 {
+    color: #facc15;
+    margin-bottom: 24px;
+}
+
+/* ===== TEXT (QUAN TRỌNG) ===== */
+.support-section p,
+.support-section li {
+    line-height: 1.9;       /* GIÃN DÒNG */
+    margin-bottom: 18px;    /* CÁCH ĐOẠN */
+    color: var(--text-main);
+    text-align: justify;
+}
+.support-section {
+    scroll-margin-top: 120px;
+}
