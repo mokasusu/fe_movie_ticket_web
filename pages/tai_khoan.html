@@ -8,22 +8,12 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <script type="module">
-    import { BASE_PATH } from '../../js/config.js';
-    window.BASE_PATH = BASE_PATH;
-    const setCss = (href) => {
-      const l = document.createElement('link');
-      l.rel = 'stylesheet';
-      l.href = BASE_PATH + href;
-      document.head.appendChild(l);
-    };
-    setCss('/css/reset.css');
-    setCss('/css/theme.css');
-    setCss('/css/style.css');
-    setCss('/css/components/header.css');
-    setCss('/css/components/footer.css');
-    setCss('/css/pages/tai_khoan.css');
-  </script>
+  <link rel="stylesheet" href="/cop_cinema/css/reset.css">
+  <link rel="stylesheet" href="/cop_cinema/css/theme.css">
+  <link rel="stylesheet" href="/cop_cinema/css/style.css">
+  <link rel="stylesheet" href="/cop_cinema/css/components/header.css">
+  <link rel="stylesheet" href="/cop_cinema/css/components/footer.css">
+  <link rel="stylesheet" href="/cop_cinema/css/pages/tai_khoan.css">
 </head>
 
 <body>
@@ -38,21 +28,7 @@
 
       <div class="col-md-6 d-flex align-items-center gap-4">
         <div class="avatar-wrapper">
-          <img id="profile-avatar" alt="Avatar">
-          <script>
-            (function() {
-              function getBasePath() {
-                if (window.BASE_PATH) return window.BASE_PATH;
-                if (window.config && window.config.BASE_PATH) return window.config.BASE_PATH;
-                var path = window.location.pathname;
-                var match = path.match(/^(\/[^\/]+)(\/|$)/);
-                return match ? match[1] : '';
-              }
-              var BASE_PATH = getBasePath();
-              var avatar = document.getElementById('profile-avatar');
-              if (avatar) avatar.src = BASE_PATH + '/assets/avatar/avt1.jpg';
-            })();
-          </script>
+          <img id="profile-avatar" src="/cop_cinema/assets/avatar/avt1.jpg" alt="Avatar">
           <label for="avatar-upload" class="edit-avatar-btn">
             <i class="fa-solid fa-pen"></i>
           </label>
@@ -189,33 +165,24 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/cop_cinema/js/components/header.js"></script>
+<script src="/cop_cinema/js/components/footer.js"></script>
+<script src="/cop_cinema/js/pages/tai_khoan.js"></script>
 <script type="module">
-  import { BASE_PATH } from '../../js/config.js';
-  async function loadComponents() {
-    try {
-      // Header
-      const headerRes = await fetch(BASE_PATH + '/pages/components/header.html');
-      document.getElementById('header-container').innerHTML = await headerRes.text();
-      try {
-        const headerModule = await import(BASE_PATH + '/js/components/header.js');
-        if (headerModule && typeof headerModule.initHeader === 'function') headerModule.initHeader();
-      } catch(e) { console.warn('header.js import failed', e); }
+        // Load Header, Footer
+        async function loadComponents() {
+          try {
+            const headerRes = await fetch('/cop_cinema/pages/components/header.html');
+            document.getElementById('header-container').innerHTML = await headerRes.text();
+            if (window.initHeaderUserMenu) window.initHeaderUserMenu();
 
-      // Footer
-      const footerRes = await fetch(BASE_PATH + '/pages/components/footer.html');
-      document.getElementById('footer-container').innerHTML = await footerRes.text();
-      try {
-        const footerModule = await import(BASE_PATH + '/js/components/footer.js');
-        if (footerModule && typeof footerModule.initFooter === 'function') footerModule.initFooter();
-      } catch(e) { console.warn('footer.js import failed', e); }
-
-    } catch (err) {
-      console.error('Load layout error:', err);
-    }
-  }
-  loadComponents();
-  // Load page logic
-  import(BASE_PATH + '/js/pages/tai_khoan.js');
+            const footerRes = await fetch('/cop_cinema/pages/components/footer.html');
+            document.getElementById('footer-container').innerHTML = await footerRes.text();
+          } catch (err) {
+            console.error('Load components error:', err);
+          }
+        }
+      loadComponents();
 </script>
 </body>
 </html>

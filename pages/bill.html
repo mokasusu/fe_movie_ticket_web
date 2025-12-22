@@ -7,23 +7,13 @@
     <title>Lịch sử giao dịch - COP Cinema Premium</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script type="module">
-        import { BASE_PATH } from '../../js/config.js';
-        window.BASE_PATH = BASE_PATH;
-        const setCss = (href) => {
-            const l = document.createElement('link');
-            l.rel = 'stylesheet';
-            l.href = BASE_PATH + href;
-            document.head.appendChild(l);
-        };
-        setCss('/css/reset.css');
-        setCss('/css/theme.css');
-        setCss('/css/style.css');
-        setCss('/css/components/header.css');
-        setCss('/css/components/footer.css');
-    </script>
+    <link rel="stylesheet" href="/cop_cinema/css/reset.css">
+    <link rel="stylesheet" href="/cop_cinema/css/theme.css">
+    <link rel="stylesheet" href="/cop_cinema/css/style.css">
+    <link rel="stylesheet" href="/cop_cinema/css/components/header.css">
+    <link rel="stylesheet" href="/cop_cinema/css/components/footer.css">
     <style>
         :root {
             --primary-red: #E50914;
@@ -339,35 +329,24 @@
       </div>
     </div>
     <div id="footer-container"></div>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script type="module">
-            import { BASE_PATH } from '../../js/config.js';
-            async function loadComponents() {
-                try {
-                    // Header
-                    const headerRes = await fetch(BASE_PATH + '/pages/components/header.html');
-                    document.getElementById('header-container').innerHTML = await headerRes.text();
-                    try {
-                        const headerModule = await import(BASE_PATH + '/js/components/header.js');
-                        if (headerModule && typeof headerModule.initHeader === 'function') headerModule.initHeader();
-                    } catch(e) { console.warn('header.js import failed', e); }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/cop_cinema/js/pages/bill.js"></script>
+    <script src="/cop_cinema/js/components/header.js"></script>
+    <script>
+        async function loadLayout() {
+        try {
+            const headerRes = await fetch('/cop_cinema/pages/components/header.html');
+            document.getElementById('header-container').innerHTML = await headerRes.text();
+            if (window.initHeaderUserMenu) window.initHeaderUserMenu();
 
-                    // Footer
-                    const footerRes = await fetch(BASE_PATH + '/pages/components/footer.html');
-                    document.getElementById('footer-container').innerHTML = await footerRes.text();
-                    try {
-                        const footerModule = await import(BASE_PATH + '/js/components/footer.js');
-                        if (footerModule && typeof footerModule.initFooter === 'function') footerModule.initFooter();
-                    } catch(e) { console.warn('footer.js import failed', e); }
-
-                } catch (err) {
-                    console.error('Load layout error:', err);
-                }
-            }
-            loadComponents();
-            // Load page logic
-            import(BASE_PATH + '/js/pages/bill.js');
-        </script>
+            const footerRes = await fetch('/cop_cinema/pages/components/footer.html');
+            document.getElementById('footer-container').innerHTML = await footerRes.text();
+        } catch (err) {
+            console.error('Load layout error:', err);
+        }
+        }
+        loadLayout();
+    </script>
 </body>
 </html>
